@@ -1,4 +1,7 @@
-import { Flex } from '@chakra-ui/react'
+import {
+  Link as ChakraLink,
+  Flex
+} from '@chakra-ui/react'
 import styled from '@emotion/styled';
 import { DiscordSVG, TwitterSVG, YobotSVG } from 'src/assets';
 import { FAQ, LaunchApp } from '.';
@@ -24,7 +27,13 @@ const Navbar = () => (
     maxHeight='150px'
     p={8}
   >
+    <ChakraLink
+      href='/'
+      d='flex'
+      flexGrow={0}
+    >
     <StyledYobot />
+    </ChakraLink>
     <LaunchGroup>
       <FAQ />
       <DiscordSVG />
