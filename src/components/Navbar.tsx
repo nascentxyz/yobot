@@ -1,11 +1,20 @@
-import { Flex, Heading } from '@chakra-ui/react'
+import { Flex } from '@chakra-ui/react'
 import styled from '@emotion/styled';
-import { YobotSVG } from 'src/assets';
+import { DiscordSVG, TwitterSVG, YobotSVG } from 'src/assets';
+import { FAQ, LaunchApp } from '.';
 
 
 const StyledYobot = styled(YobotSVG)`
   margin-right: auto;
-  margin-left: 1rem;
+  margin-left: 1em;
+`;
+
+const LaunchGroup = styled.div`
+  margin-left: auto;
+  margin-right: 1em;
+  display: flex;
+  flex-direction: row;
+  min-width: 300px;
 `;
 
 const Navbar = () => (
@@ -16,8 +25,12 @@ const Navbar = () => (
     p={8}
   >
     <StyledYobot />
-    <Heading px={2} fontSize="3vw" bgClip="text" bgGradient="linear(to right, #4fa682, #2c5282)">{title}</Heading>
-    <Heading fontSize="3vw">⚡</Heading>
+    <LaunchGroup>
+      <FAQ />
+      <DiscordSVG />
+      <TwitterSVG />
+      <LaunchApp />
+    </LaunchGroup>
   </Flex>
 )
 

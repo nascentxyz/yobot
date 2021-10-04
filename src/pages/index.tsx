@@ -1,19 +1,17 @@
 import {
   Navbar,
-  Container,
-  MainSection,
   Main,
-  DarkModeSwitch,
-  CTA
-} from '../components';
+  GradientContainer,
+  LandingPageMain
+} from 'src/components';
 
 const Index = () => (
-  <Container height="auto" minHeight="100%">
+  <GradientContainer>
     <Main>
       <Navbar />
-      <MainSection />
+      <LandingPageMain />
     </Main>
-  </Container>
+  </GradientContainer>
 )
 
 export default Index

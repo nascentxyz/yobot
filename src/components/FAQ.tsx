@@ -1,11 +1,10 @@
 import styled from "@emotion/styled";
 
 
-const FAQ = styled.p`
-  width: 29px;
-  height: 33px;
+const FAQP = styled.p`
+  width: auto;
+  height: auto;
   flex-grow: 0;
-  margin: 0 24px 0 0;
   font-family: Roboto;
   font-size: 16px;
   font-weight: bold;
@@ -15,6 +14,12 @@ const FAQ = styled.p`
   letter-spacing: normal;
   text-align: left;
   color: #c8cacf;
+  cursor: pointer;
+  margin: auto;
 `;
+
+const FAQ = () => (
+  <FAQP>FAQ</FAQP>
+)
 
 export default FAQ;
