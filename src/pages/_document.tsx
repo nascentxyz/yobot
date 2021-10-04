@@ -7,10 +7,11 @@ export default class Document extends NextDocument {
       <Html >
         <Head>
           <link rel="shortcut icon" href="/favicon.ico" />
-          <title>Nextjs Chakra Dapp Template</title>
+          <title>Yobot</title>
+          <meta name="description" content="Yobot is a trustless broker to match off-chain bots with user contract call requests." />
+          <meta name="author" content="Andreas Bigger <abigger@nascent.xyz>" />
         </Head>
         <body>
-          {/* Make Color mode to persists when you refresh the page. */}
           <ColorModeScript initialColorMode='dark' />
           <Main />
           <NextScript />
