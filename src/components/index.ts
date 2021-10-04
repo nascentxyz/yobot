@@ -1,4 +1,6 @@
+export { default as AppPageMain } from './AppPageMain';
 export { default as ConnectButtons } from './ConnectButtons';
+export { default as ConnectWallet } from './ConnectWallet';
 export { default as Container } from './Container';
 export { default as CTA } from "./CTA";
 export { default as DarkModeSwitch } from "./DarkModeSwitch";
@@ -13,4 +15,7 @@ export { default as MainSection } from './MainSection';
 export { default as LandingPageMain } from './LandingPageMain';
 export { default as LaunchApp } from './LaunchApp';
 export { default as Navbar } from './Navbar';
+export { default as NFTFrame } from './NFTFrame';
+export { default as OpenBidsFrame } from './OpenBidsFrame';
+export { default as PlaceBidFrame } from './PlaceBidFrame';
 export { default as Terminal } from "./Terminal";

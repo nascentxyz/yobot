@@ -2,16 +2,16 @@ import {
   Navbar,
   Main,
   GradientContainer,
-  LandingPageMain
+  AppPageMain
 } from 'src/components';
 
-const Index = () => (
+const App = () => (
   <GradientContainer>
     <Main>
       <Navbar />
-      <LandingPageMain />
+      <AppPageMain />
     </Main>
   </GradientContainer>
 )
 
-export default Index;
+export default App;
