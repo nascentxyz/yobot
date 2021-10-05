@@ -4,7 +4,8 @@ import styled from "@emotion/styled";
 const BidBox = styled.div`
   min-width: 480px;
   height: auto;
-  margin: auto;
+  width: 100%;
+  margin: 2em auto auto 0;
   padding: 1em;
   border-radius: 24px;
   background-color: #191b1f;

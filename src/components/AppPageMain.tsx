@@ -4,8 +4,6 @@ import { PlaceBidFrame, NFTFrame, OpenBidsFrame } from '.';
 
 
 const PageGroup = styled.div`
-  // margin: auto;
-  // height: 100%;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -14,7 +12,6 @@ const PageGroup = styled.div`
 
 const BidRow = styled.div`
   width: 100%;
-  max-width: 1100px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -25,7 +22,6 @@ const BidRow = styled.div`
 const OpenBidRow = styled.div`
   margin: auto;
   width: 100%;
-  max-width: 1100px;
   flex-grow: 1;
   display: flex;
   flex-direction: row;
@@ -33,8 +29,10 @@ const OpenBidRow = styled.div`
   justify-content: space-between;
 `;
 
-const BigBreak = styled.div`
-  padding: 2em;
+const MarginEightPix = styled.div`
+  max-width: 800px;
+  width: 100%;
+  margin: 2em auto auto auto;
 `;
 
 const AppPageMain = () => (
@@ -45,13 +43,15 @@ const AppPageMain = () => (
       p={8}
     >
       <PageGroup>
-        <BidRow>
-          <PlaceBidFrame />
-          <NFTFrame />
-        </BidRow>
-        <OpenBidRow>
-          <OpenBidsFrame />
-        </OpenBidRow>
+        <MarginEightPix>
+          <BidRow>
+            <PlaceBidFrame />
+            <NFTFrame />
+          </BidRow>
+          <OpenBidRow>
+            <OpenBidsFrame />
+          </OpenBidRow>
+        </MarginEightPix>
       </PageGroup>
     </Flex>
   )

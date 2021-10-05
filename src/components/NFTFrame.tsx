@@ -2,10 +2,9 @@ import { Flex } from "@chakra-ui/layout";
 import styled from "@emotion/styled";
 
 const NFTBox = styled.div`
-  min-width: 480px;
+  // min-width: 480px;
   height: auto;
-  margin: auto;
-  padding: 4em;
+  margin: 0 0 auto auto;
   border-radius: 24px;
   display: flex;
   flex-direction: column;
@@ -39,10 +38,9 @@ const ShadowBackground = styled.div`
 const DropTitle = styled.p`
   min-width: 157px;
   min-height: 28px;
-  // margin: auto;
   font-family: Roboto;
+  font-weight: bold;
   font-size: 20px;
-  font-weight: normal;
   font-stretch: normal;
   font-style: normal;
   line-height: 1.4;
@@ -55,7 +53,7 @@ const DropTitle = styled.p`
 const DropDateTime = styled.p`
   min-width: 105px;
   min-height: 56px;
-  // margin: auto;
+  width: min-width;
   font-family: Roboto;
   font-size: 20px;
   font-weight: 300;
@@ -68,22 +66,28 @@ const DropDateTime = styled.p`
   padding: 0.2em 0 0 0;
 `;
 
+const LeftAutoMarginWrapper = styled.div`
+  margin-left: auto;
+`;
+
 const NFTFrame = ({title='ArtBlocks Launch', dateTime='04/02/2021 16:40 PST'}) => {
 
   return (
     <NFTBox>
-      <Flex
-        m='auto'
-        w='auto'
-        p='relative'
-        d='grid'
-        padding="0 0 1em 0"
-      >
-        <ShadowBackground />
-        <TrippyImage src="/logo.png" alt="Main Art Piece" />
-      </Flex>
-      <DropTitle>{title}</DropTitle>
-      <DropDateTime>{dateTime}</DropDateTime>
+      <LeftAutoMarginWrapper>
+        <Flex
+          m='auto'
+          w='auto'
+          p='relative'
+          d='grid'
+          padding="0 0 1em 0"
+        >
+          <ShadowBackground />
+          <TrippyImage src="/logo.png" alt="Main Art Piece" />
+        </Flex>
+        <DropTitle>{title}</DropTitle>
+        <DropDateTime>{dateTime}</DropDateTime>
+      </LeftAutoMarginWrapper>
     </NFTBox>
   )
 }

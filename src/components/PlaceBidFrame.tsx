@@ -4,19 +4,19 @@ import { ConnectWallet } from ".";
 
 const BidBox = styled.div`
   min-width: 480px;
+  min-height: 420px;
   height: auto;
-  margin: auto;
+  margin: auto auto auto 0;
   padding: 1em;
   border-radius: 24px;
   background-color: #191b1f;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 `;
 
 const PlaceBidText = styled.p`
   height: auto;
-  margin: auto;
+  margin: 1em auto 1em auto;
   font-family: Roboto;
   font-size: 20px;
   font-weight: bold;
@@ -26,12 +26,11 @@ const PlaceBidText = styled.p`
   letter-spacing: normal;
   text-align: left;
   color: #fff;
-  padding-bottom: 1em;
 `;
 
 const DataForm = styled.div`
   padding-top: 1em;
-  padding-bottom: 1em;
+  padding-bottom: 2em;
   display: flex;
   flex-direction: column;
 `;
@@ -52,7 +51,7 @@ const PriceText = styled.p`
 
 const PriceSubText = styled.p`
   height: auto;
-  // margin: auto;
+  padding: 0.2em 0 0.4em 0;
   font-family: Roboto;
   font-size: 14px;
   font-weight: normal;
@@ -67,6 +66,7 @@ const PriceSubText = styled.p`
 const CustomInput = styled(Input)`
   width: 100%;
   height: auto;
+  min-height: 48px;
   margin: auto;
   border-radius: 1em;
   border: solid 1px #2c2f36;
@@ -88,6 +88,10 @@ const QuantityText = styled.p`
   padding-top: 1em;
 `;
 
+const ConnectWalletWrapper = styled.div`
+  padding: 1em 0 1em 0;
+  margin-top: auto;
+`;
 
 const PlaceBidFrame = () => {
 
@@ -101,7 +105,9 @@ const PlaceBidFrame = () => {
         <QuantityText>Quantity</QuantityText>
         <CustomInput placeholder="0" size="lg" />
       </DataForm>
-      <ConnectWallet />
+      <ConnectWalletWrapper>
+        <ConnectWallet />
+      </ConnectWalletWrapper>
     </BidBox>
   )
 };
