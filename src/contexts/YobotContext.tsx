@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import LogRocket from "logrocket";
 import { useToast } from "@chakra-ui/react";
 import { Yobot } from "../yobot-sdk/index";
+import { formatEther } from "@ethersproject/units";
 
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3Modal from "web3modal";
@@ -74,6 +75,8 @@ export interface YobotContextData {
   login: (cacheProvider?: boolean) => Promise<any>;
   logout: () => any;
   address: string;
+  // ** account ethers balance in ETH **
+  balance: number;
   isAttemptingLogin: boolean;
 }
 
@@ -122,6 +125,7 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
   }, [yobot, toast]);
 
   const [address, setAddress] = useState<string>(EmptyAddress);
+  const [balance, setBalance] = useState<number>(0);
   const [web3ModalProvider, setWeb3ModalProvider] = useState<any | null>(null);
 
   const setYobotAndAddressFromModal = useCallback(
@@ -140,6 +144,11 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
         const requestedAddress = query.address as string;
         LogRocket.identify(address);
         setAddress(requestedAddress ?? address);
+
+        // ** Get the selected address balance
+        yobotInstance.web3.eth.getBalance(requestedAddress ?? address).then((bal) => {
+          setBalance(parseFloat(formatEther(bal)));
+        }).catch((balance_err) => console.error("Failed to get account ethers with error:", balance_err));
       });
     },
     [setYobot, setAddress, query.address]
@@ -210,6 +219,7 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
       login,
       logout,
       address,
+      balance,
       isAttemptingLogin,
     }),
     [
@@ -218,6 +228,7 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
       login,
       logout,
       address,
+      balance,
       isAttemptingLogin]
   );
 

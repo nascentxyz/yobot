@@ -14,7 +14,7 @@ const StyledYobot = styled(YobotSVG)`
 
 const LaunchGroup = styled.div`
   margin-left: auto;
-  margin-right: 1em;
+  // margin-right: 1em;
   display: flex;
   flex-direction: row;
   min-width: 300px;
@@ -38,9 +38,9 @@ const Navbar = ({ accountButton=false, launchApp=false }) => {
       <StyledYobot />
       </ChakraLink>
       <LaunchGroup>
-        <FAQ />
-        <DiscordSVG />
-        <TwitterSVG />
+        <FAQ mx="0.5em" />
+        <DiscordSVG mx="0.5em"  />
+        <TwitterSVG mx="0.5em"  />
         {accountButton ? <ConnectWallet /> : null}
         {launchApp ? <LaunchApp /> : null}
       </LaunchGroup>

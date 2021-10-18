@@ -18,8 +18,8 @@ const DiscordWrapper = styled.div`
     cursor: pointer;
 `;
 
-const DiscordSVG = () => (
-    <DiscordWrapper>
+const DiscordSVG = ({ mx="" }) => (
+    <DiscordWrapper style={{ marginLeft: mx }}>
         <Discord />
     </DiscordWrapper>
 );

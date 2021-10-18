@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from "react-i18next";
 
-import { Identicon } from 'src/components';
+import { Identicon, AccountModal } from 'src/components';
 import { useYobot } from 'src/contexts/YobotContext';
 import { useAuthedCallback, useIsSmallScreen } from 'src/hooks';
 
@@ -15,7 +15,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const ConnectWallet = () => {
-  const { address, isAuthed, login, isAttemptingLogin } = useYobot();
+  const { address, isAuthed, balance, login, isAttemptingLogin } = useYobot();
 
   console.log("is authed:", isAuthed);
 
@@ -29,12 +29,12 @@ const ConnectWallet = () => {
   const openModal = useAuthedCallback(openSettingsModal);
 
   const {
-    isOpen: isClaimRGTModalOpen,
-    onOpen: openClaimRGTModal,
-    onClose: closeClaimRGTModal,
+    isOpen: isYobotModalOpen,
+    onOpen: openYobotModal,
+    onClose: closeYobotModal,
   } = useDisclosure();
 
-  const authedOpenClaimRGTModal = useAuthedCallback(openClaimRGTModal);
+  const authedOpenClaimRGTModal = useAuthedCallback(openYobotModal);
 
   // const { hasClaimableRewards } = useClaimable();
 
@@ -51,30 +51,44 @@ const ConnectWallet = () => {
   return (
     <ButtonWrapper>
       {isAuthed ? (
-        <Button
-          bg="gray.800"
-          border="1px solid transparent"
-          _hover={{
-            border: "1px",
-            borderStyle: "solid",
-            borderColor: "blue.400",
-            backgroundColor: "gray.700",
-          }}
+        <Box
+          display="flex"
+          alignItems="center"
+          background="gray.700"
           borderRadius="xl"
-          m="1px"
-          px={3}
-          // height="38px"
-          width="100%"
+          py="0"
         >
-          <Text color="white" fontSize="md" fontWeight="medium" mr="2">
-            {address &&
-              `${address.slice(0, 6)}...${address.slice(
-                address.length - 4,
-                address.length
-              )}`}
-          </Text>
-          <Identicon />
-        </Button>
+          <Box px="3">
+            <Text color="white" fontSize="md" w="max-content">
+              {balance && balance.toFixed(3)} ETH
+            </Text>
+          </Box>
+          <Button
+            bg="gray.800"
+            border="1px solid transparent"
+            _hover={{
+              border: "1px",
+              borderStyle: "solid",
+              borderColor: "blue.400",
+              backgroundColor: "gray.700",
+            }}
+            borderRadius="xl"
+            m="1px"
+            px={3}
+            width="100%"
+            onClick={openYobotModal}
+          >
+            <Text color="white" fontSize="md" fontWeight="medium" mr="2">
+              {address &&
+                `${address.slice(0, 6)}...${address.slice(
+                  address.length - 4,
+                  address.length
+                )}`}
+            </Text>
+            <Identicon />
+          </Button>
+          <AccountModal isOpen={isYobotModalOpen} onClose={closeYobotModal} />
+        </Box>
       ) : (
         <Button
           width="100%"
