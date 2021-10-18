@@ -6,6 +6,21 @@ import 'material-react-toastify/dist/ReactToastify.css';
 import { YobotProvider } from 'src/contexts/YobotContext';
 // import { DAppProvider } from "@usedapp/core";
 
+import LogRocket from "logrocket";
+// @ts-ignore
+import { version } from "../../package.json";
+export { version };
+
+if (process.env.NODE_ENV === "production") {
+  console.log("Connecting to LogRocket...");
+  LogRocket.init("eczu2e/rari-capital", {
+    console: {
+      shouldAggregateConsoleErrors: true,
+    },
+    release: version,
+  });
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider resetCSS theme={theme}>

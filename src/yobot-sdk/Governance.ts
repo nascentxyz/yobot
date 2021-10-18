@@ -7,36 +7,36 @@ import { Cache } from "./";
 var erc20Abi = require("." + "/abi/ERC20.json");
 
 export const contractAddresses = {
-  RariGovernanceToken: "0xD291E7a03283640FDc51b121aC401383A46cC623",
-  RariGovernanceTokenDistributor: "0x9C0CaEb986c003417D21A7Daaf30221d61FC1043",
-  RariGovernanceTokenUniswapDistributor:
-    "0x1FA69a416bCF8572577d3949b742fBB0a9CD98c7",
-  RariGovernanceTokenVesting: "0xA54B473028f4ba881F1eD6B670af4103e8F9B98a",
+  // RariGovernanceToken: "0xD291E7a03283640FDc51b121aC401383A46cC623",
+  // RariGovernanceTokenDistributor: "0x9C0CaEb986c003417D21A7Daaf30221d61FC1043",
+  // RariGovernanceTokenUniswapDistributor:
+  //   "0x1FA69a416bCF8572577d3949b742fBB0a9CD98c7",
+  // RariGovernanceTokenVesting: "0xA54B473028f4ba881F1eD6B670af4103e8F9B98a",
 };
 
 export const LP_TOKEN_CONTRACT = "0x18a797c7c70c1bf22fdee1c09062aba709cacf04";
 
 var abis = {};
 
-abis["RariGovernanceToken"] = require("." +
-  "/governance/abi/" +
-  "RariGovernanceToken" +
-  ".json");
+// abis["RariGovernanceToken"] = require("." +
+//   "/governance/abi/" +
+//   "RariGovernanceToken" +
+//   ".json");
 
-abis["RariGovernanceTokenDistributor"] = require("." +
-  "/governance/abi/" +
-  "RariGovernanceTokenDistributor" +
-  ".json");
+// abis["RariGovernanceTokenDistributor"] = require("." +
+//   "/governance/abi/" +
+//   "RariGovernanceTokenDistributor" +
+//   ".json");
 
-abis["RariGovernanceTokenVesting"] = require("." +
-  "/governance/abi/" +
-  "RariGovernanceTokenVesting" +
-  ".json");
+// abis["RariGovernanceTokenVesting"] = require("." +
+//   "/governance/abi/" +
+//   "RariGovernanceTokenVesting" +
+//   ".json");
 
-abis["RariGovernanceTokenUniswapDistributor"] = require("." +
-  "/governance/abi/" +
-  "RariGovernanceTokenUniswapDistributor" +
-  ".json");
+// abis["RariGovernanceTokenUniswapDistributor"] = require("." +
+//   "/governance/abi/" +
+//   "RariGovernanceTokenUniswapDistributor" +
+//   ".json");
 
 
 class Governance {

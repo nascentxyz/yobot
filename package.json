@@ -1,6 +1,7 @@
 {
   "name": "nextjs-chakra-dapp",
   "description": "A template web3 Dapp based on nextjs and chakra-ui.",
+  "version": "0.0.2",
   "author": "Andreas Bigger <abigger@nascent.xyz>",
   "private": false,
   "license": "MIT",
