@@ -1,5 +1,5 @@
 import { ChakraProvider } from '@chakra-ui/react'
-
+import Head from 'next/head';
 import theme from '../theme'
 import { AppProps } from 'next/app'
 import 'material-react-toastify/dist/ReactToastify.css';
@@ -7,6 +7,9 @@ import 'material-react-toastify/dist/ReactToastify.css';
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider resetCSS theme={theme}>
+      <Head>
+        <title>Yobot</title>
+      </Head>
       <Component {...pageProps} />
       <style jsx global>{`
             html, body {

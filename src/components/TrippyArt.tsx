@@ -2,8 +2,7 @@ import { Flex } from "@chakra-ui/layout";
 import React from "react";
 import styled from 'styled-components';
 
-const TrippyImage = styled.img`
-  // position: relative;
+const MainTrippyImage = styled.img`
   width: 212px;
   height: 213px;
   flex-grow: 0;
@@ -12,10 +11,10 @@ const TrippyImage = styled.img`
   border-radius: 16px;
   grid-column-start: 1;
   grid-row-start: 1;
+  z-index: 1;
 `;
 
-const ShadowBackground = styled.div`
-  // position: relative;
+const MainShadowBackground = styled.div`
   width: 215px;
   height: 215px;
   flex-grow: 0;
@@ -29,20 +28,17 @@ const ShadowBackground = styled.div`
 `;
 
 const TrippyArt = () => {
-
   return (
     <Flex
       w='100%'
-      p='relative'
     >
       <Flex
         m='auto'
         w='auto'
-        p='relative'
         d='grid'
       >
-        <ShadowBackground />
-        <TrippyImage src="/logo.png" alt="Main Art Piece" />
+        <MainShadowBackground />
+        <MainTrippyImage src="/logo.png" alt="Main Art Piece" />
       </Flex>
     </Flex>
   )

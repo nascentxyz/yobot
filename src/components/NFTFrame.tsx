@@ -2,7 +2,6 @@ import { Flex } from "@chakra-ui/layout";
 import styled from "@emotion/styled";
 
 const NFTBox = styled.div`
-  // min-width: 480px;
   height: auto;
   margin: 0 0 auto auto;
   border-radius: 24px;
@@ -11,7 +10,6 @@ const NFTBox = styled.div`
 `;
 
 const TrippyImage = styled.img`
-  // position: relative;
   width: 212px;
   height: 213px;
   flex-grow: 0;
@@ -23,7 +21,6 @@ const TrippyImage = styled.img`
 `;
 
 const ShadowBackground = styled.div`
-  // position: relative;
   width: 215px;
   height: 215px;
   flex-grow: 0;
@@ -78,12 +75,12 @@ const NFTFrame = ({title='ArtBlocks Launch', dateTime='04/02/2021 16:40 PST'}) =
         <Flex
           m='auto'
           w='auto'
-          p='relative'
+          // position='relative'
           d='grid'
           padding="0 0 1em 0"
         >
           <ShadowBackground />
-          <TrippyImage src="/logo.png" alt="Main Art Piece" />
+          <TrippyImage src="/logo.png" alt="Placeholder Art Piece" />
         </Flex>
         <DropTitle>{title}</DropTitle>
         <DropDateTime>{dateTime}</DropDateTime>

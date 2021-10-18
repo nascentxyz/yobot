@@ -8,7 +8,7 @@ import {
 const App = () => (
   <GradientContainer>
     <Main>
-      <Navbar />
+      <Navbar accountButton={true} />
       <AppPageMain />
     </Main>
   </GradientContainer>
