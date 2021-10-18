@@ -11,13 +11,13 @@ import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import LogRocket from "logrocket";
 import { useToast } from "@chakra-ui/react";
-
 import { Yobot } from "../yobot-sdk/index";
 
-// import Fuse from "../fuse-sdk/src";
+import WalletConnectProvider from "@walletconnect/web3-provider";
+import Web3Modal from "web3modal";
+
 import {
   chooseBestWeb3Provider,
-  // initFuseWithProviders,
   alchemyURL,
 } from "../utils";
 
@@ -25,10 +25,15 @@ async function launchModalLazy(
   t: (text: string, extra?: any) => string,
   cacheProvider: boolean = true
 ) {
-  const [WalletConnectProvider, Web3Modal] = await Promise.all([
-    import("@walletconnect/web3-provider"),
-    import("web3modal"),
-  ]);
+  console.log("Launching lazy modal...");
+  // const [WalletConnectProvider, Web3Modal] = await Promise.all([
+  //   import("@walletconnect/web3-provider"),
+  //   import("web3modal"),
+  // ]);
+
+
+  console.log("Got WalletConnectProvider:", WalletConnectProvider);
+  console.log("Got Web3Modal:", Web3Modal);
 
   const providerOptions = {
     injected: {
@@ -50,12 +55,16 @@ async function launchModalLazy(
     },
   };
 
+  console.log("Got Provider Options:", providerOptions);
+
   if (!cacheProvider) {
     localStorage.removeItem("WEB3_CONNECT_CACHED_PROVIDER");
     localStorage.removeItem("walletconnect");
   }
 
-  const web3Modal = new Web3Modal.default({
+  console.log("No cached provider");
+
+  const web3Modal = new Web3Modal({
     cacheProvider,
     providerOptions,
     theme: {
@@ -67,7 +76,14 @@ async function launchModalLazy(
     },
   });
 
-  return web3Modal.connect();
+  console.log("Got web3modal:", web3Modal);
+
+  // ?? await here ??
+  let connect_res = web3Modal.connect();
+
+  console.log("Connection result:", connect_res);
+
+  return connect_res;
 }
 
 export interface YobotContextData {
@@ -95,11 +111,9 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
     () => new Yobot(chooseBestWeb3Provider())
   );
 
-  // TODO: replace fuse with yobot
-  // const [fuse, setFuse] = useState<Fuse>(() => initFuseWithProviders());
+  console.log("Have yobot:", yobot);
 
   const [isAttemptingLogin, setIsAttemptingLogin] = useState<boolean>(false);
-
   const toast = useToast();
 
   // Check the user's network:
@@ -110,6 +124,7 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
 
         // Don't show "wrong network" toasts if dev
         if (process.env.NODE_ENV === "development") {
+          console.log("development node env...");
           return;
         }
 
@@ -138,22 +153,23 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
 
   const setYobotAndAddressFromModal = useCallback(
     (modalProvider) => {
-      const rariInstance = new Yobot(modalProvider);
-      setYobot(rariInstance);
+      console.log("inside setYobotAndAddressFromModal...");
+      const yobotInstance = new Yobot(modalProvider);
+      console.log("Created yobotInstance:", yobotInstance);
+      setYobot(yobotInstance);
 
-      // TODO: replace window item with yobot
-      // const fuseInstance = initFuseWithProviders(modalProvider);
-      // window.Fuse = Fuse as any;
-      // setFuse(fuseInstance);
-
-      rariInstance.web3.eth.getAccounts().then((addresses) => {
+      yobotInstance.web3.eth.getAccounts().then((addresses) => {
         if (addresses.length === 0) {
           console.log("Address array was empty. Reloading!");
-          window.location.reload();
+          if (typeof window !== "undefined") {
+            window.location.reload();
+          }
         }
 
         const address = addresses[0] as string;
         const requestedAddress = query.address as string;
+        console.log("got first address:", address);
+        console.log("got requested address:", requestedAddress);
 
         console.log("Setting Logrocket user to new address: " + address);
         LogRocket.identify(address);
@@ -169,10 +185,16 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
     async (cacheProvider: boolean = true) => {
       try {
         setIsAttemptingLogin(true);
-        const provider = await launchModalLazy(t, cacheProvider);
+        console.log("Logging in...", isAttemptingLogin);
+        let provider = await launchModalLazy(t, cacheProvider);
+        console.log("AWAITED provider")
+        console.log("Got provider:", provider);
         setWeb3ModalProvider(provider);
+        console.log("Set Web3ModalProvider:", web3ModalProvider);
         setYobotAndAddressFromModal(provider);
+        console.log("Set YobotAndAddressFromModal...");
         setIsAttemptingLogin(false);
+        console.log("Finished logging in!");
       } catch (err) {
         setIsAttemptingLogin(false);
         return console.error(err);
@@ -192,7 +214,9 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
     ]);
 
   const logout = useCallback(() => {
+    console.log("in logout")
     setWeb3ModalProvider((past: any) => {
+      console.log("logout - set web3 modal provider with prev val:", past);
       if (past?.off) {
         past.off("accountsChanged", refetchAccountData);
         past.off("chainChanged", refetchAccountData);
@@ -253,6 +277,7 @@ export function useYobot() {
   const context = useContext(YobotContext);
 
   if (context === undefined) {
+    console.log("context undefined???");
     throw new Error(`useYobot must be used within a YobotProvider`);
   }
 

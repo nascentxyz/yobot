@@ -6,7 +6,7 @@ import styled from '@emotion/styled';
 import { useTranslation } from "react-i18next";
 
 import { useYobot } from 'src/contexts/YobotContext';
-import { useAuthedCallback } from 'src/hooks/';
+import { useAuthedCallback, useIsSmallScreen } from 'src/hooks/';
 
 const ButtonWrapper = styled.div`
   margin-left: var(--chakra-space-2);
@@ -23,7 +23,8 @@ const ConnectWallet = () => {
     onClose: closeSettingsModal,
   } = useDisclosure();
 
-  const authedOpenSettingsModal = useAuthedCallback(openSettingsModal);
+
+  const openModal = useAuthedCallback(openSettingsModal);
 
   const {
     isOpen: isClaimRGTModalOpen,
@@ -33,7 +34,7 @@ const ConnectWallet = () => {
 
   const authedOpenClaimRGTModal = useAuthedCallback(openClaimRGTModal);
 
-  const { hasClaimableRewards } = useClaimable();
+  // const { hasClaimableRewards } = useClaimable();
 
   const { t } = useTranslation();
 
