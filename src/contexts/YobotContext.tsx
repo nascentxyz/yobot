@@ -7,22 +7,19 @@ import {
   useMemo,
   ReactNode,
 } from "react";
-
-import { useQueryClient } from "react-query";
+import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
-import { DASHBOARD_BOX_PROPS } from "../components/shared/DashboardBox";
-
-import Rari from "../rari-sdk/index";
-
 import LogRocket from "logrocket";
 import { useToast } from "@chakra-ui/react";
-import Fuse from "../fuse-sdk/src";
+
+import { Yobot } from "../yobot-sdk/index";
+
+// import Fuse from "../fuse-sdk/src";
 import {
   chooseBestWeb3Provider,
-  initFuseWithProviders,
+  // initFuseWithProviders,
   alchemyURL,
-} from "../utils/web3Providers";
-import { useLocation } from "react-router-dom";
+} from "../utils";
 
 async function launchModalLazy(
   t: (text: string, extra?: any) => string,
@@ -62,10 +59,10 @@ async function launchModalLazy(
     cacheProvider,
     providerOptions,
     theme: {
-      background: DASHBOARD_BOX_PROPS.backgroundColor,
+      background: "#121212",
       main: "#FFFFFF",
       secondary: "#858585",
-      border: DASHBOARD_BOX_PROPS.borderColor,
+      border: "#272727",
       hover: "#000000",
     },
   });
@@ -74,7 +71,7 @@ async function launchModalLazy(
 }
 
 export interface YobotContextData {
-  rari: Rari;
+  yobot: Yobot;
   web3ModalProvider: any | null;
   isAuthed: boolean;
   login: (cacheProvider?: boolean) => Promise<any>;
@@ -92,12 +89,14 @@ export const YobotContext = createContext<YobotContextData | undefined>(
 export const YobotProvider = ({ children }: { children: ReactNode }) => {
   const { t } = useTranslation();
 
-  const location = useLocation();
+  const { query } = useRouter();
 
-  const [rari, setRari] = useState<Rari>(
-    () => new Rari(chooseBestWeb3Provider())
+  const [yobot, setYobot] = useState<Yobot>(
+    () => new Yobot(chooseBestWeb3Provider())
   );
-  const [fuse, setFuse] = useState<Fuse>(() => initFuseWithProviders());
+
+  // TODO: replace fuse with yobot
+  // const [fuse, setFuse] = useState<Fuse>(() => initFuseWithProviders());
 
   const [isAttemptingLogin, setIsAttemptingLogin] = useState<boolean>(false);
 
@@ -105,7 +104,7 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
 
   // Check the user's network:
   useEffect(() => {
-    Promise.all([rari.web3.eth.net.getId(), rari.web3.eth.getChainId()]).then(
+    Promise.all([yobot.web3.eth.net.getId(), yobot.web3.eth.getChainId()]).then(
       ([netId, chainId]) => {
         console.log("Network ID: " + netId, "Chain ID: " + chainId);
 
@@ -129,22 +128,23 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
         }
       }
     );
-  }, [rari, toast]);
+  }, [yobot, toast]);
 
   const [address, setAddress] = useState<string>(EmptyAddress);
 
   const [web3ModalProvider, setWeb3ModalProvider] = useState<any | null>(null);
 
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
-  const setRariAndAddressFromModal = useCallback(
+  const setYobotAndAddressFromModal = useCallback(
     (modalProvider) => {
-      const rariInstance = new Rari(modalProvider);
-      const fuseInstance = initFuseWithProviders(modalProvider);
-      window.Fuse = Fuse as any;
+      const rariInstance = new Yobot(modalProvider);
+      setYobot(rariInstance);
 
-      setRari(rariInstance);
-      setFuse(fuseInstance);
+      // TODO: replace window item with yobot
+      // const fuseInstance = initFuseWithProviders(modalProvider);
+      // window.Fuse = Fuse as any;
+      // setFuse(fuseInstance);
 
       rariInstance.web3.eth.getAccounts().then((addresses) => {
         if (addresses.length === 0) {
@@ -152,10 +152,8 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
           window.location.reload();
         }
 
-        const address = addresses[0];
-        const requestedAddress = new URLSearchParams(location.search).get(
-          "address"
-        );
+        const address = addresses[0] as string;
+        const requestedAddress = query.address as string;
 
         console.log("Setting Logrocket user to new address: " + address);
         LogRocket.identify(address);
@@ -164,7 +162,7 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
         setAddress(requestedAddress ?? address);
       });
     },
-    [setRari, setAddress, location.search]
+    [setYobot, setAddress, query.address]
   );
 
   const login = useCallback(
@@ -173,23 +171,25 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
         setIsAttemptingLogin(true);
         const provider = await launchModalLazy(t, cacheProvider);
         setWeb3ModalProvider(provider);
-        setRariAndAddressFromModal(provider);
+        setYobotAndAddressFromModal(provider);
         setIsAttemptingLogin(false);
       } catch (err) {
         setIsAttemptingLogin(false);
         return console.error(err);
       }
     },
-    [setWeb3ModalProvider, setRariAndAddressFromModal, setIsAttemptingLogin, t]
+    [setWeb3ModalProvider, setYobotAndAddressFromModal, setIsAttemptingLogin, t]
   );
 
   const refetchAccountData = useCallback(() => {
     console.log("New account, clearing the queryClient!");
-
-    setRariAndAddressFromModal(web3ModalProvider);
-
-    queryClient.clear();
-  }, [setRariAndAddressFromModal, web3ModalProvider, queryClient]);
+    setYobotAndAddressFromModal(web3ModalProvider);
+    // queryClient.clear();
+  }, [
+    setYobotAndAddressFromModal,
+    web3ModalProvider,
+    // queryClient
+    ]);
 
   const logout = useCallback(() => {
     setWeb3ModalProvider((past: any) => {
@@ -197,13 +197,11 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
         past.off("accountsChanged", refetchAccountData);
         past.off("chainChanged", refetchAccountData);
       }
-
       return null;
     });
 
     localStorage.removeItem("WEB3_CONNECT_CACHED_PROVIDER");
     localStorage.removeItem("walletconnect");
-
     setAddress(EmptyAddress);
   }, [setWeb3ModalProvider, refetchAccountData]);
 
@@ -212,7 +210,6 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
       web3ModalProvider.on("accountsChanged", refetchAccountData);
       web3ModalProvider.on("chainChanged", refetchAccountData);
     }
-
     return () => {
       if (web3ModalProvider?.off) {
         web3ModalProvider.off("accountsChanged", refetchAccountData);
@@ -231,15 +228,22 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
   const value = useMemo(
     () => ({
       web3ModalProvider,
-      rari,
-      fuse,
+      yobot,
+      // fuse,
       isAuthed: address !== EmptyAddress,
       login,
       logout,
       address,
       isAttemptingLogin,
     }),
-    [rari, web3ModalProvider, login, logout, address, fuse, isAttemptingLogin]
+    [
+      yobot,
+      web3ModalProvider,
+      login,
+      logout,
+      address,
+      // fuse,
+      isAttemptingLogin]
   );
 
   return <YobotContext.Provider value={value}>{children}</YobotContext.Provider>;
