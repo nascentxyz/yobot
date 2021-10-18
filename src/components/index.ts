@@ -1,3 +1,5 @@
+export * from './account/';
+
 export { default as AppPageMain } from './AppPageMain';
 export { default as ConnectButtons } from './ConnectButtons';
 export { default as ConnectWallet } from './ConnectWallet';
