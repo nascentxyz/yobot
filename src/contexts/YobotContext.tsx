@@ -103,7 +103,7 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
       ([netId, chainId]) => {
         // ** Don't show "wrong network" toasts if dev
         if (process.env.NODE_ENV === "development") {
-          console.log("development node env...");
+          console.log("[NODE_ENV] Development")
           return;
         }
 
@@ -135,7 +135,6 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
 
       yobotInstance.web3.eth.getAccounts().then((addresses) => {
         if (addresses.length === 0) {
-          console.log("Address array was empty. Reloading!");
           if (typeof window !== "undefined") {
             window.location.reload();
           }

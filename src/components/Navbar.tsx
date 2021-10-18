@@ -21,8 +21,6 @@ const LaunchGroup = styled.div`
 `;
 
 const Navbar = ({ accountButton=false, launchApp=false }) => {
-  console.log("Passed in accountButton:", accountButton);
-  console.log("Passed in launchApp:", launchApp);
   return (
     <Flex
       minHeight='100px'

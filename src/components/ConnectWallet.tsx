@@ -17,8 +17,6 @@ const ButtonWrapper = styled.div`
 const ConnectWallet = () => {
   const { address, isAuthed, balance, login, isAttemptingLogin } = useYobot();
 
-  console.log("is authed:", isAuthed);
-
   const {
     isOpen: isSettingsModalOpen,
     onOpen: openSettingsModal,
