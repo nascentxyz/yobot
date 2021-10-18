@@ -1,5 +1,4 @@
 import { Flex, Heading, Container, Image, Button } from '@chakra-ui/react'
-import cn from "classnames";
 
 const ConnectButtons = ({ injected, activate, setWorking }) => {
   return (

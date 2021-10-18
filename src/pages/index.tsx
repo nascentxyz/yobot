@@ -8,7 +8,7 @@ import {
 const Index = () => (
   <GradientContainer>
     <Main>
-      <Navbar />
+      <Navbar launchApp={true} />
       <LandingPageMain />
     </Main>
   </GradientContainer>

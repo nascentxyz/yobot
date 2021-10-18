@@ -1,7 +1,8 @@
 // Identicon.tsx
 import { useEffect, useRef } from "react";
-import { useEthers } from "@usedapp/core";
 import styled from "@emotion/styled";
+import { useYobot } from "src/contexts/YobotContext";
+import Jazzicon from "@metamask/jazzicon";
 
 const StyledIdenticon = styled.div`
   height: 1rem;
@@ -12,13 +13,14 @@ const StyledIdenticon = styled.div`
 
 export default function Identicon() {
   const ref = useRef<HTMLDivElement>();
-  const { account } = useEthers();
+  const { address } = useYobot();
 
   useEffect(() => {
-    if (account && ref.current) {
+    if (address && ref.current) {
       ref.current.innerHTML = "";
+      ref.current.appendChild(Jazzicon(16, parseInt(address.slice(2, 10), 16)));
     }
-  }, [account]);
+  }, [address]);
 
-  return <StyledIdenticon ref={ref as any}
+  return <StyledIdenticon ref={ref as any} />
 }
