@@ -2,6 +2,7 @@ import { Button } from "@chakra-ui/button";
 import { Input } from "@chakra-ui/input";
 import { Flex } from "@chakra-ui/layout";
 import styled from "@emotion/styled";
+import { toast } from "material-react-toastify";
 import { useEffect, useState } from "react";
 import { useYobot } from "src/contexts/YobotContext";
 import { ConnectWallet } from ".";
@@ -125,6 +126,7 @@ const GasText = styled.p`
 const PlaceBidFrame = () => {
   const { isAuthed } = useYobot();
   const [validParams, setValidParams] = useState(false);
+  const [placingBid, setPlacingBid] = useState(false);
 
   // ** Bid Inputs **
   const [bidPrice, setBidPrice] = useState(0.0);
@@ -149,7 +151,70 @@ const PlaceBidFrame = () => {
     return () => {
       clearTimeout(gasTimer);
     };
-  }, [])
+  }, []);
+
+  // ** Bid placed helper function **
+  const placeBid = () => {
+    setPlacingBid(true);
+
+    // ** Freeze Inputs **
+    const _frozenBidPrice = bidPrice;
+    const _frozenBidQty = bidQty;
+
+    // ** Validate Frozen Inputs (sanity check) **
+    if(validateParams(_frozenBidPrice, _frozenBidQty)) {
+      // ** pop up modal for first time users or recurring if unchecked
+      const isBasedYobotApe = localStorage.getItem("IS_BASED_YOBOT_APE");
+      console.log("Is based yobot ape?", isBasedYobotApe);
+      if(isBasedYobotApe === null || isBasedYobotApe === undefined || !isBasedYobotApe) {
+        // ** Pop up modal and await confirmation to continue **
+
+        console.log("popping up modal for user verification...");
+        // TODO:::
+        // submitBid(_frozenBidPrice, _frozenBidQty);
+      } else {
+        // ** Continue with placing bid **
+        submitBid(_frozenBidPrice, _frozenBidQty);
+      }
+    } else {
+      // !! Invalid Inputs !!
+      toast.error({
+        title: "Invalid Inputs!",
+        description:
+          "Please enter a valid bid price and quantity and try again!",
+        status: "error",
+        position: "bottom",
+        duration: 3000,
+        isClosable: true,
+      });
+      setPlacingBid(false);
+    }
+  }
+
+  const submitBid = (_frozenBidPrice, _frozenBidQty) => {
+    // TODO: submit transaction
+    console.log("placing bid...");
+
+    // ** Unfreeze Everything **
+    // TODO: move this to once transaction is placed
+    setPlacingBid(false);
+  }
+
+  // ** Helper function to validate parameters
+  const validateParams = (_bidPrice, _bidQty) => {
+    if (_bidPrice && _bidPrice > 0 && _bidQty && _bidQty > 0) {
+      setValidParams(true);
+      return true;
+    }
+    // ** Any other case we reject **
+    setValidParams(false);
+    return false;
+  }
+
+  // ** Whenever our input values change, we want to validate them **
+  useEffect(() => {
+    validateParams(bidPrice, bidQty);
+  }, [bidPrice, bidQty]);
 
   return (
     <BidBox>
@@ -187,15 +252,9 @@ const PlaceBidFrame = () => {
         ) : (
             <PlaceBidButton
               disabled={!validParams}
-              // variantColor={ validParams ? "green" : "red" }
               colorScheme={ validParams ? "green" : "red" }
               variant="outline"
-              onClick={ () => {
-                // TODO: validate params
-                // TODO: pop up modal to confirm placing bid on mainnet
-                // TODO: submit transaction
-                console.log("placing bid...");
-              }}
+              onClick={placeBid}
             >
               Place Bid
             </PlaceBidButton>
