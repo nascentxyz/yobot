@@ -3,7 +3,7 @@ import {
   Button
 } from '@chakra-ui/react';
 
-const LaunchApp = () => {
+const LaunchAppButton = () => {
   return (
     <ChakraLink
       href='/app'
@@ -17,4 +17,4 @@ const LaunchApp = () => {
   );
 };
 
-export default LaunchApp;
+export default LaunchAppButton;

@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 import { toast } from "material-react-toastify";
 import { useEffect, useState } from "react";
 import { useYobot } from "src/contexts/YobotContext";
-import { ConnectWallet } from ".";
+import { ConnectWallet } from "..";
 
 const BidBox = styled.div`
   min-width: 480px;
@@ -99,7 +99,6 @@ const ButtonWrapper = styled.div`
 
 const PlaceBidButton = styled(Button)`
   width: 100%;
-  // max-width: 200px;
   margin: auto;
 `;
 
@@ -117,7 +116,6 @@ const GasText = styled.p`
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;
-  // line-height: 1.07;
   letter-spacing: normal;
   text-align: left;
   color: #95969a;

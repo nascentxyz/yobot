@@ -4,7 +4,7 @@ import {
 } from '@chakra-ui/react'
 import styled from '@emotion/styled';
 import { DiscordSVG, TwitterSVG, YobotSVG } from 'src/assets';
-import { ConnectWallet, FAQ, LaunchApp } from '.';
+import { ConnectWallet, FAQ, LaunchAppButton } from '.';
 
 
 const StyledYobot = styled(YobotSVG)`
@@ -66,7 +66,7 @@ const Navbar = ({ accountButton=false, launchApp=false }) => {
           <TwitterSVG mx="0.5em"  />
         </LinkWrapper>
         {accountButton ? <ConnectWallet /> : null}
-        {launchApp ? <LaunchApp /> : null}
+        {launchApp ? <LaunchAppButton /> : null}
       </LaunchGroup>
     </NavbarFlex>
   )

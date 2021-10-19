@@ -1,7 +1,6 @@
 import { Flex } from '@chakra-ui/react'
 import styled from '@emotion/styled';
-import { HeadlineSVG } from 'src/assets';
-import { Headline, TrippyArt } from '.';
+import { TrippyArt } from '..';
 
 
 const PageGroup = styled.div`

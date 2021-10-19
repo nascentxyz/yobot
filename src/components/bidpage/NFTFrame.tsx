@@ -75,7 +75,6 @@ const NFTFrame = ({title='ArtBlocks Launch', dateTime='04/02/2021 16:40 PST'}) =
         <Flex
           m='auto'
           w='auto'
-          // position='relative'
           d='grid'
           padding="0 0 1em 0"
         >
