@@ -75,6 +75,12 @@ const CustomInput = styled(Input)`
   border-radius: 1em;
   border: solid 1px #2c2f36;
   background-color: #212429;
+
+  &:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: var(--chakra-colors-whiteAlpha-400) !important;
+  }
 `;
 
 const QuantityText = styled.p`
@@ -246,11 +252,12 @@ const PlaceBidFrame = () => {
       </DataForm>
       <ButtonWrapper>
         {!isAuthed ? (
-          <ConnectWallet />
+          <ConnectWallet fullWidth={true} darkerBackground={true} />
         ) : (
             <PlaceBidButton
               disabled={!validParams}
               colorScheme={ validParams ? "green" : "red" }
+              color={ validParams ? "green.400" : "red.300" }
               variant="outline"
               onClick={placeBid}
             >
