@@ -18,8 +18,8 @@ const FAQP = styled.p`
   margin: auto;
 `;
 
-const FAQ = ({ mx="" }) => (
-  <FAQP style={{ marginLeft: mx }}>FAQ</FAQP>
+const FAQ = ({ mx="0.5em" }) => (
+  <FAQP style={{ marginLeft: mx, marginRight: mx }}>FAQ</FAQP>
 )
 
 export default FAQ;

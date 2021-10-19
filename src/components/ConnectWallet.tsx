@@ -18,23 +18,12 @@ const ConnectWallet = () => {
   const { address, isAuthed, balance, login, isAttemptingLogin } = useYobot();
 
   const {
-    isOpen: isSettingsModalOpen,
-    onOpen: openSettingsModal,
-    onClose: closeSettingsModal,
-  } = useDisclosure();
-
-
-  const openModal = useAuthedCallback(openSettingsModal);
-
-  const {
     isOpen: isYobotModalOpen,
     onOpen: openYobotModal,
     onClose: closeYobotModal,
   } = useDisclosure();
 
-  const authedOpenClaimRGTModal = useAuthedCallback(openYobotModal);
-
-  // const { hasClaimableRewards } = useClaimable();
+  const openModal = useAuthedCallback(openYobotModal);
 
   const { t } = useTranslation();
 
@@ -94,7 +83,7 @@ const ConnectWallet = () => {
           colorScheme="buttonBlue"
           onClick={handleAccountButtonClick}
         >
-          Connect Wallet
+          {t("Connect Wallet")}
         </Button>
       )}
     </ButtonWrapper>

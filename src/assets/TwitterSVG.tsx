@@ -13,8 +13,8 @@ const TwitterWrapper = styled.div`
     cursor: pointer;
 `;
 
-const TwitterSVG = ({ mx="" }) => (
-    <TwitterWrapper style={{ marginLeft: mx }}>
+const TwitterSVG = ({ mx="0.5em" }) => (
+    <TwitterWrapper style={{ marginLeft: mx, marginRight: mx }}>
         <Twitter />
     </TwitterWrapper>
 );

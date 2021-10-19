@@ -26,10 +26,6 @@ async function launchModalLazy(
   t: (text: string, extra?: any) => string,
   cacheProvider: boolean = true
 ) {
-  // const [WalletConnectProvider, Web3Modal] = await Promise.all([
-  //   import("@walletconnect/web3-provider"),
-  //   import("web3modal"),
-  // ]);
   const providerOptions = {
     injected: {
       display: {
@@ -77,6 +73,7 @@ export interface YobotContextData {
   address: string;
   // ** account ethers balance in ETH **
   balance: number;
+  chainId: number;
   isAttemptingLogin: boolean;
 }
 
@@ -97,17 +94,21 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
   const [isAttemptingLogin, setIsAttemptingLogin] = useState<boolean>(false);
   const toast = useToast();
 
-  // ** Check the user's network:
-  useEffect(() => {
-    Promise.all([yobot.web3.eth.net.getId(), yobot.web3.eth.getChainId()]).then(
-      ([netId, chainId]) => {
-        // ** Don't show "wrong network" toasts if dev
-        if (process.env.NODE_ENV === "development") {
-          console.log("[NODE_ENV] Development")
-          return;
-        }
+  // ** Save chainId for context switches **
+  const [chainId, setChainId] = useState<number>(-1);
 
-        if (netId !== 1 || chainId !== 1) {
+  // ** Refresh chain id **
+  const refreshChainId = ({ yobotInstance=yobot }) => {
+    Promise.all([yobotInstance.web3.eth.net.getId(), yobotInstance.web3.eth.getChainId()]).then(
+      ([netId, currChainId]) => {
+        setChainId(currChainId);
+        // ** Don't show "wrong network" toasts if dev
+        // if (process.env.NODE_ENV === "development") {
+        //   console.log("[NODE_ENV] Development")
+        //   return;
+        // }
+
+        if (netId !== 1 || currChainId !== 1) {
           setTimeout(() => {
             toast({
               title: "Wrong network!",
@@ -115,30 +116,51 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
                 "You are on the wrong network! Switch to the mainnet and reload this page!",
               status: "warning",
               position: "bottom",
-              duration: 300000,
+              duration: 3000,
               isClosable: true,
             });
           }, 1500);
         }
       }
     );
-  }, [yobot, toast]);
+  }
+
+  useEffect(() => {
+    // refreshChainId({});
+    if (localStorage.WEB3_CONNECT_CACHED_PROVIDER) {
+      // if(!isAttemptingLogin) {
+        login();
+      // }
+    } else {
+      // ** If we weren't previously connected, let's try to logout **
+      logout();
+    }
+  }, []);
 
   const [address, setAddress] = useState<string>(EmptyAddress);
   const [balance, setBalance] = useState<number>(0);
   const [web3ModalProvider, setWeb3ModalProvider] = useState<any | null>(null);
 
-  const setYobotAndAddressFromModal = useCallback(
-    (modalProvider) => {
+  const setYobotAndAddressFromModal = (modalProvider) => {
       const yobotInstance = new Yobot(modalProvider);
       setYobot(yobotInstance);
 
       yobotInstance.web3.eth.getAccounts().then((addresses) => {
+        console.log("got accounts:", addresses)
         if (addresses.length === 0) {
           if (typeof window !== "undefined") {
-            window.location.reload();
+            console.log("reloading window");
+            setIsAttemptingLogin(true);
+            logout();
+            setAddress(EmptyAddress);
+            return;
           }
         }
+
+        // ** We only want to refresh the chain id and do the rest if we have addresses **
+        refreshChainId({ yobotInstance });
+
+        // ** Set the new address **
         const address = addresses[0] as string;
         const requestedAddress = query.address as string;
         LogRocket.identify(address);
@@ -149,12 +171,9 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
           setBalance(parseFloat(formatEther(bal)));
         }).catch((balance_err) => console.error("Failed to get account ethers with error:", balance_err));
       });
-    },
-    [setYobot, setAddress, query.address]
-  );
+    };
 
-  const login = useCallback(
-    async (cacheProvider: boolean = true) => {
+  const login = async (cacheProvider: boolean = true) => {
       try {
         setIsAttemptingLogin(true);
         let provider = await launchModalLazy(t, cacheProvider);
@@ -165,30 +184,40 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
         setIsAttemptingLogin(false);
         return console.error(err);
       }
-    },
-    [setWeb3ModalProvider, setYobotAndAddressFromModal, setIsAttemptingLogin, t]
-  );
+    };
 
-  const refetchAccountData = useCallback(() => {
+  const refetchAccountData = () => {
     setYobotAndAddressFromModal(web3ModalProvider);
-  }, [
-    setYobotAndAddressFromModal,
-    web3ModalProvider,
-    ]);
+  };
 
-  const logout = useCallback(() => {
+  const logout = () => {
     setWeb3ModalProvider((past: any) => {
+      try {
+        past.clearCachedProvider().then((res) => {
+          console.log("Cleared past cached provider!", res);
+        });
+        console.log(past)
+        console.log(web3ModalProvider);
+        past.request({
+          method: 'wallet_requestPermissions',
+          params: [{
+              eth_accounts: {},
+          }]
+        });
+      } catch (e) {
+        console.error("Failed to close web3 modal provider");
+        console.error(e);
+      }
       if (past?.off) {
         past.off("accountsChanged", refetchAccountData);
         past.off("chainChanged", refetchAccountData);
       }
       return null;
     });
-
     localStorage.removeItem("WEB3_CONNECT_CACHED_PROVIDER");
     localStorage.removeItem("walletconnect");
     setAddress(EmptyAddress);
-  }, [setWeb3ModalProvider, refetchAccountData]);
+  };
 
   useEffect(() => {
     if (web3ModalProvider !== null && web3ModalProvider.on) {
@@ -203,13 +232,6 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
     };
   }, [web3ModalProvider, refetchAccountData]);
 
-  // ** Automatically open the web3modal if they have previously logged in on the site:
-  useEffect(() => {
-    if (localStorage.WEB3_CONNECT_CACHED_PROVIDER) {
-      login();
-    }
-  }, [login]);
-
   const value = useMemo(
     () => ({
       web3ModalProvider,
@@ -219,6 +241,7 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
       logout,
       address,
       balance,
+      chainId,
       isAttemptingLogin,
     }),
     [
@@ -228,6 +251,7 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
       logout,
       address,
       balance,
+      chainId,
       isAttemptingLogin]
   );
 

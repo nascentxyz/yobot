@@ -1,10 +1,14 @@
+import { Button } from "@chakra-ui/button";
 import { Input } from "@chakra-ui/input";
+import { Flex } from "@chakra-ui/layout";
 import styled from "@emotion/styled";
+import { useEffect, useState } from "react";
+import { useYobot } from "src/contexts/YobotContext";
 import { ConnectWallet } from ".";
 
 const BidBox = styled.div`
   min-width: 480px;
-  min-height: 420px;
+  min-height: 350px;
   height: auto;
   margin: auto auto auto 0;
   padding: 1em;
@@ -16,7 +20,7 @@ const BidBox = styled.div`
 
 const PlaceBidText = styled.p`
   height: auto;
-  margin: 1em auto 1em auto;
+  margin: 0.5em auto 0 0;
   font-family: Roboto;
   font-size: 20px;
   font-weight: bold;
@@ -37,7 +41,6 @@ const DataForm = styled.div`
 
 const PriceText = styled.p`
   height: auto;
-  // margin: auto;
   font-family: Roboto;
   font-size: 18px;
   font-weight: 300;
@@ -75,7 +78,6 @@ const CustomInput = styled(Input)`
 
 const QuantityText = styled.p`
   height: auto;
-  // margin: auto;
   font-family: Roboto;
   font-size: 18px;
   font-weight: 300;
@@ -88,12 +90,66 @@ const QuantityText = styled.p`
   padding-top: 1em;
 `;
 
-const ConnectWalletWrapper = styled.div`
-  padding: 1em 0 1em 0;
+const ButtonWrapper = styled.div`
+  padding-bottom: 1em;
   margin-top: auto;
+  display: flex;
+`;
+
+const PlaceBidButton = styled(Button)`
+  width: 100%;
+  // max-width: 200px;
+  margin: auto;
+`;
+
+const Row = styled(Flex)`
+  display: flex;
+  flex-direction: row;
+  align-items: space-between;
+`;
+
+const GasText = styled.p`
+  height: auto;
+  padding: 0.2em 0 0.4em 0;
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  // line-height: 1.07;
+  letter-spacing: normal;
+  text-align: left;
+  color: #95969a;
 `;
 
 const PlaceBidFrame = () => {
+  const { isAuthed } = useYobot();
+  const [validParams, setValidParams] = useState(false);
+
+  // ** Bid Inputs **
+  const [bidPrice, setBidPrice] = useState(0.0);
+  const [bidQty, setBidQty] = useState(0);
+
+  // ** Gas Estimates **
+  // TODO: fetch these predicted fees every x time
+  // ?? use previous bids to predict new fees ??
+  const [lowGasFee, setLowGasFee] = useState(0);
+  const [mediumGasFee, setMediumGasFee] = useState(0);
+  const [highGasFee, setHighGasFee] = useState(0);
+
+  // ** Helper function to fetch gas timeouts **
+  const updateGasEstimates = () => {
+    // TODO::::
+    console.log("updating gas estimates...")
+  }
+
+  // ** Every 15 seconds, update gas estimates **
+  useEffect(() => {
+    let gasTimer = setTimeout(() => updateGasEstimates(), 15 * 1000);
+    return () => {
+      clearTimeout(gasTimer);
+    };
+  }, [])
 
   return (
     <BidBox>
@@ -101,13 +157,50 @@ const PlaceBidFrame = () => {
       <DataForm>
         <PriceText>Price per NFT (ETH)</PriceText>
         <PriceSubText>Include gas fees in your bid price. Higher bids will be filled first!</PriceSubText>
-        <CustomInput placeholder="0.00" size="lg" />
+        <CustomInput
+          type="number"
+          min={0}
+          value={bidPrice}
+          onChange={(e) => setBidPrice(e.target.value ? parseFloat(e.target.value) : undefined)}
+          placeholder="0.00"
+          size="lg"
+        />
+        <Row>
+          <GasText>Low: {lowGasFee}</GasText>
+          <GasText>Medium: {mediumGasFee}</GasText>
+          <GasText>High: {highGasFee}</GasText>
+        </Row>
         <QuantityText>Quantity</QuantityText>
-        <CustomInput placeholder="0" size="lg" />
+        <CustomInput
+          type="number"
+          min={1}
+          // ?? can we set a max based on mint count dynamically ??
+          value={bidQty}
+          onChange={(e) => setBidQty(e.target.value ? parseInt(e.target.value) : undefined)}
+          placeholder="0"
+          size="lg"
+        />
       </DataForm>
-      <ConnectWalletWrapper>
-        <ConnectWallet />
-      </ConnectWalletWrapper>
+      <ButtonWrapper>
+        {!isAuthed ? (
+          <ConnectWallet />
+        ) : (
+            <PlaceBidButton
+              disabled={!validParams}
+              // variantColor={ validParams ? "green" : "red" }
+              colorScheme={ validParams ? "green" : "red" }
+              variant="outline"
+              onClick={ () => {
+                // TODO: validate params
+                // TODO: pop up modal to confirm placing bid on mainnet
+                // TODO: submit transaction
+                console.log("placing bid...");
+              }}
+            >
+              Place Bid
+            </PlaceBidButton>
+        )}
+      </ButtonWrapper>
     </BidBox>
   )
 };
