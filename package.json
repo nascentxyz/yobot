@@ -1,9 +1,9 @@
 {
-  "name": "nextjs-chakra-dapp",
-  "description": "A template web3 Dapp based on nextjs and chakra-ui.",
-  "version": "0.0.2",
-  "author": "Andreas Bigger <abigger@nascent.xyz>",
-  "private": false,
+  "name": "yobot",
+  "description": "A trustless broker to match off-chain bots with user contract call requests.",
+  "version": "0.0.3",
+  "author": "Andreas Bigger <andreas@nascent.xyz>",
+  "private": true,
   "license": "MIT",
   "scripts": {
     "dev": "next dev",
@@ -12,7 +12,9 @@
     "export": "next export",
     "lint": "next lint",
     "zeplin-connect": "zeplin connect",
-    "zeplin-connect-dev-mode": "zeplin connect --dev"
+    "zeplin-connect-dev-mode": "zeplin connect --dev",
+    "contracts-test": "dapp test",
+    "contracts-lint": "prettier --write src/**/*.sol"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.0.16",
