@@ -1,9 +1,4 @@
-import {
-  Navbar,
-  Main,
-  GradientContainer,
-  AppPageMain
-} from 'src/components';
+import { Navbar, Main, GradientContainer, AppPageMain } from "src/components";
 
 const App = () => (
   <GradientContainer>
@@ -12,6 +7,6 @@ const App = () => (
       <AppPageMain />
     </Main>
   </GradientContainer>
-)
+);
 
 export default App;

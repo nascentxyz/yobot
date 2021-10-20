@@ -38,7 +38,6 @@ var abis = {};
 //   "RariGovernanceTokenUniswapDistributor" +
 //   ".json");
 
-
 class Governance {
   // ** Types **
   web3: Web3;

@@ -22,5 +22,5 @@ export default function Identicon() {
     }
   }, [address]);
 
-  return <StyledIdenticon ref={ref as any} />
+  return <StyledIdenticon ref={ref as any} />;
 }

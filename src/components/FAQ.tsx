@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 
-
 const FAQP = styled.p`
   width: auto;
   height: auto;

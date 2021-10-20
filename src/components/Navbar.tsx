@@ -6,7 +6,6 @@ import styled from '@emotion/styled';
 import { DiscordSVG, TwitterSVG, YobotSVG } from 'src/assets';
 import { ConnectWallet, FAQ, LaunchAppButton } from '.';
 
-
 const StyledYobot = styled(YobotSVG)`
   margin-right: auto;
   margin-left: 1em;
@@ -49,7 +48,7 @@ const LinkWrapper = styled.div`
   }
 `;
 
-const Navbar = ({ accountButton=false, launchApp=false }) => {
+const Navbar = ({ accountButton = false, launchApp = false }) => {
   return (
     <NavbarFlex>
       <ChakraLink

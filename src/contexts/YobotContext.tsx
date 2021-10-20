@@ -17,10 +17,7 @@ import { formatEther } from "@ethersproject/units";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3Modal from "web3modal";
 
-import {
-  chooseBestWeb3Provider,
-  alchemyURL,
-} from "../utils";
+import { chooseBestWeb3Provider, alchemyURL } from "../utils";
 
 async function launchModalLazy(
   t: (text: string, extra?: any) => string,
@@ -167,9 +164,17 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
         setAddress(requestedAddress ?? address);
 
         // ** Get the selected address balance
-        yobotInstance.web3.eth.getBalance(requestedAddress ?? address).then((bal) => {
-          setBalance(parseFloat(formatEther(bal)));
-        }).catch((balance_err) => console.error("Failed to get account ethers with error:", balance_err));
+        yobotInstance.web3.eth
+          .getBalance(requestedAddress ?? address)
+          .then((bal) => {
+            setBalance(parseFloat(formatEther(bal)));
+          })
+          .catch((balance_err) =>
+            console.error(
+              "Failed to get account ethers with error:",
+              balance_err
+            )
+          );
       });
     };
 
@@ -188,7 +193,7 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
 
   const refetchAccountData = () => {
     setYobotAndAddressFromModal(web3ModalProvider);
-  };
+  }; // }, [setYobotAndAddressFromModal, web3ModalProvider]);
 
   const logout = () => {
     setWeb3ModalProvider((past: any) => {
@@ -252,10 +257,13 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
       address,
       balance,
       chainId,
-      isAttemptingLogin]
+      isAttemptingLogin
+    ]
   );
 
-  return <YobotContext.Provider value={value}>{children}</YobotContext.Provider>;
+  return (
+    <YobotContext.Provider value={value}>{children}</YobotContext.Provider>
+  );
 };
 
 export function useYobot() {
