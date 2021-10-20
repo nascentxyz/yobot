@@ -1,7 +1,12 @@
-import { extendTheme } from "@chakra-ui/react";
+import { extendTheme, theme as chakraTheme } from "@chakra-ui/react";
 import { createBreakpoints } from "@chakra-ui/theme-tools";
 
-const fonts = { mono: `'Menlo', monospace` };
+const fonts = {
+  ...chakraTheme.fonts,
+  body: `Roboto,Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"`,
+  heading: `Roboto,Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"`,
+  mono: `'Menlo', monospace`
+};
 
 const breakpoints = createBreakpoints({
   sm: "40em",
