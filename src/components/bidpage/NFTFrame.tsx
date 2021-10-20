@@ -74,13 +74,7 @@ const NFTFrame = ({
   return (
     <NFTBox>
       <LeftAutoMarginWrapper>
-        <Flex
-          m="auto"
-          w="auto"
-          // position='relative'
-          d="grid"
-          padding="0 0 1em 0"
-        >
+        <Flex m="auto" w="auto" d="grid" padding="0 0 1em 0">
           <ShadowBackground />
           <TrippyImage src="/logo.png" alt="Placeholder Art Piece" />
         </Flex>

@@ -13,16 +13,8 @@ const ButtonWrapper = styled.div`
   flex-grow: 0;
 `;
 
-const ConnectWallet = () => {
+const ConnectWallet = ({ fullWidth = false, darkerBackground = false }) => {
   const { address, isAuthed, balance, login, isAttemptingLogin } = useYobot();
-
-  const {
-    isOpen: isSettingsModalOpen,
-    onOpen: openSettingsModal,
-    onClose: closeSettingsModal,
-  } = useDisclosure();
-
-  const openModal = useAuthedCallback(openSettingsModal);
 
   const {
     isOpen: isYobotModalOpen,
@@ -30,9 +22,7 @@ const ConnectWallet = () => {
     onClose: closeYobotModal,
   } = useDisclosure();
 
-  const authedOpenClaimRGTModal = useAuthedCallback(openYobotModal);
-
-  // const { hasClaimableRewards } = useClaimable();
+  const openModal = useAuthedCallback(openYobotModal);
 
   const { t } = useTranslation();
 
@@ -45,7 +35,7 @@ const ConnectWallet = () => {
   }, [isAuthed, login, openModal]);
 
   return (
-    <ButtonWrapper>
+    <ButtonWrapper style={{ width: fullWidth ? "100%" : "auto" }}>
       {isAuthed ? (
         <Box
           display="flex"
@@ -88,11 +78,20 @@ const ConnectWallet = () => {
       ) : (
         <Button
           width="100%"
-          variant="outline"
-          colorScheme="buttonBlue"
+          // variant="outline"
+          // colorScheme="buttonBlue"
+          border="1px"
+          borderColor={darkerBackground ? "gray.700" : "gray.600"}
+          background={darkerBackground ? "gray.800" : "gray.700"}
+          _hover={{
+            border: "1px",
+            borderStyle: "solid",
+            borderColor: darkerBackground ? "blue.900" : "blue.800",
+            backgroundColor: darkerBackground ? "gray.700" : "gray.600",
+          }}
           onClick={handleAccountButtonClick}
         >
-          Connect Wallet
+          {t("Connect Wallet")}
         </Button>
       )}
     </ButtonWrapper>

@@ -1,7 +1,7 @@
 import { Link as ChakraLink, Flex } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { DiscordSVG, TwitterSVG, YobotSVG } from "src/assets";
-import { ConnectWallet, FAQ, LaunchApp } from ".";
+import { ConnectWallet, FAQ, LaunchAppButton } from ".";
 
 const StyledYobot = styled(YobotSVG)`
   margin-right: auto;
@@ -10,26 +10,57 @@ const StyledYobot = styled(YobotSVG)`
 
 const LaunchGroup = styled.div`
   margin-left: auto;
-  // margin-right: 1em;
   display: flex;
   flex-direction: row;
   min-width: 300px;
+
+  @media (max-width: 600px) {
+    min-width: 100px;
+    flex-direction: column;
+    margin: auto 0 auto auto;
+  }
+`;
+
+const NavbarFlex = styled(Flex)`
+  min-height: 100px;
+  height: auto;
+  max-height: 150px;
+  padding: var(--chakra-space-8);
+
+  @media (max-width: 600px) {
+    padding: var(--chakra-space-4);
+  }
+`;
+
+const LinkWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+
+  @media (max-width: 600px) {
+    position: absolute;
+    top: 0.5em;
+    width: 100%;
+    left: 0;
+    justify-content: center;
+  }
 `;
 
 const Navbar = ({ accountButton = false, launchApp = false }) => {
   return (
-    <Flex minHeight="100px" height="auto" maxHeight="150px" p={8}>
+    <NavbarFlex>
       <ChakraLink href="/" d="flex" flexGrow={0}>
         <StyledYobot />
       </ChakraLink>
       <LaunchGroup>
-        <FAQ mx="0.5em" />
-        <DiscordSVG mx="0.5em" />
-        <TwitterSVG mx="0.5em" />
+        <LinkWrapper>
+          <FAQ mx="0.5em" />
+          <DiscordSVG mx="0.5em" />
+          <TwitterSVG mx="0.5em" />
+        </LinkWrapper>
         {accountButton ? <ConnectWallet /> : null}
-        {launchApp ? <LaunchApp /> : null}
+        {launchApp ? <LaunchAppButton /> : null}
       </LaunchGroup>
-    </Flex>
+    </NavbarFlex>
   );
 };
 

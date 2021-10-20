@@ -71,6 +71,7 @@
     "web3modal": "^1.9.4"
   },
   "devDependencies": {
+    "@next/eslint-plugin-next": "^11.1.2",
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-etherscan": "^2.1.6",
     "@nomiclabs/hardhat-ganache": "^2.0.1",
@@ -82,6 +83,7 @@
     "@zeplin/cli": "1.1.12",
     "@zeplin/cli-connect-react-plugin": "1.1.1",
     "chai": "^4.3.4",
+    "copyfiles": "^2.4.1",
     "eslint": "7.32.0",
     "eslint-config-next": "11.1.2",
     "ethereum-waffle": "^3.4.0",
@@ -89,12 +91,11 @@
     "pre-commit": "^1.2.2",
     "prettier": "^2.4.0",
     "prettier-plugin-solidity": "^1.0.0-beta.18",
-    "typescript": "4.3.2",
-    "copyfiles": "^2.4.1",
     "rimraf": "^3.0.2",
     "solhint": "^3.3.6",
     "solhint-plugin-prettier": "^0.0.5",
-    "surya": "^0.4.3"
+    "surya": "^0.4.3",
+    "typescript": "4.3.2"
   },
   "prettier": {
     "overrides": [
