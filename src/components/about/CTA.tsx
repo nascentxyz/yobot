@@ -4,14 +4,14 @@ import { FAQModal, GrayButton } from "../";
 
 const CTA = () => (
   <Flex
-      direction="row"
-      alignItems="center"
-      justifyContent="flex-start"
-      bottom="0"
-      width="100%"
-      mt="auto"
-      pb={2}
-    >
+    direction="row"
+    alignItems="center"
+    justifyContent="flex-start"
+    bottom="0"
+    width="100%"
+    mt="auto"
+    pb={2}
+  >
     <Flex direction="column" width="100%" pb={4}>
       <Flex
         direction="row"
@@ -29,11 +29,7 @@ const CTA = () => (
           mx={2}
           minWidth="100px"
         >
-          <GrayButton
-            width="100%"
-          >
-            Github
-          </GrayButton>
+          <GrayButton width="100%">Github</GrayButton>
         </ChakraLink>
       </Flex>
       <Flex
@@ -62,7 +58,7 @@ const CTA = () => (
             isExternal
             href="https://twitter.com/andreasbigger"
           >
-            Jaamal
+            Jamaal
           </ChakraLink>{" "}
         </Text>
       </Flex>

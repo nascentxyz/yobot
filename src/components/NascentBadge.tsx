@@ -1,7 +1,4 @@
-import {
-  Link as ChakraLink,
-  Badge
-} from '@chakra-ui/react';
+import { Link as ChakraLink, Badge } from "@chakra-ui/react";
 
 const NascentBadge = () => {
   return (
@@ -10,7 +7,7 @@ const NascentBadge = () => {
         Nascent
       </Badge>
     </ChakraLink>
-  )
-}
+  );
+};
 
 export default NascentBadge;

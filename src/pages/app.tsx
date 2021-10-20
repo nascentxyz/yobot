@@ -1,4 +1,10 @@
-import { Navbar, Main, GradientContainer, AppPageMain, CTA } from "src/components";
+import {
+  Navbar,
+  Main,
+  GradientContainer,
+  AppPageMain,
+  CTA,
+} from "src/components";
 
 const App = () => (
   <GradientContainer>

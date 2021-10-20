@@ -4,9 +4,7 @@ import { GrayButton } from "./";
 const LaunchAppButton = () => {
   return (
     <ChakraLink href="/app" flexGrow={0} mx={2}>
-      <GrayButton width="100%">
-        Launch App
-      </GrayButton>
+      <GrayButton width="100%">Launch App</GrayButton>
     </ChakraLink>
   );
 };

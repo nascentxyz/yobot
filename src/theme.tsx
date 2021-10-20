@@ -5,7 +5,7 @@ const fonts = {
   ...chakraTheme.fonts,
   body: `Roboto,Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"`,
   heading: `Roboto,Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"`,
-  mono: `'Menlo', monospace`
+  mono: `'Menlo', monospace`,
 };
 
 const breakpoints = createBreakpoints({

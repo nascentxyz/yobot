@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Button,
-  Spinner,
-  Input,
-  Flex
-} from "@chakra-ui/react";
+import { Button, Spinner, Input, Flex } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { toast } from "material-react-toastify";
 import { useYobot } from "src/contexts/YobotContext";
@@ -276,7 +271,9 @@ const PlaceBidFrame = () => {
             onClick={placeBid}
             display={"flex"}
           >
-            {!placingBid ? ('Place Bid') : (
+            {!placingBid ? (
+              "Place Bid"
+            ) : (
               <Spinner margin={"auto"} color={"green.400"} />
             )}
           </PlaceBidButton>
