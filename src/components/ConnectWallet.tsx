@@ -13,7 +13,7 @@ const ButtonWrapper = styled.div`
   flex-grow: 0;
 `;
 
-const ConnectWallet = ({ fullWidth=false, darkerBackground=false }) => {
+const ConnectWallet = ({ fullWidth = false, darkerBackground = false }) => {
   const { address, isAuthed, balance, login, isAttemptingLogin } = useYobot();
 
   const {
@@ -35,9 +35,7 @@ const ConnectWallet = ({ fullWidth=false, darkerBackground=false }) => {
   }, [isAuthed, login, openModal]);
 
   return (
-    <ButtonWrapper
-      style={{ width: fullWidth ? '100%' : 'auto' }}
-    >
+    <ButtonWrapper style={{ width: fullWidth ? "100%" : "auto" }}>
       {isAuthed ? (
         <Box
           display="flex"

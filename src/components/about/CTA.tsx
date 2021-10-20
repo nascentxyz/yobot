@@ -1,6 +1,6 @@
 import { Link as ChakraLink, Button, Text } from "@chakra-ui/react";
 
-import { Container } from '.'
+import { Container } from "../";
 
 const CTA = () => (
   <Container flexDirection="row" bottom="0" width="100%" mt="auto" pb={2}>

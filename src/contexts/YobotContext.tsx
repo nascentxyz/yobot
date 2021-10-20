@@ -95,38 +95,39 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
   const [chainId, setChainId] = useState<number>(-1);
 
   // ** Refresh chain id **
-  const refreshChainId = ({ yobotInstance=yobot }) => {
-    Promise.all([yobotInstance.web3.eth.net.getId(), yobotInstance.web3.eth.getChainId()]).then(
-      ([netId, currChainId]) => {
-        setChainId(currChainId);
-        // ** Don't show "wrong network" toasts if dev
-        // if (process.env.NODE_ENV === "development") {
-        //   console.log("[NODE_ENV] Development")
-        //   return;
-        // }
+  const refreshChainId = ({ yobotInstance = yobot }) => {
+    Promise.all([
+      yobotInstance.web3.eth.net.getId(),
+      yobotInstance.web3.eth.getChainId(),
+    ]).then(([netId, currChainId]) => {
+      setChainId(currChainId);
+      // ** Don't show "wrong network" toasts if dev
+      // if (process.env.NODE_ENV === "development") {
+      //   console.log("[NODE_ENV] Development")
+      //   return;
+      // }
 
-        if (netId !== 1 || currChainId !== 1) {
-          setTimeout(() => {
-            toast({
-              title: "Wrong network!",
-              description:
-                "You are on the wrong network! Switch to the mainnet and reload this page!",
-              status: "warning",
-              position: "bottom",
-              duration: 3000,
-              isClosable: true,
-            });
-          }, 1500);
-        }
+      if (netId !== 1 || currChainId !== 1) {
+        setTimeout(() => {
+          toast({
+            title: "Wrong network!",
+            description:
+              "You are on the wrong network! Switch to the mainnet and reload this page!",
+            status: "warning",
+            position: "bottom",
+            duration: 3000,
+            isClosable: true,
+          });
+        }, 1500);
       }
-    );
-  }
+    });
+  };
 
   useEffect(() => {
     // refreshChainId({});
     if (localStorage.WEB3_CONNECT_CACHED_PROVIDER) {
       // if(!isAttemptingLogin) {
-        login();
+      login();
       // }
     } else {
       // ** If we weren't previously connected, let's try to logout **
@@ -139,57 +140,54 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
   const [web3ModalProvider, setWeb3ModalProvider] = useState<any | null>(null);
 
   const setYobotAndAddressFromModal = (modalProvider) => {
-      const yobotInstance = new Yobot(modalProvider);
-      setYobot(yobotInstance);
+    const yobotInstance = new Yobot(modalProvider);
+    setYobot(yobotInstance);
 
-      yobotInstance.web3.eth.getAccounts().then((addresses) => {
-        console.log("got accounts:", addresses)
-        if (addresses.length === 0) {
-          if (typeof window !== "undefined") {
-            console.log("reloading window");
-            setIsAttemptingLogin(true);
-            logout();
-            setAddress(EmptyAddress);
-            return;
-          }
+    yobotInstance.web3.eth.getAccounts().then((addresses) => {
+      console.log("got accounts:", addresses);
+      if (addresses.length === 0) {
+        if (typeof window !== "undefined") {
+          console.log("reloading window");
+          setIsAttemptingLogin(true);
+          logout();
+          setAddress(EmptyAddress);
+          return;
         }
+      }
 
-        // ** We only want to refresh the chain id and do the rest if we have addresses **
-        refreshChainId({ yobotInstance });
+      // ** We only want to refresh the chain id and do the rest if we have addresses **
+      refreshChainId({ yobotInstance });
 
-        // ** Set the new address **
-        const address = addresses[0] as string;
-        const requestedAddress = query.address as string;
-        LogRocket.identify(address);
-        setAddress(requestedAddress ?? address);
+      // ** Set the new address **
+      const address = addresses[0] as string;
+      const requestedAddress = query.address as string;
+      LogRocket.identify(address);
+      setAddress(requestedAddress ?? address);
 
-        // ** Get the selected address balance
-        yobotInstance.web3.eth
-          .getBalance(requestedAddress ?? address)
-          .then((bal) => {
-            setBalance(parseFloat(formatEther(bal)));
-          })
-          .catch((balance_err) =>
-            console.error(
-              "Failed to get account ethers with error:",
-              balance_err
-            )
-          );
-      });
-    };
+      // ** Get the selected address balance
+      yobotInstance.web3.eth
+        .getBalance(requestedAddress ?? address)
+        .then((bal) => {
+          setBalance(parseFloat(formatEther(bal)));
+        })
+        .catch((balance_err) =>
+          console.error("Failed to get account ethers with error:", balance_err)
+        );
+    });
+  };
 
   const login = async (cacheProvider: boolean = true) => {
-      try {
-        setIsAttemptingLogin(true);
-        let provider = await launchModalLazy(t, cacheProvider);
-        setWeb3ModalProvider(provider);
-        setYobotAndAddressFromModal(provider);
-        setIsAttemptingLogin(false);
-      } catch (err) {
-        setIsAttemptingLogin(false);
-        return console.error(err);
-      }
-    };
+    try {
+      setIsAttemptingLogin(true);
+      let provider = await launchModalLazy(t, cacheProvider);
+      setWeb3ModalProvider(provider);
+      setYobotAndAddressFromModal(provider);
+      setIsAttemptingLogin(false);
+    } catch (err) {
+      setIsAttemptingLogin(false);
+      return console.error(err);
+    }
+  };
 
   const refetchAccountData = () => {
     setYobotAndAddressFromModal(web3ModalProvider);
@@ -201,13 +199,15 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
         past.clearCachedProvider().then((res) => {
           console.log("Cleared past cached provider!", res);
         });
-        console.log(past)
+        console.log(past);
         console.log(web3ModalProvider);
         past.request({
-          method: 'wallet_requestPermissions',
-          params: [{
+          method: "wallet_requestPermissions",
+          params: [
+            {
               eth_accounts: {},
-          }]
+            },
+          ],
         });
       } catch (e) {
         console.error("Failed to close web3 modal provider");
@@ -257,7 +257,7 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
       address,
       balance,
       chainId,
-      isAttemptingLogin
+      isAttemptingLogin,
     ]
   );
 

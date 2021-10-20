@@ -1,6 +1,6 @@
-import { Flex } from '@chakra-ui/react'
-import styled from '@emotion/styled';
-import { PlaceBidFrame, NFTFrame, OpenBidsFrame } from '.';
+import { Flex } from "@chakra-ui/react";
+import styled from "@emotion/styled";
+import { PlaceBidFrame, NFTFrame, OpenBidsFrame } from ".";
 
 const PageGroup = styled.div`
   flex-grow: 1;

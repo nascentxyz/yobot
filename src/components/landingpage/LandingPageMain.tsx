@@ -1,7 +1,6 @@
-import { Flex } from '@chakra-ui/react'
-import styled from '@emotion/styled';
-import { TrippyArt } from '..';
-
+import { Flex } from "@chakra-ui/react";
+import styled from "@emotion/styled";
+import { TrippyArt } from "..";
 
 const PageGroup = styled.div`
   margin-left: auto;
@@ -22,7 +21,7 @@ const MinorHeading = styled.p`
   font-size: 26px;
   font-weight: lighter;
   line-height: 1.35;
-  letter-spacing: .028em;
+  letter-spacing: 0.028em;
   text-align: center;
   color: #fff;
   padding-top: 1em;
@@ -50,7 +49,13 @@ const LandingPageMainBlurb = styled.h1`
   font-weight: 900;
   font-stretch: normal;
   font-style: normal;
-  background-image: linear-gradient(70deg, #ff02cc 2%, #8444df 32%, #63cea6 66%, #d67336 115%);
+  background-image: linear-gradient(
+    70deg,
+    #ff02cc 2%,
+    #8444df 32%,
+    #63cea6 66%,
+    #d67336 115%
+  );
   text-transform: uppercase;
   background-clip: text;
   color: transparent !important;
@@ -75,23 +80,19 @@ const LandingPageMainBlurb = styled.h1`
 `;
 
 const LandingPageMain = () => (
-    <Flex
-      minHeight='100px'
-      height="auto"
-      flexGrow={1}
-      p={8}
-    >
-      <PageGroup>
-        <LandingPageMainBlurb>
-          Mint Artblocks Before The Crowd
-        </LandingPageMainBlurb>
-        <MinorHeading>
-          Leverage the power of Ethereum flashbots to mint before the rush, and get the NFTs you want.
-        </MinorHeading>
-        <BigBreak />
-        <TrippyArt />
-      </PageGroup>
-    </Flex>
-  )
+  <Flex minHeight="100px" height="auto" flexGrow={1} p={8}>
+    <PageGroup>
+      <LandingPageMainBlurb>
+        Mint Artblocks Before The Crowd
+      </LandingPageMainBlurb>
+      <MinorHeading>
+        Leverage the power of Ethereum flashbots to mint before the rush, and
+        get the NFTs you want.
+      </MinorHeading>
+      <BigBreak />
+      <TrippyArt />
+    </PageGroup>
+  </Flex>
+);
 
 export default LandingPageMain;

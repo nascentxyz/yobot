@@ -146,8 +146,8 @@ const PlaceBidFrame = () => {
   // ** Helper function to fetch gas timeouts **
   const updateGasEstimates = () => {
     // TODO::::
-    console.log("updating gas estimates...")
-  }
+    console.log("updating gas estimates...");
+  };
 
   // ** Every 15 seconds, update gas estimates **
   useEffect(() => {
@@ -166,11 +166,15 @@ const PlaceBidFrame = () => {
     const _frozenBidQty = bidQty;
 
     // ** Validate Frozen Inputs (sanity check) **
-    if(validateParams(_frozenBidPrice, _frozenBidQty)) {
+    if (validateParams(_frozenBidPrice, _frozenBidQty)) {
       // ** pop up modal for first time users or recurring if unchecked
       const isBasedYobotApe = localStorage.getItem("IS_BASED_YOBOT_APE");
       console.log("Is based yobot ape?", isBasedYobotApe);
-      if(isBasedYobotApe === null || isBasedYobotApe === undefined || !isBasedYobotApe) {
+      if (
+        isBasedYobotApe === null ||
+        isBasedYobotApe === undefined ||
+        !isBasedYobotApe
+      ) {
         // ** Pop up modal and await confirmation to continue **
 
         console.log("popping up modal for user verification...");
@@ -193,7 +197,7 @@ const PlaceBidFrame = () => {
       });
       setPlacingBid(false);
     }
-  }
+  };
 
   const submitBid = (_frozenBidPrice, _frozenBidQty) => {
     // TODO: submit transaction
@@ -202,7 +206,7 @@ const PlaceBidFrame = () => {
     // ** Unfreeze Everything **
     // TODO: move this to once transaction is placed
     setPlacingBid(false);
-  }
+  };
 
   // ** Helper function to validate parameters
   const validateParams = (_bidPrice, _bidQty) => {
@@ -213,7 +217,7 @@ const PlaceBidFrame = () => {
     // ** Any other case we reject **
     setValidParams(false);
     return false;
-  }
+  };
 
   // ** Whenever our input values change, we want to validate them **
   useEffect(() => {
@@ -225,12 +229,16 @@ const PlaceBidFrame = () => {
       <PlaceBidText>Place Bid</PlaceBidText>
       <DataForm>
         <PriceText>Price per NFT (ETH)</PriceText>
-        <PriceSubText>Include gas fees in your bid price. Higher bids will be filled first!</PriceSubText>
+        <PriceSubText>
+          Include gas fees in your bid price. Higher bids will be filled first!
+        </PriceSubText>
         <CustomInput
           type="number"
           min={0}
           value={bidPrice}
-          onChange={(e) => setBidPrice(e.target.value ? parseFloat(e.target.value) : undefined)}
+          onChange={(e) =>
+            setBidPrice(e.target.value ? parseFloat(e.target.value) : undefined)
+          }
           placeholder="0.00"
           size="lg"
         />
@@ -245,7 +253,9 @@ const PlaceBidFrame = () => {
           min={1}
           // ?? can we set a max based on mint count dynamically ??
           value={bidQty}
-          onChange={(e) => setBidQty(e.target.value ? parseInt(e.target.value) : undefined)}
+          onChange={(e) =>
+            setBidQty(e.target.value ? parseInt(e.target.value) : undefined)
+          }
           placeholder="0"
           size="lg"
         />
@@ -254,19 +264,19 @@ const PlaceBidFrame = () => {
         {!isAuthed ? (
           <ConnectWallet fullWidth={true} darkerBackground={true} />
         ) : (
-            <PlaceBidButton
-              disabled={!validParams}
-              colorScheme={ validParams ? "green" : "red" }
-              color={ validParams ? "green.400" : "red.300" }
-              variant="outline"
-              onClick={placeBid}
-            >
-              Place Bid
-            </PlaceBidButton>
+          <PlaceBidButton
+            disabled={!validParams}
+            colorScheme={validParams ? "green" : "red"}
+            color={validParams ? "green.400" : "red.300"}
+            variant="outline"
+            onClick={placeBid}
+          >
+            Place Bid
+          </PlaceBidButton>
         )}
       </ButtonWrapper>
     </BidBox>
-  )
+  );
 };
 
 export default PlaceBidFrame;
