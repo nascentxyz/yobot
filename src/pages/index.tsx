@@ -2,8 +2,8 @@ import {
   Navbar,
   Main,
   GradientContainer,
-  LandingPageMain
-} from 'src/components';
+  LandingPageMain,
+} from "src/components";
 
 const Index = () => (
   <GradientContainer>
@@ -12,6 +12,6 @@ const Index = () => (
       <LandingPageMain />
     </Main>
   </GradientContainer>
-)
+);
 
 export default Index;

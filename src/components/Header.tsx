@@ -81,6 +81,6 @@ const Header = ({ logoText, menuItems, showMenuItems }) => {
       </nav>
     </header>
   );
-}
+};
 
 export default Header;

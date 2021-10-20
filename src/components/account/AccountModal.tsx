@@ -20,7 +20,7 @@ import { useYobot } from "src/contexts/YobotContext";
 type AccountModalProps = {
   isOpen: any;
   onClose: any;
-}
+};
 
 const AccountModal = ({ isOpen, onClose }: AccountModalProps) => {
   const { address, logout } = useYobot();
@@ -154,7 +154,7 @@ const AccountModal = ({ isOpen, onClose }: AccountModalProps) => {
         </ModalFooter>
       </ModalContent>
     </Modal>
-  )
-}
+  );
+};
 
 export default AccountModal;

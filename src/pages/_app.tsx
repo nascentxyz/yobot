@@ -1,9 +1,9 @@
-import { ChakraProvider } from '@chakra-ui/react'
-import Head from 'next/head';
-import theme from '../theme'
-import { AppProps } from 'next/app'
-import 'material-react-toastify/dist/ReactToastify.css';
-import { YobotProvider } from 'src/contexts/YobotContext';
+import { ChakraProvider } from "@chakra-ui/react";
+import Head from "next/head";
+import theme from "../theme";
+import { AppProps } from "next/app";
+import "material-react-toastify/dist/ReactToastify.css";
+import { YobotProvider } from "src/contexts/YobotContext";
 // import { DAppProvider } from "@usedapp/core";
 
 import LogRocket from "logrocket";
@@ -33,19 +33,20 @@ function MyApp({ Component, pageProps }: AppProps) {
       {/* <DAppProvider config={{}}> */}
       {/* </DAppProvider> */}
       <style jsx global>{`
-            html, body {
-              min-height: 100%;
-              height: 100%;
-              font-family: Azeret Mono, monospace;
-            }
+        html,
+        body {
+          min-height: 100%;
+          height: 100%;
+          font-family: Azeret Mono, monospace;
+        }
 
-            #__next {
-              height: 100%;
-              min-height: 100%;
-            }
-          `}</style>
+        #__next {
+          height: 100%;
+          min-height: 100%;
+        }
+      `}</style>
     </ChakraProvider>
-  )
+  );
 }
 
-export default MyApp
+export default MyApp;
