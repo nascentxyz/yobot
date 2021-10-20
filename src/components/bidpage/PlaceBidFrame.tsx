@@ -1,10 +1,9 @@
-import { Button } from "@chakra-ui/button";
-import { Input } from "@chakra-ui/input";
-import { Flex } from "@chakra-ui/layout";
+import { useEffect, useState } from "react";
+import { Button, Spinner, Input, Flex } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { toast } from "material-react-toastify";
-import { useEffect, useState } from "react";
 import { useYobot } from "src/contexts/YobotContext";
+
 import { ConnectWallet } from "..";
 
 const BidBox = styled.div`
@@ -270,8 +269,13 @@ const PlaceBidFrame = () => {
             color={validParams ? "green.400" : "red.300"}
             variant="outline"
             onClick={placeBid}
+            display={"flex"}
           >
-            Place Bid
+            {!placingBid ? (
+              "Place Bid"
+            ) : (
+              <Spinner margin={"auto"} color={"green.400"} />
+            )}
           </PlaceBidButton>
         )}
       </ButtonWrapper>

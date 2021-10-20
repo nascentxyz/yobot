@@ -17,7 +17,7 @@ contract YobotArtBlocksBroker {
         uint128 quantity;
     }
 
-    // user => projectID => Order
+    /// @dev user => projectID => Order
     mapping(address => mapping(uint256 => Order)) public orders;
     mapping(address => uint256) public balances; // for bots
 
@@ -39,9 +39,9 @@ contract YobotArtBlocksBroker {
         artBlocksBrokerFeeBips = _artBlocksBrokerFeeBips;
     }
 
-    // **************
-    // USER FUNCTIONS
-    // **************
+    /*///////////////////////////////////////////////////////////////
+                        USER FUNCTIONS
+    //////////////////////////////////////////////////////////////*/
 
     function placeOrder(uint256 _artBlocksProjectId, uint128 _quantity) external payable {
         // CHECKS
@@ -78,9 +78,9 @@ contract YobotArtBlocksBroker {
         emit Action(msg.sender, _artBlocksProjectId, 0, 0, "order cancelled", 0);
     }
 
-    // *************
-    // BOT FUNCTIONS
-    // *************
+    /*///////////////////////////////////////////////////////////////
+                        BOT FUNCTIONS
+    //////////////////////////////////////////////////////////////*/
 
     function fulfillOrder(
         address _user,
@@ -138,9 +138,9 @@ contract YobotArtBlocksBroker {
         return output;
     }
 
-    // *********************
-    // COORDINATOR FUNCTIONS
-    // *********************
+    /*///////////////////////////////////////////////////////////////
+                        COORDINATOR FUNCTIONS
+    //////////////////////////////////////////////////////////////*/
 
     function changeCoordinator(address _newCoordinator) external onlyCoordinator {
         coordinator = _newCoordinator;
@@ -155,9 +155,9 @@ contract YobotArtBlocksBroker {
         artBlocksBrokerFeeBips = _newArtBlocksBrokerFeeBips;
     }
 
-    // ******************
-    // WITHDRAW FUNCTIONS
-    // ******************
+    /*///////////////////////////////////////////////////////////////
+                        WITHDRAW FUNCTIONS
+    //////////////////////////////////////////////////////////////*/
 
     // for profitReceiver and bots
     function withdraw() external {
@@ -166,9 +166,9 @@ contract YobotArtBlocksBroker {
         sendValue(payable(msg.sender), amount);
     }
 
-    // ****************
-    // HELPER FUNCTIONS
-    // ****************
+    /*///////////////////////////////////////////////////////////////
+                        HELPER FUNCTIONS
+    //////////////////////////////////////////////////////////////*/
 
     // OpenZeppelin's sendValue function, used for transfering ETH out of this contract
     function sendValue(address payable recipient, uint256 amount) internal {

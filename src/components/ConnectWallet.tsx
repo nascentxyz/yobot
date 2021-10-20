@@ -13,6 +13,13 @@ const ButtonWrapper = styled.div`
   flex-grow: 0;
 `;
 
+const NoShadowButton = styled(Button)`
+  &:focus {
+    outline: 0 !important;
+    box-shadow: none !important;
+  }
+`;
+
 const ConnectWallet = ({ fullWidth = false, darkerBackground = false }) => {
   const { address, isAuthed, balance, login, isAttemptingLogin } = useYobot();
 
@@ -49,7 +56,7 @@ const ConnectWallet = ({ fullWidth = false, darkerBackground = false }) => {
               {balance && balance.toFixed(3)} ETH
             </Text>
           </Box>
-          <Button
+          <NoShadowButton
             bg="gray.800"
             border="1px solid transparent"
             _hover={{
@@ -72,11 +79,11 @@ const ConnectWallet = ({ fullWidth = false, darkerBackground = false }) => {
                 )}`}
             </Text>
             <Identicon />
-          </Button>
+          </NoShadowButton>
           <AccountModal isOpen={isYobotModalOpen} onClose={closeYobotModal} />
         </Box>
       ) : (
-        <Button
+        <NoShadowButton
           width="100%"
           // variant="outline"
           // colorScheme="buttonBlue"
@@ -92,7 +99,7 @@ const ConnectWallet = ({ fullWidth = false, darkerBackground = false }) => {
           onClick={handleAccountButtonClick}
         >
           {t("Connect Wallet")}
-        </Button>
+        </NoShadowButton>
       )}
     </ButtonWrapper>
   );
