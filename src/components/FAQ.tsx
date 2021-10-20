@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 
-
 const FAQP = styled.p`
   width: auto;
   height: auto;
@@ -18,8 +17,6 @@ const FAQP = styled.p`
   margin: auto;
 `;
 
-const FAQ = ({ mx="" }) => (
-  <FAQP style={{ marginLeft: mx }}>FAQ</FAQP>
-)
+const FAQ = ({ mx = "" }) => <FAQP style={{ marginLeft: mx }}>FAQ</FAQP>;
 
 export default FAQ;

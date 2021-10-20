@@ -1,12 +1,11 @@
-
 import { Button, Box, Text, useDisclosure } from "@chakra-ui/react";
-import { useCallback } from 'react';
-import styled from '@emotion/styled';
+import { useCallback } from "react";
+import styled from "@emotion/styled";
 import { useTranslation } from "react-i18next";
 
-import { Identicon, AccountModal } from 'src/components';
-import { useYobot } from 'src/contexts/YobotContext';
-import { useAuthedCallback, useIsSmallScreen } from 'src/hooks';
+import { Identicon, AccountModal } from "src/components";
+import { useYobot } from "src/contexts/YobotContext";
+import { useAuthedCallback, useIsSmallScreen } from "src/hooks";
 
 const ButtonWrapper = styled.div`
   margin-left: var(--chakra-space-2);
@@ -22,7 +21,6 @@ const ConnectWallet = () => {
     onOpen: openSettingsModal,
     onClose: closeSettingsModal,
   } = useDisclosure();
-
 
   const openModal = useAuthedCallback(openSettingsModal);
 

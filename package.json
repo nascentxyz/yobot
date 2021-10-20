@@ -2,20 +2,44 @@
   "name": "yobot",
   "description": "A trustless broker to match off-chain bots with user contract call requests.",
   "version": "0.0.3",
-  "author": "Andreas Bigger <andreas@nascent.xyz>",
   "private": true,
-  "license": "MIT",
+  "license": "AGPL-3.0-only",
+  "authors": [
+    "Andreas Bigger <andreas@nascent.xyz>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nascentxyz/yobot.git"
+  },
+  "files": [
+    "*.sol"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "export": "next export",
-    "lint": "next lint",
-    "zeplin-connect": "zeplin connect",
-    "zeplin-connect-dev-mode": "zeplin connect --dev",
+    "prepublishOnly": "copyfiles -u 1 \"./src/**/*.sol\" --exclude \"./src/test/**/*.sol\" ./",
+    "postpublish": "rimraf ./*.sol",
+    "prepack": "yarn prepublishOnly",
+    "postpack": "yarn postpublish",
+    "lint": "next lint && yarn prettier && yarn solhint",
+    "lint:check": "yarn prettier:check && yarn solhint:check",
+    "prettier": "yarn prettier:check --write",
+    "prettier:check": "prettier --check \"src/**/*.sol\" && prettier --check \"src/*.sol\"",
+    "prettier:write": "prettier -w .",
+    "solhint": "yarn solhint:check --fix",
+    "solhint:check": "solhint --config ./.solhint.json \"src/**/*.sol\"",
+    "visualize": "surya graph -s src/**/*.sol | dot -Tpng > assets/contracts.png",
     "contracts-test": "dapp test",
-    "contracts-lint": "prettier --write src/**/*.sol"
+    "contracts-lint": "prettier --write src/**/*.sol",
+    "precommit-msg": "echo 'Running pre-commit checks...' && exit 0"
   },
+  "pre-commit": [
+    "precommit-msg",
+    "prettier:write",
+    "lint"
+  ],
   "dependencies": {
     "@chakra-ui/icons": "^1.0.16",
     "@chakra-ui/react": "^1.4.2",
@@ -62,9 +86,15 @@
     "eslint-config-next": "11.1.2",
     "ethereum-waffle": "^3.4.0",
     "hardhat": "^2.6.4",
+    "pre-commit": "^1.2.2",
     "prettier": "^2.4.0",
     "prettier-plugin-solidity": "^1.0.0-beta.18",
-    "typescript": "4.3.2"
+    "typescript": "4.3.2",
+    "copyfiles": "^2.4.1",
+    "rimraf": "^3.0.2",
+    "solhint": "^3.3.6",
+    "solhint-plugin-prettier": "^0.0.5",
+    "surya": "^0.4.3"
   },
   "prettier": {
     "overrides": [

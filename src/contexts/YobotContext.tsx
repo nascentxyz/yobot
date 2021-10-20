@@ -17,10 +17,7 @@ import { formatEther } from "@ethersproject/units";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3Modal from "web3modal";
 
-import {
-  chooseBestWeb3Provider,
-  alchemyURL,
-} from "../utils";
+import { chooseBestWeb3Provider, alchemyURL } from "../utils";
 
 async function launchModalLazy(
   t: (text: string, extra?: any) => string,
@@ -103,7 +100,7 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
       ([netId, chainId]) => {
         // ** Don't show "wrong network" toasts if dev
         if (process.env.NODE_ENV === "development") {
-          console.log("[NODE_ENV] Development")
+          console.log("[NODE_ENV] Development");
           return;
         }
 
@@ -145,9 +142,17 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
         setAddress(requestedAddress ?? address);
 
         // ** Get the selected address balance
-        yobotInstance.web3.eth.getBalance(requestedAddress ?? address).then((bal) => {
-          setBalance(parseFloat(formatEther(bal)));
-        }).catch((balance_err) => console.error("Failed to get account ethers with error:", balance_err));
+        yobotInstance.web3.eth
+          .getBalance(requestedAddress ?? address)
+          .then((bal) => {
+            setBalance(parseFloat(formatEther(bal)));
+          })
+          .catch((balance_err) =>
+            console.error(
+              "Failed to get account ethers with error:",
+              balance_err
+            )
+          );
       });
     },
     [setYobot, setAddress, query.address]
@@ -171,10 +176,7 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
 
   const refetchAccountData = useCallback(() => {
     setYobotAndAddressFromModal(web3ModalProvider);
-  }, [
-    setYobotAndAddressFromModal,
-    web3ModalProvider,
-    ]);
+  }, [setYobotAndAddressFromModal, web3ModalProvider]);
 
   const logout = useCallback(() => {
     setWeb3ModalProvider((past: any) => {
@@ -228,10 +230,13 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
       logout,
       address,
       balance,
-      isAttemptingLogin]
+      isAttemptingLogin,
+    ]
   );
 
-  return <YobotContext.Provider value={value}>{children}</YobotContext.Provider>;
+  return (
+    <YobotContext.Provider value={value}>{children}</YobotContext.Provider>
+  );
 };
 
 export function useYobot() {

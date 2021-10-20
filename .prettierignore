@@ -1,0 +1,17 @@
+# Ignore artifacts:
+build
+coverage
+out
+lib
+assets
+node_modules
+.next
+
+# ?? Ignore NextJS for Linting ??
+# src/pages
+# src/components
+# src/contexts
+# src/hooks
+# src/utils
+# src/yobot-sdk
+# theme.tsx

@@ -46,54 +46,53 @@ export class PixelMeasurement {
   }
 }
 
-
 export class PercentageSize {
-  percent: number
+  percent: number;
 
   constructor(num: number) {
     if (num > 1) {
-      throw new Error('Cannot have a percentage higher than 1!')
+      throw new Error("Cannot have a percentage higher than 1!");
     }
 
-    this.percent = num
+    this.percent = num;
   }
 }
 
 export class PercentOnDesktopPixelOnMobileSize {
-  percent: number
-  pixel: number
+  percent: number;
+  pixel: number;
 
   constructor({
     percentageSize,
-    pixelSize
+    pixelSize,
   }: {
-    percentageSize: number
-    pixelSize: number
+    percentageSize: number;
+    pixelSize: number;
   }) {
     if (percentageSize > 1) {
-      throw new Error('Cannot have a percentage higher than 1!')
+      throw new Error("Cannot have a percentage higher than 1!");
     }
 
-    this.percent = percentageSize
-    this.pixel = pixelSize
+    this.percent = percentageSize;
+    this.pixel = pixelSize;
   }
 }
 
 export class PixelSize {
-  pixel: number
+  pixel: number;
 
   constructor(num: number) {
-    this.pixel = num
+    this.pixel = num;
   }
 }
 
 export class ResponsivePixelSize {
-  desktop: number
-  mobile: number
+  desktop: number;
+  mobile: number;
 
   constructor({ desktop, mobile }: { desktop: number; mobile: number }) {
-    this.mobile = mobile
-    this.desktop = desktop
+    this.mobile = mobile;
+    this.desktop = desktop;
   }
 }
 
@@ -218,7 +217,6 @@ export const Row = ({
   );
 };
 
-
 /**
  *  RowOnDesktopColumnOnMobile.tsx
  *
@@ -236,21 +234,21 @@ export const RowOnDesktopColumnOnMobile = ({
   ...others
 }: RowProps) => {
   if (expand) {
-    others.height = '100%'
-    others.width = '100%'
+    others.height = "100%";
+    others.width = "100%";
   }
 
   return (
     <Flex
-      flexDirection={{ md: 'row', base: 'column' }}
+      flexDirection={{ md: "row", base: "column" }}
       justifyContent={mainAxisAlignment}
       alignItems={crossAxisAlignment}
       {...others}
     >
       {children}
     </Flex>
-  )
-}
+  );
+};
 
 /**
  * RowOrColumn.tsx
@@ -270,21 +268,21 @@ export const RowOrColumn = ({
   ...others
 }: RowProps & { isRow: boolean }) => {
   if (expand) {
-    others.height = '100%'
-    others.width = '100%'
+    others.height = "100%";
+    others.width = "100%";
   }
 
   return (
     <Flex
-      flexDirection={isRow ? 'row' : 'column'}
+      flexDirection={isRow ? "row" : "column"}
       justifyContent={mainAxisAlignment}
       alignItems={crossAxisAlignment}
       {...others}
     >
       {children}
     </Flex>
-  )
-}
+  );
+};
 
 /**************************************
  *
@@ -298,18 +296,16 @@ export const RowOrColumn = ({
  ***************************************
  */
 
-
 /**
  * useWindowSize.ts
  *
  * Gets the height and width of the current window.
  */
 export const useWindowSize = () => {
-
   const [windowSize, setWindowSize] = useState({
     width: typeof window !== "undefined" ? window.innerWidth : 0,
-    height: typeof window !== "undefined" ? window.innerHeight : 0
-  })
+    height: typeof window !== "undefined" ? window.innerHeight : 0,
+  });
 
   useEffect(() => {
     // Handler to call on window resize
@@ -317,24 +313,27 @@ export const useWindowSize = () => {
       // Set window width/height to state
       setWindowSize({
         width: typeof window !== "undefined" ? window.innerWidth : 0,
-        height: typeof window !== "undefined" ? window.innerHeight : 0
-      })
+        height: typeof window !== "undefined" ? window.innerHeight : 0,
+      });
     }
 
     // Add event listener
     if (typeof window !== "undefined") {
-      window.addEventListener('resize', handleResize)
+      window.addEventListener("resize", handleResize);
     }
 
     // Call handler right away so state gets updated with initial window size
-    handleResize()
+    handleResize();
 
     // Remove event listener on cleanup
-    return () => typeof window !== "undefined" ? window.removeEventListener('resize', handleResize) : null
-  }, []) // Empty array ensures that effect is only run on mount
+    return () =>
+      typeof window !== "undefined"
+        ? window.removeEventListener("resize", handleResize)
+        : null;
+  }, []); // Empty array ensures that effect is only run on mount
 
-  return windowSize
-}
+  return windowSize;
+};
 
 /**
  * useLockedViewHeight.ts
@@ -344,67 +343,66 @@ export const useWindowSize = () => {
  */
 export function useLockedViewHeight({
   min = -1,
-  max = Number.MAX_SAFE_INTEGER
+  max = Number.MAX_SAFE_INTEGER,
 }: {
-  min?: number
-  max?: number
+  min?: number;
+  max?: number;
 }) {
-  const { height } = useWindowSize()
+  const { height } = useWindowSize();
 
   if (height <= min) {
     return {
       windowHeight: new PixelMeasurement(min),
-      isLocked: true
-    }
+      isLocked: true,
+    };
   } else if (height >= max) {
     return {
       windowHeight: new PixelMeasurement(max),
-      isLocked: true
-    }
+      isLocked: true,
+    };
   } else {
     return {
       windowHeight: new PixelMeasurement(height),
-      isLocked: false
-    }
+      isLocked: false,
+    };
   }
 }
 
 /**
  * useIsMobile.ts
  *
- * Returns whether the width of the window makes it likely a mobile device. 
+ * Returns whether the width of the window makes it likely a mobile device.
  * */
 export function useIsMobile() {
-  const { width } = useWindowSize()
+  const { width } = useWindowSize();
 
-  return width < 768
+  return width < 768;
 }
 
-
-/** 
+/**
  * useSpacedLayout.ts
- * 
+ *
  * Takes the height of the parent, the desired spacing between children,
  * and the desired percentage sizes of the children (relative to their parent minus the spacing desired and the size of fixed sized children)
  * or the size of the child in pixels
  * and returns the pixel size of each child
  * that makes that child conform to the desired percentage.
  */
- export function useSpacedLayout({
+export function useSpacedLayout({
   parentHeight,
   spacing,
-  childSizes
+  childSizes,
 }: {
-  parentHeight: number
-  spacing: number
+  parentHeight: number;
+  spacing: number;
   childSizes: (
     | PercentageSize
     | PercentOnDesktopPixelOnMobileSize
     | PixelSize
     | ResponsivePixelSize
-  )[]
+  )[];
 }) {
-  const isMobile = useIsMobile()
+  const isMobile = useIsMobile();
 
   let parentMinusSpacingAndFixedChildSizes =
     parentHeight -
@@ -414,15 +412,15 @@ export function useIsMobile() {
         value instanceof PixelSize ||
         (value instanceof PercentOnDesktopPixelOnMobileSize && isMobile)
       ) {
-        return past + value.pixel
+        return past + value.pixel;
       } else if (value instanceof ResponsivePixelSize) {
-        return past + (isMobile ? value.mobile : value.desktop)
+        return past + (isMobile ? value.mobile : value.desktop);
       } else {
-        return past
+        return past;
       }
-    }, 0)
+    }, 0);
 
-  let spacedChildren: PixelMeasurement[] = []
+  let spacedChildren: PixelMeasurement[] = [];
 
   for (const size of childSizes) {
     if (
@@ -433,21 +431,21 @@ export function useIsMobile() {
         new PixelMeasurement(
           size.percent * parentMinusSpacingAndFixedChildSizes
         )
-      )
+      );
     } else if (size instanceof PercentOnDesktopPixelOnMobileSize && isMobile) {
-      spacedChildren.push(new PixelMeasurement(size.pixel))
+      spacedChildren.push(new PixelMeasurement(size.pixel));
     } else if (size instanceof ResponsivePixelSize) {
       spacedChildren.push(
         new PixelMeasurement(isMobile ? size.mobile : size.desktop)
-      )
+      );
     } else {
-      spacedChildren.push(new PixelMeasurement(size.pixel))
+      spacedChildren.push(new PixelMeasurement(size.pixel));
     }
   }
 
   return {
     parentHeight: new PixelMeasurement(parentHeight),
     spacing: new PixelMeasurement(spacing),
-    childSizes: spacedChildren
-  }
+    childSizes: spacedChildren,
+  };
 }

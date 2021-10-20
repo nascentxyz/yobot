@@ -61,7 +61,6 @@ const CustomTable = styled(Table)`
 `;
 
 const OpenBidsFrame = () => {
-
   return (
     <BidBox>
       <PlaceBidText>Open Bids</PlaceBidText>
@@ -72,7 +71,7 @@ const OpenBidsFrame = () => {
       </DataFormText>
       <CustomTable />
     </BidBox>
-  )
-}
+  );
+};
 
 export default OpenBidsFrame;

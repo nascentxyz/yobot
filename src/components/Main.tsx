@@ -1,4 +1,4 @@
-import { Stack, StackProps } from '@chakra-ui/react'
+import { Stack, StackProps } from "@chakra-ui/react";
 
 const Main = (props: StackProps) => (
   <Stack
@@ -10,6 +10,6 @@ const Main = (props: StackProps) => (
     flexGrow={1}
     {...props}
   />
-)
+);
 
 export default Main;
