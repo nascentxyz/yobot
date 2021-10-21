@@ -77,6 +77,8 @@ deploy to these networks
 
 ### Mainnet
 
+Original [ArtBlocksBroker](https://etherscan.io/address/0xE52A2A7B8dACe2ff8cdC64EabB605821A393474D#code): `0xE52A2A7B8dACe2ff8cdC64EabB605821A393474D`
+
 ```
 ETH_FROM=0xc0248cD71633C8a412301915912eF10e75e7D260 make deploy-mainnet
 ```
@@ -92,11 +94,6 @@ ETH_FROM=0xc0248cD71633C8a412301915912eF10e75e7D260 make deploy-rinkeby
 ## License
 
 [AGPL-3.0-only](https://github.com/nascentxyz/yobot/blob/master/LICENSE)
-
-## Credits
-
-- [t11s](https://twitter.com/transmissions11), [Jet Jadeja](https://twitter.com/JetJadeja), and [David Lucid](https://twitter.com/davidlucid) for the exceptional guidance.
-- [Georgios Konstantopoulos](https://github.com/gakonst) for the amazing [dapptools-template](https://github.com/gakonst/dapptools-template) resource.
 
 # Credits
 

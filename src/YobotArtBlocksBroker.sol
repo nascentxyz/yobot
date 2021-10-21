@@ -6,7 +6,7 @@ pragma solidity ^0.8.6;
 import {IArtBlocksFactory} from "./external/IArtBlocksFactory.sol";
 
 /// @title YobotArtBlocksBroker
-/// @author Andreas Bigger <andreas@nascent.xyz>
+/// @author Andreas Bigger <andreas@nascent.xyz> et al
 /// @notice Broker enabling permissionless markets between flashbot
 /// 				searchers and users attempting to mint ArtBlocks drops.
 contract YobotArtBlocksBroker {
