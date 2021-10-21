@@ -233,7 +233,7 @@ const PlaceBidFrame = () => {
         // Set a 1 minute transaction timeout
         setTimeout(() => {
           setTransactionTimedOut(true);
-        }, 60 * 1000)
+        }, 60 * 1000);
       } else {
         // ** Continue with placing bid **
         submitBid(_frozenBidPrice, _frozenBidQty);
@@ -287,7 +287,16 @@ const PlaceBidFrame = () => {
           Include gas fees in your bid price. Higher bids will be filled first!
         </PriceSubText>
         <Flex pointerEvents="auto" position="relative" width="100%">
-          <NonSelectableText cursor="text" opacity="0.6" position="absolute" right="0.7em" top="0.7em" zIndex="2">ETH</NonSelectableText>
+          <NonSelectableText
+            cursor="text"
+            opacity="0.6"
+            position="absolute"
+            right="0.7em"
+            top="0.7em"
+            zIndex="2"
+          >
+            ETH
+          </NonSelectableText>
           <CustomInput
             type="number"
             min="0.000"
@@ -315,10 +324,9 @@ const PlaceBidFrame = () => {
           min={1}
           value={bidQty}
           onChange={(e) => {
-              setBidQtyEmpty(e.target.value == "");
-              setBidQty(e.target.value ? parseInt(e.target.value) : undefined)
-            }
-          }
+            setBidQtyEmpty(e.target.value == "");
+            setBidQty(e.target.value ? parseInt(e.target.value) : undefined);
+          }}
           placeholder="0"
           size="lg"
         />
@@ -327,29 +335,42 @@ const PlaceBidFrame = () => {
         <Text mb="0.5em" fontSize="14px" color="red.500">
           Insufficient Funds ~ {balance && balance.toFixed(3)}Ξ
         </Text>
-      ) : ('')}
+      ) : (
+        ""
+      )}
       <ButtonWrapper>
         {!isAuthed ? (
           <ConnectWallet fullWidth={true} darkerBackground={true} />
         ) : (
           <PlaceBidButton
-            disabled={!validParams || insufficentFunds || bidPriceEmpty || bidQtyEmpty}
+            disabled={
+              !validParams || insufficentFunds || bidPriceEmpty || bidQtyEmpty
+            }
             colorScheme={validParams ? "green" : "red"}
             background={validParams ? "green.600" : "red.800"}
-            _hover={validParams ? {
-              color: "white.900",
-              border: "0.4px",
-              borderStyle: "solid",
-              borderColor: "white.900",
-              backgroundColor: "green.500",
-            } : {}}
+            _hover={
+              validParams
+                ? {
+                    color: "white.900",
+                    border: "0.4px",
+                    borderStyle: "solid",
+                    borderColor: "white.900",
+                    backgroundColor: "green.500",
+                  }
+                : {}
+            }
             color={validParams ? "white.800" : "red.100"}
             variant={validParams ? "solid" : "outline"}
             onClick={placeBid}
             display={"flex"}
           >
             {!placingBid ? (
-              <> {validParams && !bidPriceEmpty && !bidQtyEmpty ? "Place Bid" : "Enter a Price and Quantity"} </>
+              <>
+                {" "}
+                {validParams && !bidPriceEmpty && !bidQtyEmpty
+                  ? "Place Bid"
+                  : "Enter a Price and Quantity"}{" "}
+              </>
             ) : (
               <Spinner margin={"auto"} color={"green.400"} />
             )}
@@ -365,14 +386,21 @@ const PlaceBidFrame = () => {
           <ModalBody>
             <Checkbox
               colorScheme="red"
-              defaultIsChecked={typeof window !== 'undefined' ? localStorage.getItem("BASED_YOBOT_APE_MODE") !== "I_AM_BASED" : false}
+              defaultIsChecked={
+                typeof window !== "undefined"
+                  ? localStorage.getItem("BASED_YOBOT_APE_MODE") !==
+                    "I_AM_BASED"
+                  : false
+              }
               onChange={(e) => {
-                if(e.target.checked) {
+                if (e.target.checked) {
                   localStorage.setItem("BASED_YOBOT_APE_MODE", "I_AM_BASED");
                   setIsNovice(false);
                 }
               }}
-            >Don't show this message in the future</Checkbox>
+            >
+              Don't show this message in the future
+            </Checkbox>
           </ModalBody>
 
           <ModalFooter>
@@ -380,7 +408,7 @@ const PlaceBidFrame = () => {
               colorScheme="green"
               mr={3}
               onClick={() => {
-                if(!transactionTimedOut) {
+                if (!transactionTimedOut) {
                   // SUBMIT
                   submitBid(frozenBidPrice, frozenBidQty);
                   // ** Close the Modal **
@@ -392,13 +420,12 @@ const PlaceBidFrame = () => {
                   // ** Please resubmit tx
                   toast.error({
                     title: "Confirmation Timeout! (> 1 minute)",
-                    description:
-                      "Please confirm in less than 60 seconds!",
+                    description: "Please confirm in less than 60 seconds!",
                     status: "error",
                     position: "middle",
                     duration: 3000,
                     isClosable: true,
-                  })
+                  });
                 }
               }}
             >

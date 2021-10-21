@@ -99,7 +99,7 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
 
   // ** Refresh chain id **
   const refreshChainId = ({ yobotInstance = yobot }) => {
-    if(!toastingNetwork) {
+    if (!toastingNetwork) {
       Promise.all([
         yobotInstance.web3.eth.net.getId(),
         yobotInstance.web3.eth.getChainId(),
@@ -123,7 +123,7 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
               duration: 3000,
               isClosable: true,
             });
-            setTimeout(() => setToastingNetwork(false), 3000)
+            setTimeout(() => setToastingNetwork(false), 3000);
           }, 1500);
         }
       });
