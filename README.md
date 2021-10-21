@@ -79,7 +79,6 @@ deploy to these networks
 
 Original [ArtBlocksBroker](https://etherscan.io/address/0xE52A2A7B8dACe2ff8cdC64EabB605821A393474D#code): `0xE52A2A7B8dACe2ff8cdC64EabB605821A393474D`
 
-
 ```
 ETH_FROM=0xc0248cD71633C8a412301915912eF10e75e7D260 make deploy-mainnet
 ```
@@ -91,9 +90,6 @@ ETH_FROM=0xc0248cD71633C8a412301915912eF10e75e7D260 make deploy-rinkeby
 ```
 
 ### Goerli
-
-
-
 
 ## License
 
