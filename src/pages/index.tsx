@@ -3,12 +3,10 @@ import {
   Main,
   GradientContainer,
   LandingPageMain,
-  FAQModal
+  FAQModal,
 } from "src/components";
 
-import {
-  useDisclosure
-} from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
 
 const Index = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -21,7 +19,7 @@ const Index = () => {
         <FAQModal isOpen={isOpen} onClose={onClose} />
       </Main>
     </GradientContainer>
-  )
-}
+  );
+};
 
 export default Index;

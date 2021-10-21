@@ -90,7 +90,7 @@ const CTA = ({ onOpen }) => {
         </Flex>
       </Flex>
     </Flex>
-  )
-}
+  );
+};
 
 export default CTA;

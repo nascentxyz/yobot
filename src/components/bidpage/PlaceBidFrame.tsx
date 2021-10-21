@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { Button, Spinner, Input, Flex } from "@chakra-ui/react";
+import {
+  Button,
+  Spinner,
+  Input,
+  Flex,
+  Text
+} from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { toast } from "material-react-toastify";
 import { useYobot } from "src/contexts/YobotContext";
@@ -127,13 +133,26 @@ const GasText = styled.p`
 `;
 
 const PlaceBidFrame = () => {
-  const { isAuthed } = useYobot();
+  const { isAuthed, balance } = useYobot();
   const [validParams, setValidParams] = useState(false);
   const [placingBid, setPlacingBid] = useState(false);
+
+  // ** Insufficient Funds **
+  const [insufficentFunds, setInsufficientFunds] = useState(false);
 
   // ** Bid Inputs **
   const [bidPrice, setBidPrice] = useState(0.0);
   const [bidQty, setBidQty] = useState(0);
+
+  // ** Checks if we have enough ETH balance in the connected wallet **
+  useEffect(() => {
+    console.log("--- Checking sufficient balance ---");
+    console.log("bidPrice:", bidPrice);
+    console.log("bidQty:", bidQty);
+    console.log("balance:", balance);
+    console.log("------------------------------------");
+    setInsufficientFunds(bidPrice * bidQty > balance || balance == 0);
+  }, [bidPrice, bidQty, balance]);
 
   // ** Gas Estimates **
   // TODO: fetch these predicted fees every x time
@@ -233,10 +252,13 @@ const PlaceBidFrame = () => {
         </PriceSubText>
         <CustomInput
           type="number"
-          min={0}
-          value={bidPrice}
-          onChange={(e) =>
+          min="0.000"
+          step="0.0001"
+          presicion={3} 
+          onChange={(e) => {
+            console.log("Got bidPrice:", e.target.value);
             setBidPrice(e.target.value ? parseFloat(e.target.value) : undefined)
+          }
           }
           placeholder="0.00"
           size="lg"
@@ -250,7 +272,6 @@ const PlaceBidFrame = () => {
         <CustomInput
           type="number"
           min={1}
-          // ?? can we set a max based on mint count dynamically ??
           value={bidQty}
           onChange={(e) =>
             setBidQty(e.target.value ? parseInt(e.target.value) : undefined)
@@ -259,12 +280,13 @@ const PlaceBidFrame = () => {
           size="lg"
         />
       </DataForm>
+      {insufficentFunds ? (<Text mb="0.5em" fontSize="14px" color="red.500">Insufficient Funds ~ {balance && balance.toFixed(3)}Ξ</Text>) : null}
       <ButtonWrapper>
         {!isAuthed ? (
           <ConnectWallet fullWidth={true} darkerBackground={true} />
         ) : (
           <PlaceBidButton
-            disabled={!validParams}
+            disabled={!validParams || insufficentFunds}
             colorScheme={validParams ? "green" : "red"}
             color={validParams ? "green.400" : "red.300"}
             variant="outline"
@@ -272,7 +294,9 @@ const PlaceBidFrame = () => {
             display={"flex"}
           >
             {!placingBid ? (
-              "Place Bid"
+              <> {
+                validParams ? ("Place Bid") : ("Enter a Price and Quantity")
+              } </>
             ) : (
               <Spinner margin={"auto"} color={"green.400"} />
             )}

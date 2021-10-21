@@ -22,14 +22,10 @@ import { useTranslation } from "react-i18next";
 
 import { NascentBadge } from "..";
 
-const FAQModal = ({ isOpen = false, onClose = () => { } }) => {
+const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
   const { t } = useTranslation();
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      scrollBehavior={"inside"}
-    >
+    <Modal isOpen={isOpen} onClose={onClose} scrollBehavior={"inside"}>
       <ModalOverlay />
       <ModalContent maxWidth={"800px"}>
         <ModalHeader>{t("FAQ")}</ModalHeader>
@@ -81,9 +77,7 @@ const FAQModal = ({ isOpen = false, onClose = () => { } }) => {
               {t("What Yobot Can't Do")}
             </Heading>
             <Text>{t("Yobot can't promise cheap NFT mints.")}</Text>
-            <Text>
-              {t("There is no way to circumvent the required cost.")}
-            </Text>
+            <Text>{t("There is no way to circumvent the required cost.")}</Text>
             <Text>
               {t("Where: ")}
               <Code>
