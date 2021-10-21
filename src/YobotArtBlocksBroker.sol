@@ -3,7 +3,7 @@ pragma solidity ^0.8.6;
 
 /* solhint-disable max-line-length */
 
-import {Coordinator} from './Coordinator.sol';
+import {Coordinator} from "./Coordinator.sol";
 import {IArtBlocksFactory} from "./external/IArtBlocksFactory.sol";
 
 /// @title YobotArtBlocksBroker
@@ -22,14 +22,12 @@ contract YobotArtBlocksBroker is Coordinator {
     mapping(address => mapping(uint256 => Order)) public orders;
     mapping(address => uint256) public balances; // for bots
 
-
     event Action(address indexed _user, uint256 indexed _artBlocksProjectId, uint256 _priceInWeiEach, uint256 _quantity, string _action, uint256 _optionalTokenId);
 
     /// @notice Creates a new yobot erc721 limit order broker
     /// @param _profitReceiver The profit receiver for fees
     /// @param _botFeeBips The fee rake
     constructor(address _profitReceiver, uint256 _botFeeBips) Coordinator(_profitReceiver, _botFeeBips) {}
-
 
     /*///////////////////////////////////////////////////////////////
                         USER FUNCTIONS

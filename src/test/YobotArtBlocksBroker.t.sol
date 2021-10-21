@@ -22,6 +22,4 @@ contract YobotArtBlocksBrokerTest is DSTestPlus {
         assert(yabb.coordinator() == address(this));
         coordinator = yabb.coordinator();
     }
-
-
 }

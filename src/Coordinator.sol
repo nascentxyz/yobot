@@ -4,30 +4,30 @@ pragma solidity ^0.8.6;
 /* solhint-disable max-line-length */
 
 contract Coordinator {
-  /// @dev This contracts coordinator
-  address public coordinator;
+    /// @dev This contracts coordinator
+    address public coordinator;
 
-  /// @dev Address of the profit receiver
-  address payable public profitReceiver;
+    /// @dev Address of the profit receiver
+    address payable public profitReceiver;
 
-  /// @dev Fee paid by bots
-  uint256 public botFeeBips;
+    /// @dev Fee paid by bots
+    uint256 public botFeeBips;
 
-  /// @dev Modifier restricting msg.sender to solely be the coordinatoooor
-  modifier onlyCoordinator() {
-      require(msg.sender == coordinator, "not Coordinator");
-      _;
-  }
+    /// @dev Modifier restricting msg.sender to solely be the coordinatoooor
+    modifier onlyCoordinator() {
+        require(msg.sender == coordinator, "not Coordinator");
+        _;
+    }
 
-  /// @notice generic constructor to set coordinator to the msg.sender
-  constructor(address _profitReceiver, uint256 _botFeeBips) {
-    coordinator = msg.sender;
-    profitReceiver = payable(_profitReceiver);
-    require(_botFeeBips <= 500, "fee too high");
-    botFeeBips = _botFeeBips;
-  }
+    /// @notice generic constructor to set coordinator to the msg.sender
+    constructor(address _profitReceiver, uint256 _botFeeBips) {
+        coordinator = msg.sender;
+        profitReceiver = payable(_profitReceiver);
+        require(_botFeeBips <= 500, "fee too high");
+        botFeeBips = _botFeeBips;
+    }
 
-  /*///////////////////////////////////////////////////////////////
+    /*///////////////////////////////////////////////////////////////
                       COORDINATOR FUNCTIONS
   //////////////////////////////////////////////////////////////*/
 
