@@ -13,7 +13,7 @@ export { version };
 
 if (process.env.NODE_ENV === "production") {
   console.log("Connecting to LogRocket...");
-  LogRocket.init("eczu2e/rari-capital", {
+  LogRocket.init("vulxom/yobot", {
     console: {
       shouldAggregateConsoleErrors: true,
     },
@@ -30,8 +30,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       <YobotProvider>
         <Component {...pageProps} />
       </YobotProvider>
-      {/* <DAppProvider config={{}}> */}
-      {/* </DAppProvider> */}
       <style jsx global>{`
         html,
         body {

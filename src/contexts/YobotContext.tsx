@@ -94,33 +94,40 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
   // ** Save chainId for context switches **
   const [chainId, setChainId] = useState<number>(-1);
 
+  // ** Only allow one network toast notification at a time **
+  const [toastingNetwork, setToastingNetwork] = useState(false);
+
   // ** Refresh chain id **
   const refreshChainId = ({ yobotInstance = yobot }) => {
-    Promise.all([
-      yobotInstance.web3.eth.net.getId(),
-      yobotInstance.web3.eth.getChainId(),
-    ]).then(([netId, currChainId]) => {
-      setChainId(currChainId);
-      // ** Don't show "wrong network" toasts if dev
-      // if (process.env.NODE_ENV === "development") {
-      //   console.log("[NODE_ENV] Development")
-      //   return;
-      // }
+    if (!toastingNetwork) {
+      Promise.all([
+        yobotInstance.web3.eth.net.getId(),
+        yobotInstance.web3.eth.getChainId(),
+      ]).then(([netId, currChainId]) => {
+        setChainId(currChainId);
+        // ** Don't show "wrong network" toasts if dev
+        // if (process.env.NODE_ENV === "development") {
+        //   console.log("[NODE_ENV] Development")
+        //   return;
+        // }
 
-      if (netId !== 1 || currChainId !== 1) {
-        setTimeout(() => {
-          toast({
-            title: "Wrong network!",
-            description:
-              "You are on the wrong network! Switch to the mainnet and reload this page!",
-            status: "warning",
-            position: "bottom",
-            duration: 3000,
-            isClosable: true,
-          });
-        }, 1500);
-      }
-    });
+        if (netId !== 1 || currChainId !== 1) {
+          setToastingNetwork(true);
+          setTimeout(() => {
+            toast({
+              title: "Wrong network!",
+              description:
+                "You are on the wrong network! Switch to the mainnet and reload this page!",
+              status: "warning",
+              position: "bottom",
+              duration: 3000,
+              isClosable: true,
+            });
+            setTimeout(() => setToastingNetwork(false), 3000);
+          }, 1500);
+        }
+      });
+    }
   };
 
   useEffect(() => {

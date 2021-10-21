@@ -1,10 +1,24 @@
 import { useEffect, useState } from "react";
-import { Button, Spinner, Input, Flex } from "@chakra-ui/react";
+import {
+  Button,
+  Spinner,
+  Input,
+  Flex,
+  Text,
+  useDisclosure,
+  Checkbox,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+} from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { toast } from "material-react-toastify";
 import { useYobot } from "src/contexts/YobotContext";
-
-import { ConnectWallet } from "..";
+import { ConnectWallet, NoShadowButton } from "src/components";
 
 const BidBox = styled.div`
   min-width: 480px;
@@ -94,6 +108,7 @@ const QuantityText = styled.p`
   text-align: left;
   color: #fff;
   padding-top: 1em;
+  padding-bottom: 0.5em;
 `;
 
 const ButtonWrapper = styled.div`
@@ -105,6 +120,11 @@ const ButtonWrapper = styled.div`
 const PlaceBidButton = styled(Button)`
   width: 100%;
   margin: auto;
+
+  &:focus {
+    outline: 0 !important;
+    box-shadow: none !important;
+  }
 `;
 
 const Row = styled(Flex)`
@@ -113,7 +133,7 @@ const Row = styled(Flex)`
   align-items: space-between;
 `;
 
-const GasText = styled.p`
+const GasText = styled(Text)`
   height: auto;
   padding: 0.2em 0 0.4em 0;
   font-family: Roboto;
@@ -126,14 +146,52 @@ const GasText = styled.p`
   color: #95969a;
 `;
 
+const NonSelectableText = styled(Text)`
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+`;
+
 const PlaceBidFrame = () => {
-  const { isAuthed } = useYobot();
+  const { isAuthed, balance } = useYobot();
   const [validParams, setValidParams] = useState(false);
   const [placingBid, setPlacingBid] = useState(false);
+
+  // ** Does the user want to see a modal to confirm placing bids? **
+  const [isNovice, setIsNovice] = useState(true);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [transactionTimedOut, setTransactionTimedOut] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) setTransactionTimedOut(false);
+  }, [isOpen]);
+
+  useEffect(() => {
+    setIsNovice(localStorage.getItem("BASED_YOBOT_APE_MODE") !== "I_AM_BASED");
+  }, []);
+
+  // ** Insufficient Funds **
+  const [insufficentFunds, setInsufficientFunds] = useState(false);
 
   // ** Bid Inputs **
   const [bidPrice, setBidPrice] = useState(0.0);
   const [bidQty, setBidQty] = useState(0);
+
+  // ** Are bid inputs empty **
+  const [bidPriceEmpty, setBidPriceEmpty] = useState(false);
+  const [bidQtyEmpty, setBidQtyEmpty] = useState(false);
+
+  // ** Frozen bid price and qty when submitting a transaction **
+  const [frozenBidPrice, setFrozenBidPrice] = useState(bidPrice);
+  const [frozenBidQty, setFrozenBidQty] = useState(bidQty);
+
+  // ** Checks if we have enough ETH balance in the connected wallet **
+  useEffect(() => {
+    setInsufficientFunds(bidPrice * bidQty > balance || balance == 0);
+  }, [bidPrice, bidQty, balance]);
 
   // ** Gas Estimates **
   // TODO: fetch these predicted fees every x time
@@ -162,23 +220,20 @@ const PlaceBidFrame = () => {
 
     // ** Freeze Inputs **
     const _frozenBidPrice = bidPrice;
+    setFrozenBidPrice(_frozenBidPrice);
     const _frozenBidQty = bidQty;
+    setFrozenBidQty(_frozenBidQty);
 
     // ** Validate Frozen Inputs (sanity check) **
     if (validateParams(_frozenBidPrice, _frozenBidQty)) {
-      // ** pop up modal for first time users or recurring if unchecked
-      const isBasedYobotApe = localStorage.getItem("IS_BASED_YOBOT_APE");
-      console.log("Is based yobot ape?", isBasedYobotApe);
-      if (
-        isBasedYobotApe === null ||
-        isBasedYobotApe === undefined ||
-        !isBasedYobotApe
-      ) {
-        // ** Pop up modal and await confirmation to continue **
+      // ** If novice, Pop up modal and await confirmation to continue **
+      if (isNovice) {
+        onOpen();
 
-        console.log("popping up modal for user verification...");
-        // TODO:::
-        // submitBid(_frozenBidPrice, _frozenBidQty);
+        // Set a 1 minute transaction timeout
+        setTimeout(() => {
+          setTransactionTimedOut(true);
+        }, 60 * 1000);
       } else {
         // ** Continue with placing bid **
         submitBid(_frozenBidPrice, _frozenBidQty);
@@ -231,54 +286,154 @@ const PlaceBidFrame = () => {
         <PriceSubText>
           Include gas fees in your bid price. Higher bids will be filled first!
         </PriceSubText>
-        <CustomInput
-          type="number"
-          min={0}
-          value={bidPrice}
-          onChange={(e) =>
-            setBidPrice(e.target.value ? parseFloat(e.target.value) : undefined)
-          }
-          placeholder="0.00"
-          size="lg"
-        />
-        <Row>
-          <GasText>Low: {lowGasFee}</GasText>
-          <GasText>Medium: {mediumGasFee}</GasText>
-          <GasText>High: {highGasFee}</GasText>
+        <Flex pointerEvents="auto" position="relative" width="100%">
+          <NonSelectableText
+            cursor="text"
+            opacity="0.6"
+            position="absolute"
+            right="0.7em"
+            top="0.7em"
+            zIndex="2"
+          >
+            ETH
+          </NonSelectableText>
+          <CustomInput
+            type="number"
+            min="0.000"
+            step="0.0001"
+            presicion={3}
+            onChange={(e) => {
+              setBidPriceEmpty(e.target.value == "");
+              setBidPrice(
+                e.target.value ? parseFloat(e.target.value) : undefined
+              );
+            }}
+            placeholder="0.00"
+            size="lg"
+          />
+        </Flex>
+        <Row mt="0.2em">
+          <GasText mr="0.5em">Suggested Gas: </GasText>
+          <GasText mx="0.5em">Low: {lowGasFee}</GasText>
+          <GasText mx="0.5em">Medium: {mediumGasFee}</GasText>
+          <GasText mx="0.5em">High: {highGasFee}</GasText>
         </Row>
         <QuantityText>Quantity</QuantityText>
         <CustomInput
           type="number"
           min={1}
-          // ?? can we set a max based on mint count dynamically ??
           value={bidQty}
-          onChange={(e) =>
-            setBidQty(e.target.value ? parseInt(e.target.value) : undefined)
-          }
+          onChange={(e) => {
+            setBidQtyEmpty(e.target.value == "");
+            setBidQty(e.target.value ? parseInt(e.target.value) : undefined);
+          }}
           placeholder="0"
           size="lg"
         />
       </DataForm>
+      {insufficentFunds ? (
+        <Text mb="0.5em" fontSize="14px" color="red.500">
+          Insufficient Funds ~ {balance && balance.toFixed(3)}Ξ
+        </Text>
+      ) : (
+        ""
+      )}
       <ButtonWrapper>
         {!isAuthed ? (
           <ConnectWallet fullWidth={true} darkerBackground={true} />
         ) : (
           <PlaceBidButton
-            disabled={!validParams}
+            disabled={
+              !validParams || insufficentFunds || bidPriceEmpty || bidQtyEmpty
+            }
             colorScheme={validParams ? "green" : "red"}
-            color={validParams ? "green.400" : "red.300"}
-            variant="outline"
+            background={validParams ? "green.600" : "red.800"}
+            _hover={
+              validParams
+                ? {
+                    color: "white.900",
+                    border: "0.4px",
+                    borderStyle: "solid",
+                    borderColor: "white.900",
+                    backgroundColor: "green.500",
+                  }
+                : {}
+            }
+            color={validParams ? "white.800" : "red.100"}
+            variant={validParams ? "solid" : "outline"}
             onClick={placeBid}
             display={"flex"}
           >
             {!placingBid ? (
-              "Place Bid"
+              <>
+                {" "}
+                {validParams && !bidPriceEmpty && !bidQtyEmpty
+                  ? "Place Bid"
+                  : "Enter a Price and Quantity"}{" "}
+              </>
             ) : (
               <Spinner margin={"auto"} color={"green.400"} />
             )}
           </PlaceBidButton>
         )}
       </ButtonWrapper>
+      {/* Place Bid Confirmation Modal */}
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>🚨 Place Bid? 🚨</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Checkbox
+              colorScheme="red"
+              defaultIsChecked={
+                typeof window !== "undefined"
+                  ? localStorage.getItem("BASED_YOBOT_APE_MODE") !==
+                    "I_AM_BASED"
+                  : false
+              }
+              onChange={(e) => {
+                if (e.target.checked) {
+                  localStorage.setItem("BASED_YOBOT_APE_MODE", "I_AM_BASED");
+                  setIsNovice(false);
+                }
+              }}
+            >
+              Don't show this message in the future
+            </Checkbox>
+          </ModalBody>
+
+          <ModalFooter>
+            <NoShadowButton
+              colorScheme="green"
+              mr={3}
+              onClick={() => {
+                if (!transactionTimedOut) {
+                  // SUBMIT
+                  submitBid(frozenBidPrice, frozenBidQty);
+                  // ** Close the Modal **
+                  onClose();
+                } else {
+                  // ** Close the Modal **
+                  onClose();
+                  // ** Toast notification that the 1 minute confirmation period timed out...
+                  // ** Please resubmit tx
+                  toast.error({
+                    title: "Confirmation Timeout! (> 1 minute)",
+                    description: "Please confirm in less than 60 seconds!",
+                    status: "error",
+                    position: "middle",
+                    duration: 3000,
+                    isClosable: true,
+                  });
+                }
+              }}
+            >
+              Submit
+            </NoShadowButton>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </BidBox>
   );
 };
