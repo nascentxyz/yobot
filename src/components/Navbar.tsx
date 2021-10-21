@@ -45,7 +45,7 @@ const LinkWrapper = styled.div`
   }
 `;
 
-const Navbar = ({ accountButton = false, launchApp = false }) => {
+const Navbar = ({ accountButton = false, launchApp = false, onOpen }) => {
   return (
     <NavbarFlex>
       <ChakraLink href="/" d="flex" flexGrow={0}>
@@ -53,9 +53,32 @@ const Navbar = ({ accountButton = false, launchApp = false }) => {
       </ChakraLink>
       <LaunchGroup>
         <LinkWrapper>
-          <FAQ mx="0.5em" />
-          <DiscordSVG mx="0.5em" />
-          <TwitterSVG mx="0.5em" />
+          <ChakraLink
+            textDecoration="none !important"
+            height="min-content"
+            margin="auto"
+            onClick={onOpen}
+          >
+            <FAQ mx="0.5em" />
+          </ChakraLink>
+          <ChakraLink
+            textDecoration="none !important"
+            height="min-content"
+            margin="auto"
+            isExternal
+            href="https://discord.gg/eSXG94jzqe"
+          >
+            <DiscordSVG mx="0.5em" />
+          </ChakraLink>
+          <ChakraLink
+            textDecoration="none !important"
+            height="min-content"
+            margin="auto"
+            isExternal
+            href="https://twitter.com/yobotco"
+          >
+            <TwitterSVG mx="0.5em" />
+          </ChakraLink>
         </LinkWrapper>
         {accountButton ? <ConnectWallet /> : null}
         {launchApp ? <LaunchAppButton /> : null}
