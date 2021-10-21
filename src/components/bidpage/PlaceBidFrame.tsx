@@ -19,6 +19,7 @@ import styled from "@emotion/styled";
 import { toast } from "material-react-toastify";
 import { useYobot } from "src/contexts/YobotContext";
 import { ConnectWallet, NoShadowButton } from "src/components";
+import { useTranslation } from "react-i18next";
 
 const BidBox = styled.div`
   min-width: 480px;
@@ -156,6 +157,7 @@ const NonSelectableText = styled(Text)`
 `;
 
 const PlaceBidFrame = () => {
+  const { t } = useTranslation();
   const { isAuthed, balance } = useYobot();
   const [validParams, setValidParams] = useState(false);
   const [placingBid, setPlacingBid] = useState(false);
@@ -399,7 +401,7 @@ const PlaceBidFrame = () => {
                 }
               }}
             >
-              Don't show this message in the future
+              {t("Don't show this message in the future")}
             </Checkbox>
           </ModalBody>
 
