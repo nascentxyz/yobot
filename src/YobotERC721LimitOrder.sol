@@ -4,6 +4,7 @@ pragma solidity ^0.8.6;
 /* solhint-disable max-line-length */
 
 import {IERC721} from "./external/IERC721.sol";
+import {Coordinator} from "./Coordinator.sol";
 
 /// @title YobotERC721LimitOrder
 /// @author Andreas Bigger <andreas@nascent.xyz> et al
@@ -12,23 +13,12 @@ import {IERC721} from "./external/IERC721.sol";
 ///         with the original UI at See ArtBotter.io
 /// @notice Broker enabling permissionless markets between flashbot
 /// 				searchers and users attempting to mint generic ERC721 drops.
-contract YobotERC721LimitOrder {
+contract YobotERC721LimitOrder is Coordinator {
     /// @notice A user's order
     struct Order {
         uint128 priceInWeiEach;
         uint128 quantity;
     }
-
-    // TODO: This should eventually be phased out?
-    // TODO: where the contract can be completely permissionless
-    /// @dev This contracts coordinator
-    address public coordinator;
-
-    /// @dev Address of the profit receiver
-    address public profitReceiver;
-
-    /// @dev Fee paid by bots
-    uint256 public botFeeBips;
 
     // user => token address => {priceInWeiEach, quantity}
     mapping(address => mapping(address => Order)) public orders;
@@ -44,21 +34,10 @@ contract YobotERC721LimitOrder {
     /// @param optionalTokenId An optional specific token id
     event Action(address indexed user, address indexed tokenAddress, uint256 priceInWeiEach, uint256 quantity, string action, uint256 optionalTokenId);
 
-    /// @dev Modifier restricting msg.sender to solely be the coordinatoooor
-    modifier onlyCoordinator() {
-        require(msg.sender == coordinator, "not Coordinator");
-        _;
-    }
-
     /// @notice Creates a new yobot erc721 limit order broker
     /// @param _profitReceiver The profit receiver for fees
     /// @param _botFeeBips The fee rake
-    constructor(address _profitReceiver, uint256 _botFeeBips) {
-        coordinator = msg.sender;
-        profitReceiver = _profitReceiver;
-        require(_botFeeBips <= 500, "fee too high");
-        botFeeBips = _botFeeBips;
-    }
+    constructor(address _profitReceiver, uint256 _botFeeBips) Coordinator(_profitReceiver, _botFeeBips) {}
 
     /*///////////////////////////////////////////////////////////////
                       USER FUNCTIONS
@@ -152,23 +131,6 @@ contract YobotERC721LimitOrder {
         uint256 amountToSend = balances[msg.sender];
         balances[msg.sender] = 0;
         sendValue(payable(msg.sender), amountToSend);
-    }
-
-    /*///////////////////////////////////////////////////////////////
-                      COORDINATOR FUNCTIONS
-  //////////////////////////////////////////////////////////////*/
-
-    function changeCoordinator(address _newCoordinator) external onlyCoordinator {
-        coordinator = _newCoordinator;
-    }
-
-    function changeProfitReceiver(address _newProfitReceiver) external onlyCoordinator {
-        profitReceiver = _newProfitReceiver;
-    }
-
-    function changeBotFeeBips(uint256 _newBotFeeBips) external onlyCoordinator {
-        require(_newBotFeeBips <= 500, "fee cannot be greater than 5%");
-        botFeeBips = _newBotFeeBips;
     }
 
     /*///////////////////////////////////////////////////////////////

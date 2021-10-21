@@ -3,13 +3,14 @@ pragma solidity ^0.8.6;
 
 /* solhint-disable max-line-length */
 
+import {Coordinator} from './Coordinator.sol';
 import {IArtBlocksFactory} from "./external/IArtBlocksFactory.sol";
 
 /// @title YobotArtBlocksBroker
 /// @author Andreas Bigger <andreas@nascent.xyz> et al
 /// @notice Broker enabling permissionless markets between flashbot
 /// 				searchers and users attempting to mint ArtBlocks drops.
-contract YobotArtBlocksBroker {
+contract YobotArtBlocksBroker is Coordinator {
     IArtBlocksFactory public constant ARTBLOCKS_FACTORY = IArtBlocksFactory(0xa7d8d9ef8D8Ce8992Df33D8b8CF4Aebabd5bD270);
 
     struct Order {
@@ -21,23 +22,14 @@ contract YobotArtBlocksBroker {
     mapping(address => mapping(uint256 => Order)) public orders;
     mapping(address => uint256) public balances; // for bots
 
-    address public coordinator;
-    address public profitReceiver;
-    uint256 public artBlocksBrokerFeeBips; // paid by bots, not users
-
-    modifier onlyCoordinator() {
-        require(msg.sender == coordinator, "not Coordinator");
-        _;
-    }
 
     event Action(address indexed _user, uint256 indexed _artBlocksProjectId, uint256 _priceInWeiEach, uint256 _quantity, string _action, uint256 _optionalTokenId);
 
-    constructor(address _profitReceiver, uint256 _artBlocksBrokerFeeBips) {
-        coordinator = msg.sender;
-        profitReceiver = _profitReceiver;
-        require(_artBlocksBrokerFeeBips < 10_000, "fee too high");
-        artBlocksBrokerFeeBips = _artBlocksBrokerFeeBips;
-    }
+    /// @notice Creates a new yobot erc721 limit order broker
+    /// @param _profitReceiver The profit receiver for fees
+    /// @param _botFeeBips The fee rake
+    constructor(address _profitReceiver, uint256 _botFeeBips) Coordinator(_profitReceiver, _botFeeBips) {}
+
 
     /*///////////////////////////////////////////////////////////////
                         USER FUNCTIONS
@@ -104,7 +96,7 @@ contract YobotArtBlocksBroker {
         }
         orders[_user][_artBlocksProjectId] = newOrder;
 
-        uint256 artBlocksBrokerFee = (order.priceInWeiEach * artBlocksBrokerFeeBips) / 10_000;
+        uint256 artBlocksBrokerFee = (order.priceInWeiEach * botFeeBips) / 10_000;
         balances[profitReceiver] += artBlocksBrokerFee;
 
         // INTERACTIONS
@@ -136,23 +128,6 @@ contract YobotArtBlocksBroker {
             output[i] = fulfillOrder(_user[i], _artBlocksProjectId[i], _tokenId[i], _expectedPriceInWeiEach[i], _profitTo[i], _sendNow[i]);
         }
         return output;
-    }
-
-    /*///////////////////////////////////////////////////////////////
-                        COORDINATOR FUNCTIONS
-    //////////////////////////////////////////////////////////////*/
-
-    function changeCoordinator(address _newCoordinator) external onlyCoordinator {
-        coordinator = _newCoordinator;
-    }
-
-    function changeProfitReceiver(address _newProfitReceiver) external onlyCoordinator {
-        profitReceiver = _newProfitReceiver;
-    }
-
-    function changeArtBlocksBrokerFeeBips(uint256 _newArtBlocksBrokerFeeBips) external onlyCoordinator {
-        require(_newArtBlocksBrokerFeeBips < artBlocksBrokerFeeBips, "fee can only ever be reduced");
-        artBlocksBrokerFeeBips = _newArtBlocksBrokerFeeBips;
     }
 
     /*///////////////////////////////////////////////////////////////
