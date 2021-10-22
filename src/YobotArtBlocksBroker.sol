@@ -13,15 +13,26 @@ import {IArtBlocksFactory} from "./external/IArtBlocksFactory.sol";
 contract YobotArtBlocksBroker is Coordinator {
     IArtBlocksFactory public constant ARTBLOCKS_FACTORY = IArtBlocksFactory(0xa7d8d9ef8D8Ce8992Df33D8b8CF4Aebabd5bD270);
 
+    /// @notice A user's order
     struct Order {
+        /// @dev the price to pay for each erc721 token
         uint128 priceInWeiEach;
+        /// @dev the quantity of tokens to pay
         uint128 quantity;
     }
 
     /// @dev user => projectID => Order
     mapping(address => mapping(uint256 => Order)) public orders;
-    mapping(address => uint256) public balances; // for bots
+    // bot => eth balance
+    mapping(address => uint256) public balances;
 
+    /// @notice Emitted whenever a respective individual executes a function
+    /// @param _user the address of the sender executing the action - used primarily for indexing
+    /// @param _artBlocksProjectId The Artblocks project Id
+    /// @param _priceInWeiEach The bid price in wei for each ERC721 Token
+    /// @param _quantity The number of tokens
+    /// @param _action The action being emitted
+    /// @param _optionalTokenId An optional specific token id
     event Action(address indexed _user, uint256 indexed _artBlocksProjectId, uint256 _priceInWeiEach, uint256 _quantity, string _action, uint256 _optionalTokenId);
 
     /// @notice Creates a new yobot erc721 limit order broker
@@ -44,7 +55,7 @@ contract YobotArtBlocksBroker is Coordinator {
         // Removes user foot-guns and garuantees user can receive NFTs
         // We disable linting against tx-origin to purposefully allow EOA checks
         // solhint-disable-next-line avoid-tx-origin
-        require(msg.sender == tx.origin, "NON_EOA_ORIGIN");
+        // require(msg.sender == tx.origin, "NON_EOA_ORIGIN");
 
         Order memory order = orders[msg.sender][_artBlocksProjectId];
         require(order.priceInWeiEach * order.quantity == 0, "DUPLICATE_ORDER");
@@ -62,6 +73,7 @@ contract YobotArtBlocksBroker is Coordinator {
     /// @param _artBlocksProjectId the ArtBlocks Project Id
     function cancelOrder(uint256 _artBlocksProjectId) external {
         // CHECKS
+        require(_artBlocksProjectId != 0, "INVALID_ARTBLOCKS_ID");
         Order memory order = orders[msg.sender][_artBlocksProjectId];
         uint256 amountToSendBack = order.priceInWeiEach * order.quantity;
         require(amountToSendBack != 0, "NONEXISTANT_ORDER");
