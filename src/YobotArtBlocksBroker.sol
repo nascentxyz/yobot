@@ -55,7 +55,7 @@ contract YobotArtBlocksBroker is Coordinator {
         // Removes user foot-guns and garuantees user can receive NFTs
         // We disable linting against tx-origin to purposefully allow EOA checks
         // solhint-disable-next-line avoid-tx-origin
-        // require(msg.sender == tx.origin, "NON_EOA_ORIGIN");
+        require(msg.sender == tx.origin, "NON_EOA_ORIGIN");
 
         Order memory order = orders[msg.sender][_artBlocksProjectId];
         require(order.priceInWeiEach * order.quantity == 0, "DUPLICATE_ORDER");
