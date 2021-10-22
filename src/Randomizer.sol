@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.6;
 
-/* solhint-disable max-states-count */
-/* solhint-disable max-line-length */
+/* solhint-disable var-name-mixedcase */
 
 import {SafeMath} from "zeppelin-solidity/utils/math/SafeMath.sol";
 
