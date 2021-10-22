@@ -20,9 +20,9 @@ contract CustomERC721Metadata is ERC165, ERC721, ERC721Enumerable {
     /**
      * @dev Constructor function
      */
-    constructor(string memory con_name, string memory con_symbol) public {
-        _name = con_name;
-        _symbol = con_symbol;
+    constructor(string memory argName, string memory argSymbol) public {
+        _name = argName;
+        _symbol = argSymbol;
 
         // register the supported interfaces to conform to ERC721 via ERC165
         // ?? Changed `_registerInterface` to `supportsInterface` ??
