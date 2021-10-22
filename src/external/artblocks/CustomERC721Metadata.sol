@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.6;
 
+/* solhint-disable max-line-length */
+
 import {ERC165} from "zeppelin-solidity/utils/introspection/ERC165.sol";
 import {ERC721} from "zeppelin-solidity/token/ERC721/ERC721.sol";
 import {ERC721Enumerable} from "zeppelin-solidity/token/ERC721/extensions/ERC721Enumerable.sol";
@@ -20,7 +22,7 @@ contract CustomERC721Metadata is ERC165, ERC721, ERC721Enumerable {
     /**
      * @dev Constructor function
      */
-    constructor(string memory argName, string memory argSymbol) public {
+    constructor(string memory argName, string memory argSymbol) ERC721(argName, argSymbol) {
         _name = argName;
         _symbol = argSymbol;
 
@@ -33,7 +35,7 @@ contract CustomERC721Metadata is ERC165, ERC721, ERC721Enumerable {
      * @dev Gets the token name
      * @return string representing the token name
      */
-    function name() external view returns (string memory) {
+    function name() public view virtual override returns (string memory) {
         return _name;
     }
 
@@ -41,7 +43,25 @@ contract CustomERC721Metadata is ERC165, ERC721, ERC721Enumerable {
      * @dev Gets the token symbol
      * @return string representing the token symbol
      */
-    function symbol() external view returns (string memory) {
+    function symbol() public view virtual override returns (string memory) {
         return _symbol;
+    }
+
+    /**
+     * @notice use ERC721Enumerable definition
+     */
+    function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256 tokenId
+    ) internal virtual override(ERC721, ERC721Enumerable) {
+        ERC721Enumerable._beforeTokenTransfer(from, to, tokenId);
+    }
+
+    /**
+     * @notice use ERC721Enumerable definition
+     */
+    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, ERC721, ERC721Enumerable) returns (bool) {
+        return ERC721Enumerable.supportsInterface(interfaceId);
     }
 }

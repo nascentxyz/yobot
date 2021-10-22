@@ -5,6 +5,8 @@ pragma solidity ^0.8.6;
 /* solhint-disable max-line-length */
 
 import {Strings} from "zeppelin-solidity/utils/Strings.sol";
+import {SafeMath} from "zeppelin-solidity/utils/math/SafeMath.sol";
+
 import {CustomERC721Metadata} from "./external/artblocks/CustomERC721Metadata.sol";
 
 interface Randomizer {
@@ -14,7 +16,7 @@ interface Randomizer {
 contract GenArt721Core is CustomERC721Metadata {
     // ** Not needed as of Solidity 0.8.x: https://blog.soliditylang.org/2020/12/16/solidity-v0.8.0-release-announcement/ **
     // ** This introduces checked arithmetic, reverts on over and underflows, and unchecked blocks, among others **
-    // using SafeMath for uint256;
+    using SafeMath for uint256;
 
     event Mint(address indexed _to, uint256 indexed _tokenId, uint256 indexed _projectId);
 
@@ -43,7 +45,10 @@ contract GenArt721Core is CustomERC721Metadata {
     }
 
     uint256 public constant ONE_MILLION = 1_000_000;
-    mapping(uint256 => Project) public projects;
+    /// @dev Projects can't be public since the Project struct overflows 16 slots causing a stack too deep error
+    /// @dev This is because when declared public, the compiler creates a default getter function causing stack too deep
+    /// @dev - solution: switch from projects mapping to `internal` marking
+    mapping(uint256 => Project) internal projects;
 
     //All financial functions are stripped from struct for visibility
     mapping(uint256 => address) public projectIdToArtistAddress;
@@ -103,7 +108,7 @@ contract GenArt721Core is CustomERC721Metadata {
         string memory _tokenName,
         string memory _tokenSymbol,
         address _randomizerContract
-    ) public CustomERC721Metadata(_tokenName, _tokenSymbol) {
+    ) CustomERC721Metadata(_tokenName, _tokenSymbol) {
         admin = msg.sender;
         isWhitelisted[msg.sender] = true;
         artblocksAddress = msg.sender;
@@ -196,13 +201,17 @@ contract GenArt721Core is CustomERC721Metadata {
         bool _dynamic
     ) public onlyWhitelisted {
         uint256 projectId = nextProjectId;
-        projectIdToArtistAddress[projectId] = _artistAddress;
-        projects[projectId].name = _projectName;
-        projectIdToCurrencySymbol[projectId] = "ETH";
-        projectIdToPricePerTokenInWei[projectId] = _pricePerTokenInWei;
-        projects[projectId].paused = true;
-        projects[projectId].dynamic = _dynamic;
-        projects[projectId].maxInvocations = ONE_MILLION;
+        {
+            projectIdToArtistAddress[projectId] = _artistAddress;
+            projects[projectId].name = _projectName;
+            projectIdToCurrencySymbol[projectId] = "ETH";
+            projectIdToPricePerTokenInWei[projectId] = _pricePerTokenInWei;
+        }
+        {
+            projects[projectId].paused = true;
+            projects[projectId].dynamic = _dynamic;
+            projects[projectId].maxInvocations = ONE_MILLION;
+        }
         if (!_dynamic) {
             projects[projectId].useHashString = false;
         } else {
@@ -342,12 +351,16 @@ contract GenArt721Core is CustomERC721Metadata {
             bool dynamic
         )
     {
-        projectName = projects[_projectId].name;
-        artist = projects[_projectId].artist;
-        description = projects[_projectId].description;
-        website = projects[_projectId].website;
-        license = projects[_projectId].license;
-        dynamic = projects[_projectId].dynamic;
+        {
+            projectName = projects[_projectId].name;
+            artist = projects[_projectId].artist;
+            description = projects[_projectId].description;
+        }
+        {
+            website = projects[_projectId].website;
+            license = projects[_projectId].license;
+            dynamic = projects[_projectId].dynamic;
+        }
     }
 
     function projectTokenInfo(uint256 _projectId)
@@ -440,15 +453,38 @@ contract GenArt721Core is CustomERC721Metadata {
         royaltyFeeByID = projectIdToSecondaryMarketRoyaltyPercentage[tokenIdToProjectId[_tokenId]];
     }
 
-    function tokenURI(uint256 _tokenId) external view onlyValidTokenId(_tokenId) returns (string memory) {
+    function uint2str(uint256 _i) internal pure returns (string memory str) {
+        if (_i == 0) {
+            return "0";
+        }
+
+        uint256 j = _i;
+        uint256 length;
+        while (j != 0) {
+            length++;
+            j /= 10;
+        }
+
+        bytes memory bstr = new bytes(length);
+        uint256 k = length;
+        j = _i;
+
+        while (j != 0) {
+            bstr[--k] = bytes1(uint8(48 + (j % 10)));
+            j /= 10;
+        }
+        str = string(bstr);
+    }
+
+    function tokenURI(uint256 _tokenId) public view override onlyValidTokenId(_tokenId) returns (string memory) {
         if (bytes(staticIpfsImageLink[_tokenId]).length > 0) {
-            return Strings.strConcat(projects[tokenIdToProjectId[_tokenId]].projectBaseIpfsURI, staticIpfsImageLink[_tokenId]);
+            return string(abi.encodePacked(projects[tokenIdToProjectId[_tokenId]].projectBaseIpfsURI, staticIpfsImageLink[_tokenId]));
         }
 
         if (!projects[tokenIdToProjectId[_tokenId]].dynamic && projects[tokenIdToProjectId[_tokenId]].useIpfs) {
-            return Strings.strConcat(projects[tokenIdToProjectId[_tokenId]].projectBaseIpfsURI, projects[tokenIdToProjectId[_tokenId]].ipfsHash);
+            return string(abi.encodePacked(projects[tokenIdToProjectId[_tokenId]].projectBaseIpfsURI, projects[tokenIdToProjectId[_tokenId]].ipfsHash));
         }
 
-        return Strings.strConcat(projects[tokenIdToProjectId[_tokenId]].projectBaseURI, Strings.uint2str(_tokenId));
+        return string(abi.encodePacked(projects[tokenIdToProjectId[_tokenId]].projectBaseURI, uint2str(_tokenId)));
     }
 }
