@@ -14,7 +14,7 @@ interface Randomizer {
 }
 
 contract GenArt721Core is CustomERC721Metadata {
-    // ** Not needed as of Solidity 0.8.x: https://blog.soliditylang.org/2020/12/16/solidity-v0.8.0-release-announcement/ **
+    // ** Not needed for overflow/underflow as of Solidity 0.8.x: https://blog.soliditylang.org/2020/12/16/solidity-v0.8.0-release-announcement/ **
     // ** This introduces checked arithmetic, reverts on over and underflows, and unchecked blocks, among others **
     using SafeMath for uint256;
 

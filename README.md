@@ -97,6 +97,28 @@ ETH_FROM=0xc0248cD71633C8a412301915912eF10e75e7D260 make deploy-rinkeby
 
 ### Goerli
 
+#### Pre Deploys
+
+First, if `seth` is not configured, we should run an `ethsign import --keystore <desired_keystore_file_location>`.
+Then follow the steps to import your wallet private key and set a signing passphrase.
+
+Then, we must source our environment variables to deploy to the Goerli network:
+
+```
+ETH_FROM=xxxx
+ETH_RPC_URL=xxxx
+ETH_GAS=xxxx 
+```
+
+The ArtBlocks Factory is deployed on mainnet at [0xa7d8d9ef8D8Ce8992Df33D8b8CF4Aebabd5bD270](https://etherscan.io/address/0xa7d8d9ef8D8Ce8992Df33D8b8CF4Aebabd5bD270#code), but we need to have it deployed on goerli.
+
+To deploy `GenArt721Core` as was deployed to `` on [Goerli](), run the following command in the [base directory](./):
+
+```
+dapp create GenArt721Core --verify
+```
+
+
 ## License
 
 [AGPL-3.0-only](https://github.com/nascentxyz/yobot/blob/master/LICENSE)
