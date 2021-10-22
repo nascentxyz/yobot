@@ -55,6 +55,10 @@ Run `yarn visualize` to generate an amalgamated contract visualization in the `o
 
 Run `surya graph -s src/YobotArtBlocksBroker.sol | dot -Tpng > out/YobotArtBlocksBroker.png`
 
+##### YobotERC721LimitOrder.sol
+
+Run `surya graph -s src/YobotERC721LimitOrder.sol | dot -Tpng > out/YobotERC721LimitOrder.png`
+
 ## Deploying
 
 Contracts can be deployed via the `make deploy` command. Addresses are automatically

@@ -65,7 +65,7 @@ class Yobot {
     );
     this.YobotERC721LimitOrder = new this.web3.eth.Contract(
       YobotERC721LimitOrderAbi,
-      contractAddresses["mainnet"]["YOBOT_ERC721_LIMIT_ORDER_ABI"]
+      contractAddresses["mainnet"]["YobotERC721LimitOrder"]
     );
 
     var self = this;
