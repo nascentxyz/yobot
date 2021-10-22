@@ -131,8 +131,9 @@ dapp create GenArt721Core --verify
 ## Noted Issues
 
 On initial library import, `zeppelin-solidity` root contract directory will need to be changed from "contracts" to "src". Use the commands:
+
 ```
-n -s contracts lib/zeppelin-solidity/src
+ln -s contracts lib/zeppelin-solidity/src
 echo /src >>.git/modules/lib/zeppelin-solidity/info/exclude
 ```
 
