@@ -12,7 +12,7 @@ contract Randomizer {
     using SafeMath for uint256;
 
     /// @dev internal SEEDOOOOR
-    uint256 immutable private SEEDOOOOR;
+    uint256 private immutable SEEDOOOOR;
 
     /// @dev the constructoooor
     /// @param _seed the seed value for the hash

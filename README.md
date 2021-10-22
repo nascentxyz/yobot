@@ -107,7 +107,7 @@ Then, we must source our environment variables to deploy to the Goerli network:
 ```
 ETH_FROM=xxxx
 ETH_RPC_URL=xxxx
-ETH_GAS=xxxx 
+ETH_GAS=xxxx
 ```
 
 The ArtBlocks Factory is deployed on mainnet at [0xa7d8d9ef8D8Ce8992Df33D8b8CF4Aebabd5bD270](https://etherscan.io/address/0xa7d8d9ef8D8Ce8992Df33D8b8CF4Aebabd5bD270#code), but we need to have it deployed on goerli.
@@ -117,7 +117,6 @@ To deploy `GenArt721Core` as was deployed to `` on [Goerli](), run the following
 ```
 dapp create GenArt721Core --verify
 ```
-
 
 ## License
 
