@@ -128,6 +128,14 @@ dapp create GenArt721Core --verify
 - [Georgios Konstantopoulos](https://github.com/gakonst) for the amazing [dapptools-template](https://github.com/gakonst/dapptools-template) resource.
 - ds-test, OZ, Chainlink for inherited libraries
 
+## Noted Issues
+
+On initial library import, `zeppelin-solidity` root contract directory will need to be changed from "contracts" to "src". Use the commands:
+```
+n -s contracts lib/zeppelin-solidity/src
+echo /src >>.git/modules/lib/zeppelin-solidity/info/exclude
+```
+
 ## Disclaimer
 
 _These smart contracts are being provided as is. No guarantee, representation or warranty is being made, express or implied, as to the safety or correctness of the user interface or the smart contracts. They have not been audited and as such there can be no assurance they will work as intended, and users may experience delays, failures, errors, omissions, loss of transmitted information or loss of funds. Nascent is not liable for any of the foregoing. Users should proceed with caution and use at their own risk._
