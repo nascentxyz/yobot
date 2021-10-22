@@ -33,31 +33,37 @@ contract YobotArtBlocksBroker is Coordinator {
                         USER FUNCTIONS
     //////////////////////////////////////////////////////////////*/
 
+    /// @notice places an open order for a user
+    /// @param _artBlocksProjectId the ArtBlocks Project Id
+    /// @param _quantity the number of tokens
     function placeOrder(uint256 _artBlocksProjectId, uint128 _quantity) external payable {
         // CHECKS
-        require(_artBlocksProjectId != 0, "invalid AB id");
+        require(_artBlocksProjectId != 0, "INVALID_ARTBLOCKS_ID");
 
-        // we disable linting against tx-origin to purposefully allow EOA checks
+        // Removes user foot-guns and garuantees user can receive NFTs
+        // We disable linting against tx-origin to purposefully allow EOA checks
         // solhint-disable-next-line avoid-tx-origin
-        require(msg.sender == tx.origin, "we only mint to EOAs"); // removes user foot-guns and garuantees user can receive NFTs
+        require(msg.sender == tx.origin, "NON_EOA_ORIGIN");
+
         Order memory order = orders[msg.sender][_artBlocksProjectId];
-        // You already have an order for this ArtBlocks project. Please cancel the existing order before making a new one.
-        require(order.priceInWeiEach * order.quantity == 0, "EXISTING_OUTSTANDING_ORDER");
+        require(order.priceInWeiEach * order.quantity == 0, "DUPLICATE_ORDER");
         uint128 priceInWeiEach = uint128(msg.value) / _quantity;
-        require(priceInWeiEach > 0, "Zero wei offers not accepted.");
+        require(priceInWeiEach > 0, "ZERO_WEI_BID");
 
         // EFFECTS
         orders[msg.sender][_artBlocksProjectId].priceInWeiEach = priceInWeiEach;
         orders[msg.sender][_artBlocksProjectId].quantity = _quantity;
 
-        emit Action(msg.sender, _artBlocksProjectId, priceInWeiEach, _quantity, "order placed", 0);
+        emit Action(msg.sender, _artBlocksProjectId, priceInWeiEach, _quantity, "ORDER_PLACED", 0);
     }
 
+    /// @notice Cancels a user's order for the given ArtBlocks Project Id
+    /// @param _artBlocksProjectId the ArtBlocks Project Id
     function cancelOrder(uint256 _artBlocksProjectId) external {
         // CHECKS
         Order memory order = orders[msg.sender][_artBlocksProjectId];
         uint256 amountToSendBack = order.priceInWeiEach * order.quantity;
-        require(amountToSendBack != 0, "You do not have an existing order for this ArtBlocks project.");
+        require(amountToSendBack != 0, "NONEXISTANT_ORDER");
 
         // EFFECTS
         delete orders[msg.sender][_artBlocksProjectId];
@@ -65,7 +71,7 @@ contract YobotArtBlocksBroker is Coordinator {
         // INTERACTIONS
         sendValue(payable(msg.sender), amountToSendBack);
 
-        emit Action(msg.sender, _artBlocksProjectId, 0, 0, "order cancelled", 0);
+        emit Action(msg.sender, _artBlocksProjectId, 0, 0, "ORDER_CANCELLED", 0);
     }
 
     /*///////////////////////////////////////////////////////////////
@@ -168,14 +174,7 @@ contract YobotArtBlocksBroker is Coordinator {
         bool[] memory _sendNow
     ) external returns (uint256[] memory) {
         // verify argument array lengths are equal
-        require(
-            _users.length == _artBlocksProjectIds.length &&
-            _artBlocksProjectIds.length == _tokenIds.length &&
-            _tokenIds.length == _expectedPriceInWeiEach.length &&
-            _expectedPriceInWeiEach.length == _profitTo.length &&
-            _profitTo.length == _sendNow.length,
-            "ARRAY_LENGTH_MISMATCH"
-        );
+        require(_users.length == _artBlocksProjectIds.length && _artBlocksProjectIds.length == _tokenIds.length && _tokenIds.length == _expectedPriceInWeiEach.length && _expectedPriceInWeiEach.length == _profitTo.length && _profitTo.length == _sendNow.length, "ARRAY_LENGTH_MISMATCH");
         uint256[] memory output = new uint256[](_users.length);
         for (uint256 i = 0; i < _users.length; i++) {
             output[i] = fillOrder(_users[i], _artBlocksProjectIds[i], _tokenIds[i], _expectedPriceInWeiEach[i], _profitTo[i], _sendNow[i]);
@@ -225,5 +224,4 @@ contract YobotArtBlocksBroker is Coordinator {
         for (uint256 i = 0; i < _users.length; i++) output[i] = orders[_users[i]][_artBlocksProjectIds[i]];
         return output;
     }
-
 }

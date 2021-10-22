@@ -43,25 +43,36 @@ contract YobotERC721LimitOrder is Coordinator {
                       USER FUNCTIONS
   //////////////////////////////////////////////////////////////*/
 
-    // users should place orders ONLY for token addresses that they trust
+    /// @notice places an open order for a user
+    /// @notice users should place orders ONLY for token addresses that they trust
+    /// @param _tokenAddress the erc721 token address
+    /// @param _quantity the number of tokens
     function placeOrder(address _tokenAddress, uint128 _quantity) external payable {
+        // CHECKS
+        // Removes user foot-guns and garuantees user can receive NFTs
+        // We disable linting against tx-origin to purposefully allow EOA checks
+        // solhint-disable-next-line avoid-tx-origin
+        require(msg.sender == tx.origin, "NON_EOA_ORIGIN");
+
         Order memory order = orders[msg.sender][_tokenAddress];
-        require(order.quantity == 0, "EXISTING_OUTSTANDING_ORDER");
+        require(order.quantity == 0, "DUPLICATE_ORDER");
         uint128 priceInWeiEach = uint128(msg.value) / _quantity;
-        require(priceInWeiEach > 0, "Zero wei offers not accepted.");
+        require(priceInWeiEach > 0, "ZERO_WEI_BID");
 
         // EFFECTS
         orders[msg.sender][_tokenAddress].priceInWeiEach = priceInWeiEach;
         orders[msg.sender][_tokenAddress].quantity = _quantity;
 
-        emit Action(msg.sender, _tokenAddress, priceInWeiEach, _quantity, "order placed", 0);
+        emit Action(msg.sender, _tokenAddress, priceInWeiEach, _quantity, "ORDER_PLACED", 0);
     }
 
+    /// @notice Cancels a user's order for the given erc721 token
+    /// @param _tokenAddress the erc721 token address
     function cancelOrder(address _tokenAddress) external {
         // CHECKS
         Order memory order = orders[msg.sender][_tokenAddress];
         uint256 amountToSendBack = order.priceInWeiEach * order.quantity;
-        require(amountToSendBack != 0, "You do not have an existing order for this token.");
+        require(amountToSendBack != 0, "NONEXISTANT_ORDER");
 
         // EFFECTS
         delete orders[msg.sender][_tokenAddress];
@@ -69,7 +80,7 @@ contract YobotERC721LimitOrder is Coordinator {
         // INTERACTIONS
         sendValue(payable(msg.sender), amountToSendBack);
 
-        emit Action(msg.sender, _tokenAddress, 0, 0, "order cancelled", 0);
+        emit Action(msg.sender, _tokenAddress, 0, 0, "ORDER_CANCELLED", 0);
     }
 
     /*///////////////////////////////////////////////////////////////
@@ -167,14 +178,7 @@ contract YobotERC721LimitOrder is Coordinator {
         bool[] memory _sendNow
     ) external returns (uint256[] memory) {
         // verify argument array lengths are equal
-        require(
-            _users.length == _tokenAddresses.length &&
-            _tokenAddresses.length == _tokenIds.length &&
-            _tokenIds.length == _expectedPriceInWeiEach.length &&
-            _expectedPriceInWeiEach.length == _profitTo.length &&
-            _profitTo.length == _sendNow.length,
-            "ARRAY_LENGTH_MISMATCH"
-        );
+        require(_users.length == _tokenAddresses.length && _tokenAddresses.length == _tokenIds.length && _tokenIds.length == _expectedPriceInWeiEach.length && _expectedPriceInWeiEach.length == _profitTo.length && _profitTo.length == _sendNow.length, "ARRAY_LENGTH_MISMATCH");
         uint256[] memory output = new uint256[](_users.length);
         for (uint256 i = 0; i < _users.length; i++) {
             output[i] = fillOrder(_users[i], _tokenAddresses[i], _tokenIds[i], _expectedPriceInWeiEach[i], _profitTo[i], _sendNow[i]);
