@@ -26,7 +26,11 @@ contract YobotERC721LimitOrderTest is DSTestPlus {
     /// @param _value value to send - _value = price per nft * _quantity
     /// @param _tokenAddress ERC721 Token Address
     /// @param _quantity the number of erc721 tokens
-    function testFailPlaceDuplicateOrder(uint256 _value, address _tokenAddress, uint128 _quantity) public {
+    function testFailPlaceDuplicateOrder(
+        uint256 _value,
+        address _tokenAddress,
+        uint128 _quantity
+    ) public {
         ylo.placeOrder{value: _value}(_tokenAddress, _quantity);
         // this should fail with `DUPLICATE_ORDER` since order.quantity * order.priceInWeiEach
         ylo.placeOrder{value: _value}(_tokenAddress, _quantity);
@@ -36,7 +40,11 @@ contract YobotERC721LimitOrderTest is DSTestPlus {
     /// @param _value value to send - _value = price per nft * _quantity
     /// @param _tokenAddress ERC721 Token Address
     /// @param _quantity the number of erc721 tokens
-    function testFailPlaceOrderFromContract(uint256 _value, address _tokenAddress, uint128 _quantity) public {
+    function testFailPlaceOrderFromContract(
+        uint256 _value,
+        address _tokenAddress,
+        uint128 _quantity
+    ) public {
         // this should fail with `NOT_EOA`
         ylo.placeOrder{value: _value}(_tokenAddress, _quantity);
     }

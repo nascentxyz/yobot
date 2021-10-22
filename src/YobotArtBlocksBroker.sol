@@ -119,11 +119,12 @@ contract YobotArtBlocksBroker is Coordinator {
         if (order.quantity > 1) {
             newOrder.priceInWeiEach = order.priceInWeiEach;
             newOrder.quantity = order.quantity - 1;
-        } else {
+        }
+        // else {
             // ?? ??
             // TODO: Delete orders from mapping once all are filled
-        }
-        orders[_user][_artBlocksProjectId] = newOrder; 
+        // }
+        orders[_user][_artBlocksProjectId] = newOrder;
 
         uint256 artBlocksBrokerFee = (order.priceInWeiEach * botFeeBips) / 10_000;
         balances[profitReceiver] += artBlocksBrokerFee;

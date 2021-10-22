@@ -34,7 +34,11 @@ contract YobotArtBlocksBrokerTest is DSTestPlus {
     /// @param _value value to send - _value = price per nft * _quantity
     /// @param _artBlocksProjectId the ArtBlocks Project Id
     /// @param _quantity the number of erc721 tokens
-    function testFailPlaceDuplicateOrder(uint256 _value, uint256 _artBlocksProjectId, uint128 _quantity) public {
+    function testFailPlaceDuplicateOrder(
+        uint256 _value,
+        uint256 _artBlocksProjectId,
+        uint128 _quantity
+    ) public {
         require(_artBlocksProjectId > 0, "ID_CANNOT_BE_ZERO");
         yabb.placeOrder{value: _value}(_artBlocksProjectId, _quantity);
         // this should fail with `DUPLICATE_ORDER` since order.quantity * order.priceInWeiEach
@@ -45,7 +49,11 @@ contract YobotArtBlocksBrokerTest is DSTestPlus {
     /// @param _value value to send - _value = price per nft * _quantity
     /// @param _artBlocksProjectId the ArtBlocks Project Id
     /// @param _quantity the number of erc721 tokens
-    function testFailPlaceOrderFromContract(uint256 _value, uint256 _artBlocksProjectId, uint128 _quantity) public {
+    function testFailPlaceOrderFromContract(
+        uint256 _value,
+        uint256 _artBlocksProjectId,
+        uint128 _quantity
+    ) public {
         // this should fail with `NOT_EOA`
         yabb.placeOrder{value: _value}(_artBlocksProjectId, _quantity);
     }
