@@ -37,6 +37,7 @@ contract YobotERC721LimitOrder is Coordinator {
     /// @notice Creates a new yobot erc721 limit order broker
     /// @param _profitReceiver The profit receiver for fees
     /// @param _botFeeBips The fee rake
+    // solhint-disable-next-line no-empty-blocks
     constructor(address _profitReceiver, uint256 _botFeeBips) Coordinator(_profitReceiver, _botFeeBips) {}
 
     /*///////////////////////////////////////////////////////////////
