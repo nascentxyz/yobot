@@ -418,10 +418,11 @@ contract GenArt721Core is CustomERC721Metadata {
         return projectIdToTokenIds[_projectId];
     }
 
-    function tokensOfOwner(address owner) external view returns (uint256[] memory) {
-        // ?? replaced `_tokensOfOwner` with `_ownedTokens` ??
-        return _ownedTokens(owner);
-    }
+    // TODO: is this necessary ?? tokens are mapped privately inside erc721 enumerable
+    // function tokensOfOwner(address owner) external view returns (uint256[] memory) {
+    //     // ?? replaced `_tokensOfOwner` with `_ownedTokens` ??
+    //     return _ownedTokens(owner);
+    // }
 
     function getRoyaltyData(uint256 _tokenId)
         public
