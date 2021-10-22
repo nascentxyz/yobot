@@ -114,12 +114,16 @@ contract YobotArtBlocksBroker is Coordinator {
         require(ARTBLOCKS_FACTORY.tokenIdToProjectId(_tokenId) == _artBlocksProjectId, "UNREQUESTED_TOKEN_ID");
 
         // EFFECTS
+        // TODO: remove newOrder entirely?
         Order memory newOrder;
         if (order.quantity > 1) {
             newOrder.priceInWeiEach = order.priceInWeiEach;
             newOrder.quantity = order.quantity - 1;
+        } else {
+            // ?? ??
+            // TODO: Delete orders from mapping once all are filled
         }
-        orders[_user][_artBlocksProjectId] = newOrder;
+        orders[_user][_artBlocksProjectId] = newOrder; 
 
         uint256 artBlocksBrokerFee = (order.priceInWeiEach * botFeeBips) / 10_000;
         balances[profitReceiver] += artBlocksBrokerFee;
@@ -202,8 +206,10 @@ contract YobotArtBlocksBroker is Coordinator {
     /// @notice Allows profitReceiver and bots to withdraw their fees
     /// @dev delete balances on withdrawal to free up storage
     function withdraw() external {
+        // EFFECTS
         uint256 amount = balances[msg.sender];
         delete balances[msg.sender];
+        // INTERACTIONS
         sendValue(payable(msg.sender), amount);
     }
 

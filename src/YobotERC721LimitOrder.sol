@@ -196,8 +196,10 @@ contract YobotERC721LimitOrder is Coordinator {
     /// @notice Allows profitReceiver and bots to withdraw their fees
     /// @dev delete balances on withdrawal to free up storage
     function withdraw() external {
+        // EFFECTS
         uint256 amount = balances[msg.sender];
         delete balances[msg.sender];
+        // INTERACTIONS
         sendValue(payable(msg.sender), amount);
     }
 
