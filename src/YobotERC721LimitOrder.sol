@@ -16,7 +16,9 @@ import {Coordinator} from "./Coordinator.sol";
 contract YobotERC721LimitOrder is Coordinator {
     /// @notice A user's order
     struct Order {
+        /// @dev the price to pay for each erc721 token
         uint128 priceInWeiEach;
+        /// @dev the quantity of tokens to pay
         uint128 quantity;
     }
 
@@ -26,13 +28,13 @@ contract YobotERC721LimitOrder is Coordinator {
     mapping(address => uint256) public balances;
 
     /// @notice Emitted whenever a respective individual executes a function
-    /// @param user the address of the sender executing the action - used primarily for indexing
-    /// @param tokenAddress The token address to interact with
-    /// @param priceInWeiEach The bid price in wei for each ERC721 Token
-    /// @param quantity The number of tokens
-    /// @param action The action being emitted
-    /// @param optionalTokenId An optional specific token id
-    event Action(address indexed user, address indexed tokenAddress, uint256 priceInWeiEach, uint256 quantity, string action, uint256 optionalTokenId);
+    /// @param _user the address of the sender executing the action - used primarily for indexing
+    /// @param _tokenAddress The token address to interact with
+    /// @param _priceInWeiEach The bid price in wei for each ERC721 Token
+    /// @param _quantity The number of tokens
+    /// @param _action The action being emitted
+    /// @param _optionalTokenId An optional specific token id
+    event Action(address indexed _user, address indexed _tokenAddress, uint256 _priceInWeiEach, uint256 _quantity, string _action, uint256 _optionalTokenId);
 
     /// @notice Creates a new yobot erc721 limit order broker
     /// @param _profitReceiver The profit receiver for fees
@@ -194,8 +196,10 @@ contract YobotERC721LimitOrder is Coordinator {
     /// @notice Allows profitReceiver and bots to withdraw their fees
     /// @dev delete balances on withdrawal to free up storage
     function withdraw() external {
+        // EFFECTS
         uint256 amount = balances[msg.sender];
         delete balances[msg.sender];
+        // INTERACTIONS
         sendValue(payable(msg.sender), amount);
     }
 
