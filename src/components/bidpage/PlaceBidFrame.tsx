@@ -14,6 +14,7 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  Heading
 } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { toast } from "material-react-toastify";
@@ -190,6 +191,9 @@ const PlaceBidFrame = () => {
   const [frozenBidPrice, setFrozenBidPrice] = useState(bidPrice);
   const [frozenBidQty, setFrozenBidQty] = useState(bidQty);
 
+  // ** Allow user to press enter on Quantity **
+  const [enterPressed, setEnterPressed] = useState(false);
+
   // ** Checks if we have enough ETH balance in the connected wallet **
   useEffect(() => {
     setInsufficientFunds(bidPrice * bidQty > balance || balance == 0);
@@ -325,6 +329,24 @@ const PlaceBidFrame = () => {
           type="number"
           min={1}
           value={bidQty}
+          onKeyDown={(e) => {
+            if(!enterPressed) {
+              setEnterPressed(true);
+              // ** Let's allow the user to hit enter here to place bid **
+              if(validParams && !bidPriceEmpty && !bidQtyEmpty && !insufficentFunds && isAuthed && !placingBid) {
+                if (e.key === 'Enter') {
+                  setTimeout(() => {
+                    placeBid();
+                    setEnterPressed(false);
+                  }, 200);
+                } else {
+                  setEnterPressed(false);
+                }
+              } else {
+                setEnterPressed(false);
+              }
+            }
+          }}
           onChange={(e) => {
             setBidQtyEmpty(e.target.value == "");
             setBidQty(e.target.value ? parseInt(e.target.value) : undefined);
@@ -346,7 +368,7 @@ const PlaceBidFrame = () => {
         ) : (
           <PlaceBidButton
             disabled={
-              !validParams || insufficentFunds || bidPriceEmpty || bidQtyEmpty
+              !validParams || insufficentFunds || bidPriceEmpty || bidQtyEmpty || placingBid
             }
             colorScheme={validParams ? "green" : "red"}
             background={validParams ? "green.600" : "red.800"}
@@ -383,8 +405,10 @@ const PlaceBidFrame = () => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>🚨 Place Bid? 🚨</ModalHeader>
-          <ModalCloseButton />
+          <ModalHeader>
+            <Heading>🚨 Place Bid? 🚨</Heading>
+            <ModalCloseButton />
+          </ModalHeader>
           <ModalBody>
             <Checkbox
               colorScheme="red"
@@ -408,7 +432,6 @@ const PlaceBidFrame = () => {
           <ModalFooter>
             <NoShadowButton
               colorScheme="green"
-              mr={3}
               onClick={() => {
                 if (!transactionTimedOut) {
                   // SUBMIT

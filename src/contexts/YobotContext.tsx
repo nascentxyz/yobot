@@ -97,9 +97,13 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
   // ** Only allow one network toast notification at a time **
   const [toastingNetwork, setToastingNetwork] = useState(false);
 
+  // ** Lock setting yobot and address
+  const [updatingLock, setUpdatingLock] = useState(false);
+
   // ** Refresh chain id **
   const refreshChainId = ({ yobotInstance = yobot }) => {
     if (!toastingNetwork) {
+      setToastingNetwork(true);
       Promise.all([
         yobotInstance.web3.eth.net.getId(),
         yobotInstance.web3.eth.getChainId(),
@@ -112,19 +116,19 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
         // }
 
         if (netId !== 1 || currChainId !== 1) {
-          setToastingNetwork(true);
-          setTimeout(() => {
-            toast({
-              title: "Wrong network!",
-              description:
-                "You are on the wrong network! Switch to the mainnet and reload this page!",
-              status: "warning",
-              position: "bottom",
-              duration: 3000,
-              isClosable: true,
-            });
-            setTimeout(() => setToastingNetwork(false), 3000);
-          }, 1500);
+          // ** Prevent Fast Reentrancy
+            setTimeout(() => {
+              toast({
+                title: "Wrong network!",
+                description:
+                  "You are on the wrong network! Switch to the mainnet and reload this page!",
+                status: "warning",
+                position: "bottom",
+                duration: 3000,
+                isClosable: true,
+              });
+              setTimeout(() => setToastingNetwork(false), 3000);
+            }, 1500);
         }
       });
     }
@@ -147,40 +151,44 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
   const [web3ModalProvider, setWeb3ModalProvider] = useState<any | null>(null);
 
   const setYobotAndAddressFromModal = (modalProvider) => {
-    const yobotInstance = new Yobot(modalProvider);
-    setYobot(yobotInstance);
+    if(!updatingLock) {
+      setUpdatingLock(true);
+      const yobotInstance = new Yobot(modalProvider);
+      setYobot(yobotInstance);
 
-    yobotInstance.web3.eth.getAccounts().then((addresses) => {
-      console.log("got accounts:", addresses);
-      if (addresses.length === 0) {
-        if (typeof window !== "undefined") {
-          console.log("reloading window");
-          setIsAttemptingLogin(true);
-          logout();
-          setAddress(EmptyAddress);
-          return;
+      yobotInstance.web3.eth.getAccounts().then((addresses) => {
+        if (addresses.length === 0) {
+          if (typeof window !== "undefined") {
+            console.log("reloading window");
+            setIsAttemptingLogin(true);
+            logout();
+            setAddress(EmptyAddress);
+            return;
+          }
         }
-      }
 
-      // ** We only want to refresh the chain id and do the rest if we have addresses **
-      refreshChainId({ yobotInstance });
+        // ** We only want to refresh the chain id and do the rest if we have addresses **
+        refreshChainId({ yobotInstance });
 
-      // ** Set the new address **
-      const address = addresses[0] as string;
-      const requestedAddress = query.address as string;
-      LogRocket.identify(address);
-      setAddress(requestedAddress ?? address);
+        // ** Set the new address **
+        const address = addresses[0] as string;
+        const requestedAddress = query.address as string;
+        LogRocket.identify(address);
+        setAddress(requestedAddress ?? address);
 
-      // ** Get the selected address balance
-      yobotInstance.web3.eth
-        .getBalance(requestedAddress ?? address)
-        .then((bal) => {
-          setBalance(parseFloat(formatEther(bal)));
-        })
-        .catch((balance_err) =>
-          console.error("Failed to get account ethers with error:", balance_err)
-        );
-    });
+        // ** Get the selected address balance
+        yobotInstance.web3.eth
+          .getBalance(requestedAddress ?? address)
+          .then((bal) => {
+            setBalance(parseFloat(formatEther(bal)));
+
+            // TODO: show connected balance here ??
+          })
+          .catch((balance_err) =>
+            console.error("Failed to get account ethers with error:", balance_err)
+          );
+      });
+    }
   };
 
   const login = async (cacheProvider: boolean = true) => {
