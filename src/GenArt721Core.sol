@@ -419,7 +419,8 @@ contract GenArt721Core is CustomERC721Metadata {
     }
 
     function tokensOfOwner(address owner) external view returns (uint256[] memory) {
-        return _tokensOfOwner(owner);
+        // ?? replaced `_tokensOfOwner` with `_ownedTokens` ??
+        return _ownedTokens(owner);
     }
 
     function getRoyaltyData(uint256 _tokenId)
