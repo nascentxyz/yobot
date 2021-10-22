@@ -14,7 +14,7 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Heading
+  Heading,
 } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { toast } from "material-react-toastify";
@@ -330,11 +330,18 @@ const PlaceBidFrame = () => {
           min={1}
           value={bidQty}
           onKeyDown={(e) => {
-            if(!enterPressed) {
+            if (!enterPressed) {
               setEnterPressed(true);
               // ** Let's allow the user to hit enter here to place bid **
-              if(validParams && !bidPriceEmpty && !bidQtyEmpty && !insufficentFunds && isAuthed && !placingBid) {
-                if (e.key === 'Enter') {
+              if (
+                validParams &&
+                !bidPriceEmpty &&
+                !bidQtyEmpty &&
+                !insufficentFunds &&
+                isAuthed &&
+                !placingBid
+              ) {
+                if (e.key === "Enter") {
                   setTimeout(() => {
                     placeBid();
                     setEnterPressed(false);
@@ -368,7 +375,11 @@ const PlaceBidFrame = () => {
         ) : (
           <PlaceBidButton
             disabled={
-              !validParams || insufficentFunds || bidPriceEmpty || bidQtyEmpty || placingBid
+              !validParams ||
+              insufficentFunds ||
+              bidPriceEmpty ||
+              bidQtyEmpty ||
+              placingBid
             }
             colorScheme={validParams ? "green" : "red"}
             background={validParams ? "green.600" : "red.800"}

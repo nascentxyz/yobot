@@ -117,18 +117,18 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
 
         if (netId !== 1 || currChainId !== 1) {
           // ** Prevent Fast Reentrancy
-            setTimeout(() => {
-              toast({
-                title: "Wrong network!",
-                description:
-                  "You are on the wrong network! Switch to the mainnet and reload this page!",
-                status: "warning",
-                position: "bottom",
-                duration: 3000,
-                isClosable: true,
-              });
-              setTimeout(() => setToastingNetwork(false), 3000);
-            }, 1500);
+          setTimeout(() => {
+            toast({
+              title: "Wrong network!",
+              description:
+                "You are on the wrong network! Switch to the mainnet and reload this page!",
+              status: "warning",
+              position: "bottom",
+              duration: 3000,
+              isClosable: true,
+            });
+            setTimeout(() => setToastingNetwork(false), 3000);
+          }, 1500);
         }
       });
     }
@@ -151,7 +151,7 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
   const [web3ModalProvider, setWeb3ModalProvider] = useState<any | null>(null);
 
   const setYobotAndAddressFromModal = (modalProvider) => {
-    if(!updatingLock) {
+    if (!updatingLock) {
       setUpdatingLock(true);
       const yobotInstance = new Yobot(modalProvider);
       setYobot(yobotInstance);
@@ -185,7 +185,10 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
             // TODO: show connected balance here ??
           })
           .catch((balance_err) =>
-            console.error("Failed to get account ethers with error:", balance_err)
+            console.error(
+              "Failed to get account ethers with error:",
+              balance_err
+            )
           );
       });
     }

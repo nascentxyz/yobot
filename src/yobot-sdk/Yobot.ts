@@ -18,7 +18,7 @@ const contractAddresses = {
   goerli: {
     YobotArtBlocksBroker: "",
     YobotERC721LimitOrder: "",
-  }
+  },
 };
 
 // ** Import the Contract Abis **
@@ -59,8 +59,14 @@ class Yobot {
     this.cache = new Cache({ allTokens: 86400, ethUsdPrice: 300 });
 
     // ** Initiate Contracts **
-    this.YobotArtBlocksBroker = new this.web3.eth.Contract(YOBOT_ART_BLOCKS_BROKER_ABI, CONTRACT_ADDRESSES["mainnet"]["YobotArtBlocksBroker"]);
-    this.YobotERC721LimitOrder = new this.web3.eth.Contract(YOBOT_ERC721_LIMIT_ORDER_ABI, CONTRACT_ADDRESSES["mainnet"]["YOBOT_ERC721_LIMIT_ORDER_ABI"]);
+    this.YobotArtBlocksBroker = new this.web3.eth.Contract(
+      YobotArtBlocksBrokerAbi,
+      contractAddresses["mainnet"]["YobotArtBlocksBroker"]
+    );
+    this.YobotERC721LimitOrder = new this.web3.eth.Contract(
+      YobotERC721LimitOrderAbi,
+      contractAddresses["mainnet"]["YOBOT_ERC721_LIMIT_ORDER_ABI"]
+    );
 
     var self = this;
 
@@ -92,18 +98,17 @@ class Yobot {
                         Place Order Functions
     //////////////////////////////////////////////////////////////*/
 
-    this.validateBid = async function (
-      currencyCode,
-      amount,
-      sender
-    ) {
+    this.validateBid = async function (currencyCode, amount, sender) {
       // ** Input validation **
       if (!sender) throw new Error("Sender parameter not set.");
       if (currencyCode !== "ETH") throw new Error("Invalid currency code!");
-      if (!amount || amount.lte(Web3.utils.toBN(0))) throw new Error("Deposit amount must be greater than 0!");
+      if (!amount || amount.lte(Web3.utils.toBN(0)))
+        throw new Error("Deposit amount must be greater than 0!");
 
       // ** Get Account Balance BN **
-      var accountBalanceBN = Web3.utils.toBN(await self.web3.eth.getBalance(sender));
+      var accountBalanceBN = Web3.utils.toBN(
+        await self.web3.eth.getBalance(sender)
+      );
       if (amount.gt(accountBalanceBN))
         throw new Error(
           "Not enough balance in your account to make a deposit of this amount."
@@ -122,17 +127,23 @@ class Yobot {
       options
     ) {
       // ** Input Validation **
-      if (!options || !options.from) throw new Error("Options parameter not set or from address not set.");
+      if (!options || !options.from)
+        throw new Error("Options parameter not set or from address not set.");
       if (currencyCode !== "ETH") throw new Error("Invalid currency code!");
-      if (!price || price.lte(Web3.utils.toBN(0))) throw new Error("NFT price must be greater than 0!");
-      if (!quantity || quantity.lte(Web3.utils.toBN(0))) throw new Error("Quantity must be greater than 0!");
-      if (!artBlocksProjectId || artBlocksProjectId.lte(Web3.utils.toBN(0))) throw new Error("ArtBlocks Project Id must be greater than 0!");
-      
+      if (!price || price.lte(Web3.utils.toBN(0)))
+        throw new Error("NFT price must be greater than 0!");
+      if (!quantity || quantity.lte(Web3.utils.toBN(0)))
+        throw new Error("Quantity must be greater than 0!");
+      if (!artBlocksProjectId || artBlocksProjectId.lte(Web3.utils.toBN(0)))
+        throw new Error("ArtBlocks Project Id must be greater than 0!");
+
       // ** Calculate value to send **
       let totalCost = price * quantity;
 
       // ** Get Account Balance BN **
-      var accountBalanceBN = Web3.utils.toBN(await self.web3.eth.getBalance(options.from));
+      var accountBalanceBN = Web3.utils.toBN(
+        await self.web3.eth.getBalance(options.from)
+      );
       if (totalCost.gt(accountBalanceBN))
         throw new Error(
           "Not enough balance in your account to place a bid of that size."
@@ -155,15 +166,11 @@ class Yobot {
       // ** Place Bid on YobotArtBlocksBroker **
       options.value = totalCost;
       var receipt = await self.YobotArtBlocksBroker.methods
-        .placeOrder(
-          artBlocksProjectId,
-          quantity
-        )
+        .placeOrder(artBlocksProjectId, quantity)
         .send(options);
 
       // ** Return **
       return [amount, null, null, receipt];
-
     };
 
     /*///////////////////////////////////////////////////////////////
@@ -172,7 +179,8 @@ class Yobot {
 
     this.cancelBid = async function (options) {
       // ** Input Validation **
-      if (!options || !options.from) throw new Error("Options parameter not set or from address not set.");
+      if (!options || !options.from)
+        throw new Error("Options parameter not set or from address not set.");
 
       // ** Try to cancel order **
       try {
@@ -186,7 +194,7 @@ class Yobot {
         );
       }
 
-      return [amount, null, receipt];     
+      return [amount, null, receipt];
     };
   }
 }
