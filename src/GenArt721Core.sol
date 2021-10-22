@@ -4,14 +4,17 @@ pragma solidity ^0.8.6;
 /* solhint-disable max-states-count */
 /* solhint-disable max-line-length */
 
-import {CustomERC721Metadata} from "./artblocks/CustomERC721Metadata";
+import {Strings} from "zeppelin-solidity/utils/Strings.sol";
+import {CustomERC721Metadata} from "./external/artblocks/CustomERC721Metadata.sol";
 
 interface Randomizer {
     function returnValue() external view returns (bytes32);
 }
 
 contract GenArt721Core is CustomERC721Metadata {
-    using SafeMath for uint256;
+    // ** Not needed as of Solidity 0.8.x: https://blog.soliditylang.org/2020/12/16/solidity-v0.8.0-release-announcement/ **
+    // ** This introduces checked arithmetic, reverts on over and underflows, and unchecked blocks, among others **
+    // using SafeMath for uint256;
 
     event Mint(address indexed _to, uint256 indexed _tokenId, uint256 indexed _projectId);
 

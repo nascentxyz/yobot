@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.6;
 
-import {ERC165} from "lib/zeppelin-solidity/contracts/utils/introspection/ERC165";
-import {ERC721} from "lib/zeppelin-solidity/contracts/token/ERC721/ERC721";
-import {ERC721Enumerable} from "lib/zeppelin-solidity/contracts/token/ERC721/extensions/ERC721Enumerable";
+import {ERC165} from "zeppelin-solidity/utils/introspection/ERC165.sol";
+import {ERC721} from "zeppelin-solidity/token/ERC721/ERC721.sol";
+import {ERC721Enumerable} from "zeppelin-solidity/token/ERC721/extensions/ERC721Enumerable.sol";
 
 /**
  * ERC721 base contract without the concept of tokenUri as this is managed by the parent
@@ -20,12 +20,13 @@ contract CustomERC721Metadata is ERC165, ERC721, ERC721Enumerable {
     /**
      * @dev Constructor function
      */
-    constructor(string memory name, string memory symbol) public {
-        _name = name;
-        _symbol = symbol;
+    constructor(string memory con_name, string memory con_symbol) public {
+        _name = con_name;
+        _symbol = con_symbol;
 
         // register the supported interfaces to conform to ERC721 via ERC165
-        _registerInterface(_INTERFACE_ID_ERC721_METADATA);
+        // ?? Changed `_registerInterface` to `supportsInterface` ??
+        supportsInterface(_INTERFACE_ID_ERC721_METADATA);
     }
 
     /**
