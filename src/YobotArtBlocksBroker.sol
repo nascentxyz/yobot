@@ -121,8 +121,8 @@ contract YobotArtBlocksBroker is Coordinator {
             newOrder.quantity = order.quantity - 1;
         }
         // else {
-            // ?? ??
-            // TODO: Delete orders from mapping once all are filled
+        // ?? ??
+        // TODO: Delete orders from mapping once all are filled
         // }
         orders[_user][_artBlocksProjectId] = newOrder;
 
