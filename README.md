@@ -1,6 +1,6 @@
-# <h1 align="center"> YOBOT </h1>
+# <h1 align="center"> Yobot </h1>
 
-A trustless broker to match flashbots searchers with user bids.
+<p align="center">A trustless broker to match Flashbots searchers with user bids.</p>
 
 <div align="center">
 
@@ -25,10 +25,6 @@ Open http://localhost:3000 with your browser to see the result.
 
 You can start editing the page by modifying src/pages/index.js. The page auto-updates as you edit the file.
 
-## References
-
-- [Rari dApp](https://github.com/Rari-Capital/rari-dApp/tree/master/src)
-- [Jacobe Dawson](https://github.com/jacobedawson)'s [Connect Metamask React dApp Tutorial](https://dev.to/jacobedawson/build-a-web3-dapp-in-react-login-with-metamask-4chp).
 
 ## Deploying
 
@@ -39,8 +35,6 @@ You can start editing the page by modifying src/pages/index.js. The page auto-up
 ### Getting Started
 
 ```sh
-git clone https://github.com/Rari-Capital/charity-vaults.git
-cd charity-vaults
 make
 make test
 ```
@@ -127,6 +121,9 @@ dapp create GenArt721Core --verify
 - [Artbotter]() for their tremendous initial lift and inspiration!
 - [Georgios Konstantopoulos](https://github.com/gakonst) for the amazing [dapptools-template](https://github.com/gakonst/dapptools-template) resource.
 - ds-test, OZ, Chainlink for inherited libraries
+- [Rari dApp](https://github.com/Rari-Capital/rari-dApp/tree/master/src)
+- [Jacobe Dawson](https://github.com/jacobedawson)'s [Connect Metamask React dApp Tutorial](https://dev.to/jacobedawson/build-a-web3-dapp-in-react-login-with-metamask-4chp).
+
 
 ## Noted Issues
 
