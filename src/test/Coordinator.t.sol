@@ -88,19 +88,19 @@ contract CoordinatorTest is DSTestPlus {
     /// @dev property base the changeBotFeeBips function
     /// @param oldFee the old botFeeBips specified in the constructor
     /// @param newFee the new botFeeBips set with changeBotFeeBips
-    function testchangeBotFeeBips(uint256 oldFee, uint256 newFee) public {
-        if (newFee < oldFee && oldFee < 10_000) {
+    function testChangeBotFeeBips(uint256 oldFee, uint256 newFee) public {
+        if (newFee < oldFee && oldFee < 500) {
             Coordinator tempyabb = new Coordinator(address(0), oldFee);
             tempyabb.changeBotFeeBips(newFee);
             assert(tempyabb.botFeeBips() == newFee);
-        } else if (newFee > oldFee && newFee < 10_000) {
+        } else if (newFee > oldFee && newFee < 500) {
             // in this case, newFee acts as the old fee and vise versa...
             Coordinator tempyabb = new Coordinator(address(0), newFee);
             tempyabb.changeBotFeeBips(oldFee);
             assert(tempyabb.botFeeBips() == oldFee);
         } else {
             // Either the fees are equal, or one of the fees is greater than 10,000
-            assert(oldFee == newFee || (oldFee > 10_000 || newFee > 10_000));
+            assert(oldFee == newFee || (oldFee > 500 || newFee > 500));
         }
     }
 

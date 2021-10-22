@@ -218,7 +218,7 @@ contract YobotArtBlocksBroker is Coordinator {
     }
 
     /// @notice returns the open orders for a given user and list of ArtBlocks Project Ids
-    /// @param _user the users address
+    /// @param _users the users address
     /// @param _artBlocksProjectIds a list of ArtBlocks Project Ids
     function viewOrders(address[] memory _users, uint256[] memory _artBlocksProjectIds) external view returns (Order[] memory) {
         Order[] memory output = new Order[](_users.length);

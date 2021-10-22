@@ -222,7 +222,7 @@ contract YobotERC721LimitOrder is Coordinator {
     }
 
     /// @notice returns the open orders for a given user and list of tokens
-    /// @param _user the users address
+    /// @param _users the users address
     /// @param _tokenAddresses a list of token addresses
     function viewOrders(address[] memory _users, address[] memory _tokenAddresses) external view returns (Order[] memory) {
         Order[] memory output = new Order[](_users.length);
