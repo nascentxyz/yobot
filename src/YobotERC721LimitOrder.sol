@@ -7,7 +7,7 @@ import {IERC721} from "./external/IERC721.sol";
 import {Coordinator} from "./Coordinator.sol";
 
 /// @title YobotERC721LimitOrder
-/// @author Andreas Bigger <andreas@nascent.xyz> et al
+/// @author Andreas Bigger, Artbotter 
 /// @notice Original contract implementation was open-sourced and verified on etherscan at:
 ///         https://etherscan.io/address/0x56E6FA0e461f92644c6aB8446EA1613F4D72a756#code
 ///         with the original UI at See ArtBotter.io
