@@ -3,7 +3,7 @@ import Head from "next/head";
 import theme from "../theme";
 import { AppProps } from "next/app";
 import "material-react-toastify/dist/ReactToastify.css";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { YobotProvider } from "src/contexts/YobotContext";
 
 import LogRocket from "logrocket";

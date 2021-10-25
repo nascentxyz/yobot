@@ -1,7 +1,7 @@
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 // ** Callback for Transaction Submission **
-const onTxSubmitted = async (msg='🚀 Transaction Submitted 🚀 ') => {
+const onTxSubmitted = async (msg = "🚀 Transaction Submitted 🚀 ") => {
   toast(msg, {
     position: "bottom-center",
     autoClose: 3000,
@@ -13,7 +13,7 @@ const onTxSubmitted = async (msg='🚀 Transaction Submitted 🚀 ') => {
 };
 
 // ** Callback for Transaction Failed **
-const onTxFailed = async (msg='❌ Transaction Failed ❌') => {
+const onTxFailed = async (msg = "❌ Transaction Failed ❌") => {
   toast.error(msg, {
     position: "bottom-center",
     autoClose: 3000,
@@ -25,7 +25,7 @@ const onTxFailed = async (msg='❌ Transaction Failed ❌') => {
 };
 
 // ** User Rejection Callback **
-const userRejectedCallback = async (msg='❌ Transaction Rejected ❌') => {
+const userRejectedCallback = async (msg = "❌ Transaction Rejected ❌") => {
   toast.warn(msg, {
     position: "bottom-center",
     autoClose: 3000,
@@ -37,7 +37,7 @@ const userRejectedCallback = async (msg='❌ Transaction Rejected ❌') => {
 };
 
 // ** Callback for Transaction Confirmation **
-const onTxConfirmed = async (msg=`💰 Minting Successfull💰`) => {
+const onTxConfirmed = async (msg = `💰 Minting Successfull💰`) => {
   // ** Then, let's toast **
   toast.success(msg, {
     position: "bottom-center",
@@ -49,9 +49,4 @@ const onTxConfirmed = async (msg=`💰 Minting Successfull💰`) => {
   });
 };
 
-export {
-  onTxSubmitted,
-  onTxFailed,
-  userRejectedCallback,
-  onTxConfirmed
-};
+export { onTxSubmitted, onTxFailed, userRejectedCallback, onTxConfirmed };

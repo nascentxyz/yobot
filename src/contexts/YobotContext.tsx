@@ -58,7 +58,7 @@ const launchModalLazy = (
   });
 
   return web3Modal.connect();
-}
+};
 
 export interface YobotContextData {
   yobot: Yobot;
@@ -74,9 +74,7 @@ export interface YobotContextData {
 }
 
 const EmptyAddress = "0x0000000000000000000000000000000000000000";
-const YobotContext = createContext<YobotContextData | undefined>(
-  undefined
-);
+const YobotContext = createContext<YobotContextData | undefined>(undefined);
 
 const YobotProvider = ({ children }: { children: ReactNode }) => {
   const { t } = useTranslation();
@@ -152,15 +150,14 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
   const [chainChange, setChainChange] = useState<boolean>(false);
   // ** For successfuly chain change toast
   useEffect(() => {
-    if(chainChange) {
+    if (chainChange) {
       setChainChange(false);
-      if(address !== EmptyAddress && chainId === 4) {
+      if (address !== EmptyAddress && chainId === 4) {
         // ** Prevent Fast Reentrancy
         setTimeout(() => {
           toast({
             title: "Connected!",
-            description:
-              "Connected to the correct network!",
+            description: "Connected to the correct network!",
             status: "success",
             position: "bottom",
             duration: 3000,
@@ -313,7 +310,7 @@ const useYobot = () => {
   }
 
   return context;
-}
+};
 
 // ** Exports
 export {
@@ -321,5 +318,5 @@ export {
   useYobot,
   EmptyAddress,
   InternalWeb3Context,
-  launchModalLazy
-}
+  launchModalLazy,
+};

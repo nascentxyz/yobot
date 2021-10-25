@@ -7,7 +7,7 @@ import {
   FAQModal,
 } from "src/components";
 
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer } from "react-toastify";
 import { useDisclosure } from "@chakra-ui/react";
 
 const App = () => {
