@@ -315,8 +315,8 @@ const useYobot = () => {
 // ** Exports
 export {
   useYobot,
-  useYobot,
+  YobotProvider,
   EmptyAddress,
-  InternalWeb3Context,
+  // InternalWeb3Context,
   launchModalLazy,
 };

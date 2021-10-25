@@ -30,9 +30,13 @@ class Yobot {
   cache: Cache;
   governance: Governance;
 
-  // ** Place Bid Functions **
+  // ** Contracts
+  YobotArtBlocksBroker: object;
+  YobotERC721LimitOrder: object;
+
+  // ** Place ArtBlocks Bid Functions **
   validateBid: (amount: number, sender: string) => Promise<any>;
-  placeBid: (
+  placeArtBlocksBid: (
     price: number,
     quantity: number,
     artBlocksProjectId: number,
@@ -43,8 +47,8 @@ class Yobot {
     userRejectedCallback: any
   ) => Promise<any>;
 
-  // ** Cancel Bid Functions **
-  cancelBid: (
+  // ** Cancel ArtBlocks Bid Functions **
+  cancelArtBlocksBid: (
     artBlocksProjectId: number,
     sender: string,
     txSubmitCallback: any,
@@ -72,11 +76,11 @@ class Yobot {
 
     // ** Initiate Contracts **
     this.YobotArtBlocksBroker = new this.web3.eth.Contract(
-      YobotArtBlocksBrokerAbi.abi,
+      YobotArtBlocksBrokerAbi,
       contractAddresses["mainnet"]["YobotArtBlocksBroker"]
     );
     this.YobotERC721LimitOrder = new this.web3.eth.Contract(
-      YobotERC721LimitOrderAbi.abi,
+      YobotERC721LimitOrderAbi,
       contractAddresses["mainnet"]["YobotERC721LimitOrder"]
     );
 
@@ -92,19 +96,19 @@ class Yobot {
     this.validateBid = async function (amount: number, sender: string) {
       // ** Input validation **
       if (!sender) throw new Error("Sender parameter not set.");
-      if (!amount || amount.lte(Web3.utils.toBN(0)))
+      if (!amount || amount <=0)
         throw new Error("Deposit amount must be greater than 0!");
 
-      // ** Get Account Balance BN **
-      var accountBalanceBN = Web3.utils.toBN(
-        await self.web3.eth.getBalance(sender)
-      );
-      if (amount.gt(accountBalanceBN))
+      // ** Get Account Balance ethers **
+      let accountBalanceEthers = parseFloat(Web3.utils.fromWei(
+        await self.web3.eth.getBalance(sender), 'ether'
+      ));
+      if (amount > accountBalanceEthers)
         throw new Error(
           "Not enough balance in your account to make a deposit of this amount."
         );
 
-      // ** Return amountUsdBN **
+      // ** Return amount **
       return [amount];
     };
 
@@ -122,28 +126,28 @@ class Yobot {
       console.log("In placeArtBlocksBid function...");
 
       // ** Price must be greater than 0 **
-      if (!price || price.lte(Web3.utils.toBN(0)))
+      if (!price || price <= 0)
         throw new Error("NFT price must be greater than 0!");
 
       // ** Quantity must be greater than 0 **
-      if (!quantity || quantity.lte(Web3.utils.toBN(0)))
+      if (!quantity || quantity <= 0)
         throw new Error("Quantity must be greater than 0!");
 
       // ** ArtBlocks Project Id must be greater than 0 **
-      if (!artBlocksProjectId || artBlocksProjectId.lte(Web3.utils.toBN(0)))
+      if (!artBlocksProjectId || artBlocksProjectId <= 0)
         throw new Error("ArtBlocks Project Id must be greater than 0!");
 
       // ** Calculate value to send **
       let totalCost = price * quantity;
-      let amountToSend = this.web3.utils.toWei(totalCost.toString(), "ether");
+      let amountToSend = this.web3.utils.toWei(totalCost.toString(), 'ether');
 
-      // ** Get Account Balance BN **
-      var accountBalanceBN = Web3.utils.toBN(
-        await self.web3.eth.getBalance(options.from)
-      );
+      // ** Get Account Balance ethers **
+      let accountBalanceEthers = parseFloat(Web3.utils.fromWei(
+        await self.web3.eth.getBalance(sender), 'ether'
+      ));
 
       // ** Make sure the user has enough eth in their account to send **
-      if (totalCost.gt(accountBalanceBN))
+      if (totalCost > accountBalanceEthers)
         throw new Error(
           "Not enough balance in your account to place a bid of that size."
         );
@@ -157,7 +161,7 @@ class Yobot {
         .send(
           artBlocksProjectId,
           quantity,
-          { from: address, value: amountToSend },
+          { from: sender, value: amountToSend },
           (err, transactionHash) => {
             if (err) {
               console.log("TRANSACTION_FAILED:", err);
@@ -182,7 +186,7 @@ class Yobot {
 
     // ** Cancel a placed order **
     // ** internally, removes any data stores and returns the user their funds **
-    this.cancelBid = async function (
+    this.cancelArtBlocksBid = async function (
       artBlocksProjectId: number,
       sender: string,
       txSubmitCallback: any,
@@ -193,7 +197,7 @@ class Yobot {
       console.log("In cancelBid function...");
 
       // ** ArtBlocks Project Id must be greater than 0 **
-      if (!artBlocksProjectId || artBlocksProjectId.lte(Web3.utils.toBN(0)))
+      if (!artBlocksProjectId || artBlocksProjectId <= 0)
         throw new Error("ArtBlocks Project Id must be greater than 0!");
 
       // ** Extract cancelOrder method from the YobotArtBlocksBroker Contract **
@@ -202,7 +206,7 @@ class Yobot {
 
       // ** Send Transaction **
       let txn = await cancelOrderMethod
-        .send(artBlocksProjectId, { from: address }, (err, transactionHash) => {
+        .send(artBlocksProjectId, { from: sender }, (err, transactionHash) => {
           if (err) {
             console.log("TRANSACTION_FAILED:", err);
             userRejectedCallback();
