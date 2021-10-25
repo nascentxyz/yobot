@@ -2,7 +2,6 @@ import {
   createContext,
   useContext,
   useState,
-  useCallback,
   useEffect,
   useMemo,
   ReactNode,
@@ -11,18 +10,18 @@ import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import LogRocket from "logrocket";
 import { useToast } from "@chakra-ui/react";
-import { Yobot } from "../yobot-sdk/index";
+import { Yobot } from "src/yobot-sdk/index";
 import { formatEther } from "@ethersproject/units";
 
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3Modal from "web3modal";
 
-import { chooseBestWeb3Provider, alchemyURL } from "../utils";
+import { chooseBestWeb3Provider, alchemyURL } from "src/utils";
 
-async function launchModalLazy(
+const launchModalLazy = (
   t: (text: string, extra?: any) => string,
   cacheProvider: boolean = true
-) {
+) => {
   const providerOptions = {
     injected: {
       display: {
@@ -74,12 +73,12 @@ export interface YobotContextData {
   isAttemptingLogin: boolean;
 }
 
-export const EmptyAddress = "0x0000000000000000000000000000000000000000";
-export const YobotContext = createContext<YobotContextData | undefined>(
+const EmptyAddress = "0x0000000000000000000000000000000000000000";
+const YobotContext = createContext<YobotContextData | undefined>(
   undefined
 );
 
-export const YobotProvider = ({ children }: { children: ReactNode }) => {
+const YobotProvider = ({ children }: { children: ReactNode }) => {
   const { t } = useTranslation();
 
   const { query } = useRouter();
@@ -115,7 +114,7 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
         //   return;
         // }
 
-        if (netId !== 1 || currChainId !== 1) {
+        if (netId !== 4 || currChainId !== 4) {
           // ** Prevent Fast Reentrancy
           setTimeout(() => {
             toast({
@@ -149,6 +148,28 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
   const [address, setAddress] = useState<string>(EmptyAddress);
   const [balance, setBalance] = useState<number>(0);
   const [web3ModalProvider, setWeb3ModalProvider] = useState<any | null>(null);
+
+  const [chainChange, setChainChange] = useState<boolean>(false);
+  // ** For successfuly chain change toast
+  useEffect(() => {
+    if(chainChange) {
+      setChainChange(false);
+      if(address !== EmptyAddress && chainId === 4) {
+        // ** Prevent Fast Reentrancy
+        setTimeout(() => {
+          toast({
+            title: "Connected!",
+            description:
+              "Connected to the correct network!",
+            status: "success",
+            position: "bottom",
+            duration: 3000,
+            isClosable: true,
+          });
+        }, 1500);
+      }
+    }
+  }, [chainId]);
 
   const setYobotAndAddressFromModal = (modalProvider) => {
     if (!updatingLock) {
@@ -209,7 +230,7 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
 
   const refetchAccountData = () => {
     setYobotAndAddressFromModal(web3ModalProvider);
-  }; // }, [setYobotAndAddressFromModal, web3ModalProvider]);
+  };
 
   const logout = () => {
     setWeb3ModalProvider((past: any) => {
@@ -284,7 +305,7 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export function useYobot() {
+const useYobot = () => {
   const context = useContext(YobotContext);
 
   if (context === undefined) {
@@ -292,4 +313,13 @@ export function useYobot() {
   }
 
   return context;
+}
+
+// ** Exports
+export {
+  useYobot,
+  useYobot,
+  EmptyAddress,
+  InternalWeb3Context,
+  launchModalLazy
 }

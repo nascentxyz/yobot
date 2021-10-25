@@ -1,4 +1,4 @@
-import { useYobot } from "../contexts/YobotContext";
+import { useYobot } from "src/contexts/YobotContext";
 
 const useAuthedCallback = (callback: () => any) => {
   const { login, isAuthed } = useYobot();

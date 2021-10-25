@@ -7,6 +7,7 @@ import {
   FAQModal,
 } from "src/components";
 
+import { ToastContainer } from 'react-toastify';
 import { useDisclosure } from "@chakra-ui/react";
 
 const App = () => {
@@ -14,6 +15,7 @@ const App = () => {
 
   return (
     <GradientContainer>
+      <ToastContainer />
       <Main>
         <Navbar onOpen={onOpen} accountButton={true} />
         <AppPageMain />

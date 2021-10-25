@@ -1,7 +1,5 @@
 /* eslint-disable */
 import Web3 from "web3";
-import axios from "axios";
-import Big from "big.js";
 
 import { Cache, Governance } from "./";
 
@@ -31,7 +29,6 @@ class Yobot {
   web3: Web3;
   cache: Cache;
   governance: Governance;
-  getEthUsdPriceBN: () => Big;
 
   // ** Place Bid Functions **
   validateBid: (amount: number, sender: string) => Promise<any>;
@@ -92,10 +89,7 @@ class Yobot {
                         Place Order Functions
     //////////////////////////////////////////////////////////////*/
 
-    this.validateBid = async function (
-      amount: number,
-      sender: string
-    ) {
+    this.validateBid = async function (amount: number, sender: string) {
       // ** Input validation **
       if (!sender) throw new Error("Sender parameter not set.");
       if (!amount || amount.lte(Web3.utils.toBN(0)))
@@ -159,22 +153,24 @@ class Yobot {
       console.log("Sending place ArtBlocksBid to method:", placeOrderMethod);
 
       // ** Send Transaction **
-      let txn = await placeOrderMethod.send(
-        artBlocksProjectId,
-        quantity,
-        { from: address, value: amountToSend },
-        (err, transactionHash) => {
-          if(err) {
-            console.log("TRANSACTION_FAILED:", err);
-            userRejectedCallback();
-          } else {
-            console.log("TRANSACTION_SUBMITTED:", transactionHash);
-            txSubmitCallback();
+      let txn = await placeOrderMethod
+        .send(
+          artBlocksProjectId,
+          quantity,
+          { from: address, value: amountToSend },
+          (err, transactionHash) => {
+            if (err) {
+              console.log("TRANSACTION_FAILED:", err);
+              userRejectedCallback();
+            } else {
+              console.log("TRANSACTION_SUBMITTED:", transactionHash);
+              txSubmitCallback();
+            }
           }
-        }
-      ).on('receipt', () => {
-        txConfirmedCallback('⚔️ Placed Order ⚔️')
-      });
+        )
+        .on("receipt", () => {
+          txConfirmedCallback("⚔️ Placed Order ⚔️");
+        });
 
       // ** Just return the txn object **
       return txn;
@@ -205,21 +201,19 @@ class Yobot {
       console.log("Sending cancel ArtBlocksBid to method:", cancelOrderMethod);
 
       // ** Send Transaction **
-      let txn = await cancelOrderMethod.send(
-        artBlocksProjectId,
-        { from: address },
-        (err, transactionHash) => {
-          if(err) {
+      let txn = await cancelOrderMethod
+        .send(artBlocksProjectId, { from: address }, (err, transactionHash) => {
+          if (err) {
             console.log("TRANSACTION_FAILED:", err);
             userRejectedCallback();
           } else {
             console.log("TRANSACTION_SUBMITTED:", transactionHash);
             txSubmitCallback();
           }
-        }
-      ).on('receipt', () => {
-        txConfirmedCallback('⚔️ Placed Order ⚔️')
-      });
+        })
+        .on("receipt", () => {
+          txConfirmedCallback("⚔️ Placed Order ⚔️");
+        });
 
       // ** Just return the txn object **
       return txn;
