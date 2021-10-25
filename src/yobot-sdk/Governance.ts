@@ -2,7 +2,7 @@
 import Web3 from "web3";
 import axios from "axios";
 
-import { Cache } from "./";
+import Cache from "./Cache";
 
 var erc20Abi = require("." + "/abi/ERC20.json");
 
