@@ -30,16 +30,31 @@ class Yobot {
   // ** Types **
   web3: Web3;
   cache: Cache;
-  pools: { [key: string]: any };
   governance: Governance;
   getEthUsdPriceBN: () => Big;
 
   // ** Place Bid Functions **
-  validateBid: () => Promise<any>;
-  placeBid: () => Promise<any>;
+  validateBid: (amount: number, sender: string) => Promise<any>;
+  placeBid: (
+    price: number,
+    quantity: number,
+    artBlocksProjectId: number,
+    sender: string,
+    txSubmitCallback: any,
+    txFailCallback: any,
+    txConfirmedCallback: any,
+    userRejectedCallback: any
+  ) => Promise<any>;
 
   // ** Cancel Bid Functions **
-  cancelBid: () => Promise<any>;
+  cancelBid: (
+    artBlocksProjectId: number,
+    sender: string,
+    txSubmitCallback: any,
+    txFailCallback: any,
+    txConfirmedCallback: any,
+    userRejectedCallback: any
+  ) => Promise<any>;
 
   // ** Class Statics **
   static Governance = Governance;
@@ -60,36 +75,15 @@ class Yobot {
 
     // ** Initiate Contracts **
     this.YobotArtBlocksBroker = new this.web3.eth.Contract(
-      YobotArtBlocksBrokerAbi,
+      YobotArtBlocksBrokerAbi.abi,
       contractAddresses["mainnet"]["YobotArtBlocksBroker"]
     );
     this.YobotERC721LimitOrder = new this.web3.eth.Contract(
-      YobotERC721LimitOrderAbi,
+      YobotERC721LimitOrderAbi.abi,
       contractAddresses["mainnet"]["YobotERC721LimitOrder"]
     );
 
     var self = this;
-
-    // ** Helper function to fetch ETH/USD Price
-    this.getEthUsdPriceBN = async function () {
-      return await self.cache.getOrUpdate("ethUsdPrice", async function () {
-        try {
-          return Web3.utils.toBN(
-            new Big(
-              (
-                await axios.get(
-                  "https://api.coingecko.com/api/v3/simple/price?vs_currencies=usd&ids=ethereum"
-                )
-              ).data.ethereum.usd
-            )
-              .mul(1e18)
-              .toFixed(0)
-          );
-        } catch (error) {
-          throw new Error("Error retrieving data from Coingecko API: " + error);
-        }
-      });
-    };
 
     // ** Initiate Governance **
     this.governance = new Governance(this.web3);
@@ -98,10 +92,12 @@ class Yobot {
                         Place Order Functions
     //////////////////////////////////////////////////////////////*/
 
-    this.validateBid = async function (currencyCode, amount, sender) {
+    this.validateBid = async function (
+      amount: number,
+      sender: string
+    ) {
       // ** Input validation **
       if (!sender) throw new Error("Sender parameter not set.");
-      if (currencyCode !== "ETH") throw new Error("Invalid currency code!");
       if (!amount || amount.lte(Web3.utils.toBN(0)))
         throw new Error("Deposit amount must be greater than 0!");
 
@@ -118,83 +114,115 @@ class Yobot {
       return [amount];
     };
 
-    this.placeBid = async function (
-      currencyCode,
-      price,
-      quantity,
-      artBlocksProjectId,
-      minEthAmount,
-      options
+    // ** Place ArtBlocks Bid function **
+    this.placeArtBlocksBid = async function (
+      price: number,
+      quantity: number,
+      artBlocksProjectId: number,
+      sender: string,
+      txSubmitCallback: any,
+      txFailCallback: any,
+      txConfirmedCallback: any,
+      userRejectedCallback: any
     ) {
-      // ** Input Validation **
-      if (!options || !options.from)
-        throw new Error("Options parameter not set or from address not set.");
-      if (currencyCode !== "ETH") throw new Error("Invalid currency code!");
+      console.log("In placeArtBlocksBid function...");
+
+      // ** Price must be greater than 0 **
       if (!price || price.lte(Web3.utils.toBN(0)))
         throw new Error("NFT price must be greater than 0!");
+
+      // ** Quantity must be greater than 0 **
       if (!quantity || quantity.lte(Web3.utils.toBN(0)))
         throw new Error("Quantity must be greater than 0!");
+
+      // ** ArtBlocks Project Id must be greater than 0 **
       if (!artBlocksProjectId || artBlocksProjectId.lte(Web3.utils.toBN(0)))
         throw new Error("ArtBlocks Project Id must be greater than 0!");
 
       // ** Calculate value to send **
       let totalCost = price * quantity;
+      let amountToSend = this.web3.utils.toWei(totalCost.toString(), "ether");
 
       // ** Get Account Balance BN **
       var accountBalanceBN = Web3.utils.toBN(
         await self.web3.eth.getBalance(options.from)
       );
+
+      // ** Make sure the user has enough eth in their account to send **
       if (totalCost.gt(accountBalanceBN))
         throw new Error(
           "Not enough balance in your account to place a bid of that size."
         );
 
-      // ** More Input Validation **
-      if (options.value && options.value.toString() !== totalCost.toString())
-        throw new Error(
-          "Value set in options paramater but not equal to the total cost."
-        );
+      // ** Extract placeOrder method from the YobotArtBlocksBroker Contract **
+      let placeOrderMethod = this.YobotArtBlocksBroker.methods.placeOrder();
+      console.log("Sending place ArtBlocksBid to method:", placeOrderMethod);
 
-      // ** Check amountUsdBN against minEthAmount **
-      if (
-        typeof minEthAmount !== "undefined" &&
-        minEthAmount !== null &&
-        totalCost.lt(minEthAmount)
-      )
-        return [amount];
+      // ** Send Transaction **
+      let txn = await placeOrderMethod.send(
+        artBlocksProjectId,
+        quantity,
+        { from: address, value: amountToSend },
+        (err, transactionHash) => {
+          if(err) {
+            console.log("TRANSACTION_FAILED:", err);
+            userRejectedCallback();
+          } else {
+            console.log("TRANSACTION_SUBMITTED:", transactionHash);
+            txSubmitCallback();
+          }
+        }
+      ).on('receipt', () => {
+        txConfirmedCallback('⚔️ Placed Order ⚔️')
+      });
 
-      // ** Place Bid on YobotArtBlocksBroker **
-      options.value = totalCost;
-      var receipt = await self.YobotArtBlocksBroker.methods
-        .placeOrder(artBlocksProjectId, quantity)
-        .send(options);
-
-      // ** Return **
-      return [amount, null, null, receipt];
+      // ** Just return the txn object **
+      return txn;
     };
 
     /*///////////////////////////////////////////////////////////////
                         Cancel Order Functions
     //////////////////////////////////////////////////////////////*/
 
-    this.cancelBid = async function (options) {
-      // ** Input Validation **
-      if (!options || !options.from)
-        throw new Error("Options parameter not set or from address not set.");
+    // ** Cancel a placed order **
+    // ** internally, removes any data stores and returns the user their funds **
+    this.cancelBid = async function (
+      artBlocksProjectId: number,
+      sender: string,
+      txSubmitCallback: any,
+      txFailCallback: any,
+      txConfirmedCallback: any,
+      userRejectedCallback: any
+    ) {
+      console.log("In cancelBid function...");
 
-      // ** Try to cancel order **
-      try {
-        var receipt = await self.YobotArtBlocksBroker.methods
-          .cancelOrder()
-          .send(options);
-      } catch (err) {
-        throw new Error(
-          "YobotArtBlocksBroker.cancelOrder failed: " +
-            (err.message ? err.message : err)
-        );
-      }
+      // ** ArtBlocks Project Id must be greater than 0 **
+      if (!artBlocksProjectId || artBlocksProjectId.lte(Web3.utils.toBN(0)))
+        throw new Error("ArtBlocks Project Id must be greater than 0!");
 
-      return [amount, null, receipt];
+      // ** Extract cancelOrder method from the YobotArtBlocksBroker Contract **
+      let cancelOrderMethod = this.YobotArtBlocksBroker.methods.cancelOrder();
+      console.log("Sending cancel ArtBlocksBid to method:", cancelOrderMethod);
+
+      // ** Send Transaction **
+      let txn = await cancelOrderMethod.send(
+        artBlocksProjectId,
+        { from: address },
+        (err, transactionHash) => {
+          if(err) {
+            console.log("TRANSACTION_FAILED:", err);
+            userRejectedCallback();
+          } else {
+            console.log("TRANSACTION_SUBMITTED:", transactionHash);
+            txSubmitCallback();
+          }
+        }
+      ).on('receipt', () => {
+        txConfirmedCallback('⚔️ Placed Order ⚔️')
+      });
+
+      // ** Just return the txn object **
+      return txn;
     };
   }
 }
