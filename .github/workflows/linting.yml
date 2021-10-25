@@ -29,7 +29,7 @@ jobs:
         run: nix-shell --run 'make'
 
       - name: Update Openzeppelin contracts directory
-        run: ln -s contracts lib/zeppelin-solidity/src
+        run: yarn fix-oz
 
       - name: Check contracts are linted
         id: lint-check

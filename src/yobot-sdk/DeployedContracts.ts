@@ -1,4 +1,3 @@
-
 // ** Define our deployed contract addresses **
 const DeployedContracts = {
   mainnet: {

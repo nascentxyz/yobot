@@ -2,16 +2,16 @@ import Web3 from "web3";
 
 // TODO: can we refactor this?
 interface PlaceOrderProps {
-  web3: Web3,
-  yobotArtBlocksBroker: any,
-  price: number,
-  quantity: number,
-  artBlocksProjectId: number,
-  sender: string,
-  txSubmitCallback: any,
-  txFailCallback: any,
-  txConfirmedCallback: any,
-  userRejectedCallback: any
+  web3: Web3;
+  yobotArtBlocksBroker: any;
+  price: number;
+  quantity: number;
+  artBlocksProjectId: number;
+  sender: string;
+  txSubmitCallback: any;
+  txFailCallback: any;
+  txConfirmedCallback: any;
+  userRejectedCallback: any;
 }
 
 // ** ArtBlocks Place Order function **
@@ -84,4 +84,4 @@ const placeOrder = async (
   return txn;
 };
 
-export default placeOrder
+export default placeOrder;

@@ -1,11 +1,11 @@
 /* eslint-disable */
 import Web3 from "web3";
 
-import { DeployedContracts } from "../";
-import { placeOrder, cancelOrder } from "./ArtBlocksBroker";
+import { DeployedContracts } from "../../";
+import { placeOrder, cancelOrder } from ".";
 
 // ** Import the Contract Abis **
-var YobotArtBlocksBrokerAbi = require("." + "/abi/YobotArtBlocksBroker.json");
+var YobotArtBlocksBrokerAbi = require(".." + "/abi/YobotArtBlocksBroker.json");
 
 // ** Class Definition **
 class YobotArtBlocksBroker {

@@ -1,11 +1,11 @@
 /* eslint-disable */
 import Web3 from "web3";
 
-import { DeployedContracts } from "../";
-import { placeOrder, cancelOrder } from "./ERC721LimitOrder";
+import { DeployedContracts } from "../../";
+import { placeOrder, cancelOrder } from ".";
 
 // ** Import the Contract Abis **
-var YobotERC721LimitOrderAbi = require("." + "/abi/YobotERC721LimitOrder.json");
+var YobotERC721LimitOrderAbi = require(".." + "/abi/YobotERC721LimitOrder.json");
 
 // ** Class Definition **
 class YobotERC721LimitOrder {

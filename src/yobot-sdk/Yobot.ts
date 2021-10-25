@@ -1,14 +1,11 @@
 /* eslint-disable */
 import Web3 from "web3";
 
-import DeployedContracts from "./DeployedContracts"
+import DeployedContracts from "./DeployedContracts";
 // import { Cache, Governance } from "./";
 
 // ** Import Contract Wrappers **
-import {
-  YobotArtBlocksBroker,
-  YobotERC721LimitOrder
-} from "./wrappers";
+import { YobotArtBlocksBroker, YobotERC721LimitOrder } from "./wrappers";
 
 // ** Class Definition **
 class Yobot {
@@ -25,8 +22,8 @@ class Yobot {
     this.web3 = new Web3(web3Provider);
 
     // ** Initiate Contract Wrappers **
-    this.YobotArtBlocksBroker = new YobotArtBlocksBroker(web3Provider)
-    this.YobotERC721LimitOrder = new YobotERC721LimitOrder(web3Provider)
+    this.YobotArtBlocksBroker = new YobotArtBlocksBroker(web3Provider);
+    this.YobotERC721LimitOrder = new YobotERC721LimitOrder(web3Provider);
 
     // ** Initiate Governance **
     // this.governance = new Governance(this.web3);
@@ -39,4 +36,4 @@ export {
   DeployedContracts,
   // Governance,
   // Cache
-}
+};

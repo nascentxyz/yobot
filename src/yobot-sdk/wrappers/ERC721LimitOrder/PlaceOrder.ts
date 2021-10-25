@@ -2,16 +2,16 @@ import Web3 from "web3";
 
 // TODO: can we refactor this?
 interface PlaceOrderProps {
-  web3: Web3,
-  yobotERC721LimitOrder: any,
-  price: number,
-  quantity: number,
-  tokenAddress: string,
-  sender: string,
-  txSubmitCallback: any,
-  txFailCallback: any,
-  txConfirmedCallback: any,
-  userRejectedCallback: any
+  web3: Web3;
+  yobotERC721LimitOrder: any;
+  price: number;
+  quantity: number;
+  tokenAddress: string;
+  sender: string;
+  txSubmitCallback: any;
+  txFailCallback: any;
+  txConfirmedCallback: any;
+  userRejectedCallback: any;
 }
 
 // ** Generalized ERC721 Place Order function **
@@ -38,8 +38,7 @@ const placeOrder = async (
     throw new Error("Quantity must be greater than 0!");
 
   // ** ERC721 Token Address must be valid **
-  if (!tokenAddress)
-    throw new Error("Invalid ERC721 Token address!");
+  if (!tokenAddress) throw new Error("Invalid ERC721 Token address!");
 
   // ** Calculate value to send **
   let totalCost = price * quantity;
@@ -58,7 +57,10 @@ const placeOrder = async (
 
   // ** Extract placeOrder method from the YobotERC721LimitOrder Contract **
   let placeOrderMethod = yobotERC721LimitOrder.methods.placeOrder();
-  console.log("Sending place Generalized ERC721 Place Order to method:", placeOrderMethod);
+  console.log(
+    "Sending place Generalized ERC721 Place Order to method:",
+    placeOrderMethod
+  );
 
   // ** Send Transaction **
   let txn = await placeOrderMethod
@@ -84,4 +86,4 @@ const placeOrder = async (
   return txn;
 };
 
-export default placeOrder
+export default placeOrder;
