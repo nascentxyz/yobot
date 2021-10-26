@@ -114,10 +114,13 @@ dapp create GenArt721Core --verify
 **YobotERC721LimitOrder** deployed and verified on goerli at [0x0d29790c2412f42248905f879260f1a6f409a11a](https://goerli.etherscan.io/address/0x0d29790c2412f42248905f879260f1a6f409a11a#code)
 
 Command used to deploy:
+
 ```
 ETH_GAS=15000000 dapp create src/YobotERC721LimitOrder.sol:YobotERC721LimitOrder --verify 0xf25e32C0f2928F198912A4F21008aF146Af8A05a 5
 ```
+
 Command used to verify:
+
 ```
 ETH_GAS=15000000 dapp verify-contract src/YobotERC721LimitOrder.sol:YobotERC721LimitOrder 0x0d29790c2412f42248905f879260f1a6f409a11a 0xf25e32C0f2928F198912A4F21008aF146Af8A05a 5
 ```
@@ -125,15 +128,16 @@ ETH_GAS=15000000 dapp verify-contract src/YobotERC721LimitOrder.sol:YobotERC721L
 **YobotArtBlocksBroker** Deployed and verified on goerli at: [0x041761ca2d7730ae3788f732c1a43db002feff2f](https://goerli.etherscan.io/address/0x041761ca2d7730ae3788f732c1a43db002feff2f#code)
 
 Command used to deploy:
+
 ```
 ETH_GAS=15000000 dapp create src/YobotArtBlocksBroker.sol:YobotArtBlocksBroker 0xf25e32C0f2928F198912A4F21008aF146Af8A05a 5
 ```
 
 Command to verify:
+
 ```
 ETH_GAS=15000000 dapp verify-contract src/YobotArtBlocksBroker.sol:YobotArtBlocksBroker 0x041761ca2d7730ae3788f732c1a43db002feff2f 0xf25e32C0f2928F198912A4F21008aF146Af8A05a 5
 ```
-
 
 ## License
 
