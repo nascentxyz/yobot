@@ -84,13 +84,57 @@ ETH_FROM=0xc0248cD71633C8a412301915912eF10e75e7D260 make deploy-mainnet
 
 ### Rinkeby
 
+
+First, if `seth` is not configured, we should run an `ethsign import --keystore <desired_keystore_file_location>`.
+Then follow the steps to import your wallet private key and set a signing passphrase.
+
+Then, we must source our environment variables to deploy to the Rinkeby network:
+
+```sh
+ETH_FROM=xxxx
+ETH_RPC_URL=xxxx
+# 15M is block limit
+ETH_GAS=xxxx
 ```
-ETH_FROM=0xc0248cD71633C8a412301915912eF10e75e7D260 make deploy-rinkeby
+
+The ArtBlocks Factory is deployed on mainnet at [0xa7d8d9ef8D8Ce8992Df33D8b8CF4Aebabd5bD270](https://etherscan.io/address/0xa7d8d9ef8D8Ce8992Df33D8b8CF4Aebabd5bD270#code), but we need to have it deployed on Rinkeby.
+
+To deploy `GenArt721Core` as was deployed to `` on [Rinkeby](), run the following command in the [base directory](./):
+
 ```
+dapp create GenArt721Core --verify
+```
+
+**YobotERC721LimitOrder** deployed and verified on rinkeby at [0x8b5842a935731ed1b92e3211a7f38bebd185eb53](https://rinkeby.etherscan.io/address/0x8b5842a935731ed1b92e3211a7f38bebd185eb53#code)
+
+Command used to deploy:
+
+```
+ETH_GAS=15000000 dapp create src/YobotERC721LimitOrder.sol:YobotERC721LimitOrder --verify 0xf25e32C0f2928F198912A4F21008aF146Af8A05a 5
+```
+
+Command used to verify:
+
+```
+ETH_GAS=15000000 dapp verify-contract src/YobotERC721LimitOrder.sol:YobotERC721LimitOrder 0x8b5842a935731ed1b92e3211a7f38bebd185eb53 0xf25e32C0f2928F198912A4F21008aF146Af8A05a 5
+```
+
+**YobotArtBlocksBroker** Deployed and verified on rinkeby at: [0x1b78c74b301aa66c3da90556be7290eb2dcc2864](https://rinkeby.etherscan.io/address/0x1b78c74b301aa66c3da90556be7290eb2dcc2864#code)
+
+Command used to deploy:
+
+```
+ETH_GAS=15000000 dapp create src/YobotArtBlocksBroker.sol:YobotArtBlocksBroker --verify 0xf25e32C0f2928F198912A4F21008aF146Af8A05a 5
+```
+
+Command to verify:
+
+```
+ETH_GAS=15000000 dapp verify-contract src/YobotArtBlocksBroker.sol:YobotArtBlocksBroker 0x1b78c74b301aa66c3da90556be7290eb2dcc2864 0xf25e32C0f2928F198912A4F21008aF146Af8A05a 5
+```
+
 
 ### Goerli
-
-#### Pre Deploys
 
 First, if `seth` is not configured, we should run an `ethsign import --keystore <desired_keystore_file_location>`.
 Then follow the steps to import your wallet private key and set a signing passphrase.
