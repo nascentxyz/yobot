@@ -5,7 +5,8 @@ import { DeployedContracts } from "../../";
 import { placeOrder, cancelOrder } from ".";
 
 // ** Import the Contract Abis **
-var YobotERC721LimitOrderAbi = require(".." + "/abi/YobotERC721LimitOrder.json");
+var YobotERC721LimitOrderAbi = require(".." +
+  "/abi/YobotERC721LimitOrder.json");
 
 // ** Class Definition **
 class YobotERC721LimitOrder {
