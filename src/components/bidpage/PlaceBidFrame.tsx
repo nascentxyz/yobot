@@ -22,144 +22,11 @@ import { useYobot } from "src/contexts/YobotContext";
 import { ConnectWallet, NoShadowButton } from "src/components";
 import { useTranslation } from "react-i18next";
 
-const BidBox = styled.div`
-  min-width: 480px;
-  min-height: 350px;
-  height: auto;
-  margin: auto auto auto 0;
-  padding: 1em;
-  border-radius: 24px;
-  background-color: #191b1f;
-  display: flex;
-  flex-direction: column;
-`;
-
-const PlaceBidText = styled.p`
-  height: auto;
-  margin: 0.5em auto 0 0;
-  font-family: Roboto;
-  font-size: 20px;
-  font-weight: bold;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.4;
-  letter-spacing: normal;
-  text-align: left;
-  color: #fff;
-`;
-
-const DataForm = styled.div`
-  padding-top: 1em;
-  padding-bottom: 2em;
-  display: flex;
-  flex-direction: column;
-`;
-
-const PriceText = styled.p`
-  height: auto;
-  font-family: Roboto;
-  font-size: 18px;
-  font-weight: 300;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.56;
-  letter-spacing: normal;
-  text-align: left;
-  color: #fff;
-`;
-
-const PriceSubText = styled.p`
-  height: auto;
-  padding: 0.2em 0 0.4em 0;
-  font-family: Roboto;
-  font-size: 14px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.07;
-  letter-spacing: normal;
-  text-align: left;
-  color: #95969a;
-`;
-
-const CustomInput = styled(Input)`
-  width: 100%;
-  height: auto;
-  min-height: 48px;
-  margin: auto;
-  border-radius: 1em;
-  border: solid 1px #2c2f36;
-  background-color: #212429;
-
-  &:focus {
-    outline: none !important;
-    box-shadow: none !important;
-    border-color: var(--chakra-colors-whiteAlpha-400) !important;
-  }
-`;
-
-const QuantityText = styled.p`
-  height: auto;
-  font-family: Roboto;
-  font-size: 18px;
-  font-weight: 300;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.56;
-  letter-spacing: normal;
-  text-align: left;
-  color: #fff;
-  padding-top: 1em;
-  padding-bottom: 0.5em;
-`;
-
-const ButtonWrapper = styled.div`
-  padding-bottom: 1em;
-  margin-top: auto;
-  display: flex;
-`;
-
-const PlaceBidButton = styled(Button)`
-  width: 100%;
-  margin: auto;
-
-  &:focus {
-    outline: 0 !important;
-    box-shadow: none !important;
-  }
-`;
-
-const Row = styled(Flex)`
-  display: flex;
-  flex-direction: row;
-  align-items: space-between;
-`;
-
-const GasText = styled(Text)`
-  height: auto;
-  padding: 0.2em 0 0.4em 0;
-  font-family: Roboto;
-  font-size: 14px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  letter-spacing: normal;
-  text-align: left;
-  color: #95969a;
-`;
-
-const NonSelectableText = styled(Text)`
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-  -khtml-user-select: none; /* Konqueror HTML */
-  -moz-user-select: none; /* Old versions of Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
-  user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
-`;
+import { onTxSubmitted, onTxFailed, userRejectedCallback, onTxConfirmed } from "src/utils";
 
 const PlaceBidFrame = () => {
   const { t } = useTranslation();
-  const { isAuthed, balance } = useYobot();
+  const { yobot, isAuthed, balance } = useYobot();
   const [validParams, setValidParams] = useState(false);
   const [placingBid, setPlacingBid] = useState(false);
 
@@ -260,12 +127,24 @@ const PlaceBidFrame = () => {
   };
 
   const submitBid = (_frozenBidPrice, _frozenBidQty) => {
-    // TODO: submit transaction
     console.log("placing bid...");
 
-    // ** Unfreeze Everything **
-    // TODO: move this to once transaction is placed
-    setPlacingBid(false);
+    // TODO: depending on the erc721 - art blocks or general - this should change
+    let placeBidTx = await yobot.YobotERC721LimitOrder.placeOrder(
+      yobot.web3, // web3
+      yobot.yobotERC721LimitOrder, // yobotERC721LimitOrder
+      _frozenBidPrice, // price
+      _frozenBidQty, // quantity
+      tokenAddress, // tokenAddress
+      address, // sender
+      onTxSubmitted, // txSubmitCallback
+      onTxFailed, // txFailCallback
+      async (msg) => { // txFailCallback
+        onTxConfirmed(msg);
+      },
+      userRejectedCallback // userRejectedCallback
+    );
+    console.log('placeBidTx:', placeBidTx);
   };
 
   // ** Helper function to validate parameters
@@ -473,5 +352,141 @@ const PlaceBidFrame = () => {
     </BidBox>
   );
 };
+
+
+const BidBox = styled.div`
+  min-width: 480px;
+  min-height: 350px;
+  height: auto;
+  margin: auto auto auto 0;
+  padding: 1em;
+  border-radius: 24px;
+  background-color: #191b1f;
+  display: flex;
+  flex-direction: column;
+`;
+
+const PlaceBidText = styled.p`
+  height: auto;
+  margin: 0.5em auto 0 0;
+  font-family: Roboto;
+  font-size: 20px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+`;
+
+const DataForm = styled.div`
+  padding-top: 1em;
+  padding-bottom: 2em;
+  display: flex;
+  flex-direction: column;
+`;
+
+const PriceText = styled.p`
+  height: auto;
+  font-family: Roboto;
+  font-size: 18px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.56;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+`;
+
+const PriceSubText = styled.p`
+  height: auto;
+  padding: 0.2em 0 0.4em 0;
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.07;
+  letter-spacing: normal;
+  text-align: left;
+  color: #95969a;
+`;
+
+const CustomInput = styled(Input)`
+  width: 100%;
+  height: auto;
+  min-height: 48px;
+  margin: auto;
+  border-radius: 1em;
+  border: solid 1px #2c2f36;
+  background-color: #212429;
+
+  &:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: var(--chakra-colors-whiteAlpha-400) !important;
+  }
+`;
+
+const QuantityText = styled.p`
+  height: auto;
+  font-family: Roboto;
+  font-size: 18px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.56;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+  padding-top: 1em;
+  padding-bottom: 0.5em;
+`;
+
+const ButtonWrapper = styled.div`
+  padding-bottom: 1em;
+  margin-top: auto;
+  display: flex;
+`;
+
+const PlaceBidButton = styled(Button)`
+  width: 100%;
+  margin: auto;
+
+  &:focus {
+    outline: 0 !important;
+    box-shadow: none !important;
+  }
+`;
+
+const Row = styled(Flex)`
+  display: flex;
+  flex-direction: row;
+  align-items: space-between;
+`;
+
+const GasText = styled(Text)`
+  height: auto;
+  padding: 0.2em 0 0.4em 0;
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #95969a;
+`;
+
+const NonSelectableText = styled(Text)`
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+`;
 
 export default PlaceBidFrame;

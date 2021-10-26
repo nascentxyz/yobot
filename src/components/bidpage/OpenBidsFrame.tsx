@@ -1,5 +1,46 @@
 import { Table } from "@chakra-ui/table";
 import styled from "@emotion/styled";
+import { useYobot } from "src/contexts/YobotContext";
+import { ConnectWallet, NoShadowButton } from "src/components";
+import { useTranslation } from "react-i18next";
+
+const OpenBidsFrame = () => {
+  const { t } = useTranslation();
+  const { yobot, isAuthed, balance } = useYobot();
+
+  // TODO: Fetch user's current open bids
+
+  const cancelBid = () => {
+    console.log("cancelling bid...");
+
+    // TODO: depending on the erc721 - art blocks or general - this should change
+    let cancelBidTx = await yobot.YobotERC721LimitOrder.cancelOrder(
+      yobot.web3, // web3
+      yobot.yobotERC721LimitOrder, // yobotERC721LimitOrder
+      tokenAddress, // tokenAddress
+      address, // sender
+      onTxSubmitted, // txSubmitCallback
+      onTxFailed, // txFailCallback
+      async (msg) => { // txFailCallback
+        onTxConfirmed(msg);
+      },
+      userRejectedCallback // userRejectedCallback
+    );
+    console.log('cancel bid tx:', cancelBidTx);
+  };
+
+  return (
+    <BidBox>
+      <PlaceBidText>{t("Open Bids")}</PlaceBidText>
+      <DataFormText>
+        <HeaderText>{t("Date")}</HeaderText>
+        <HeaderText>{t("Quantity")}</HeaderText>
+        <HeaderText>{t("Total")}</HeaderText>
+      </DataFormText>
+      <CustomTable />
+    </BidBox>
+  );
+};
 
 const BidBox = styled.div`
   min-width: 480px;
@@ -59,19 +100,5 @@ const CustomTable = styled(Table)`
   border: solid 1px #2c2f36;
   background-color: #212429;
 `;
-
-const OpenBidsFrame = () => {
-  return (
-    <BidBox>
-      <PlaceBidText>Open Bids</PlaceBidText>
-      <DataFormText>
-        <HeaderText>Date</HeaderText>
-        <HeaderText>Quantity</HeaderText>
-        <HeaderText>Total</HeaderText>
-      </DataFormText>
-      <CustomTable />
-    </BidBox>
-  );
-};
 
 export default OpenBidsFrame;

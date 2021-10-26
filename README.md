@@ -84,6 +84,7 @@ ETH_FROM=0xc0248cD71633C8a412301915912eF10e75e7D260 make deploy-mainnet
 
 ### Rinkeby
 
+Deployed ERC721 for sanity checks: [0xd8bbf8ceb445de814fb47547436b3cfeecadd4ec](https://ropsten.etherscan.io/address/0xd8bbf8ceb445de814fb47547436b3cfeecadd4ec) from the [0xcert ERC721 implementation](https://github.com/0xcert/ethereum-erc721)
 
 First, if `seth` is not configured, we should run an `ethsign import --keystore <desired_keystore_file_location>`.
 Then follow the steps to import your wallet private key and set a signing passphrase.
@@ -132,7 +133,6 @@ Command to verify:
 ```
 ETH_GAS=15000000 dapp verify-contract src/YobotArtBlocksBroker.sol:YobotArtBlocksBroker 0x1b78c74b301aa66c3da90556be7290eb2dcc2864 0xf25e32C0f2928F198912A4F21008aF146Af8A05a 5
 ```
-
 
 ### Goerli
 
