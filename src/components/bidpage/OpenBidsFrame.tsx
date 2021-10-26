@@ -1,4 +1,5 @@
-import { Table } from "@chakra-ui/table";
+import { useEffect, useState } from "react";
+import { Table, Thead, Tr, Th, Tbody, Td } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { useYobot } from "src/contexts/YobotContext";
 import { ConnectWallet, NoShadowButton } from "src/components";
@@ -6,9 +7,14 @@ import { useTranslation } from "react-i18next";
 
 const OpenBidsFrame = () => {
   const { t } = useTranslation();
-  const { yobot, isAuthed, balance } = useYobot();
+  const { yobot, isAuthed, openOrders, fetchOpenOrders } = useYobot();
 
-  // TODO: Fetch user's current open bids
+  // ** On component render, fetch a user's current open orders
+  useEffect(() => {
+    (async () => {
+      await fetchOrders();
+    })();
+  }, []);
 
   const cancelBid = () => {
     console.log("cancelling bid...");
@@ -21,23 +27,52 @@ const OpenBidsFrame = () => {
       address, // sender
       onTxSubmitted, // txSubmitCallback
       onTxFailed, // txFailCallback
-      async (msg) => { // txFailCallback
+      async (msg) => {
+        // txFailCallback
         onTxConfirmed(msg);
       },
       userRejectedCallback // userRejectedCallback
     );
-    console.log('cancel bid tx:', cancelBidTx);
+    console.log("cancel bid tx:", cancelBidTx);
   };
 
   return (
     <BidBox>
       <PlaceBidText>{t("Open Bids")}</PlaceBidText>
-      <DataFormText>
+      {/* <DataFormText>
         <HeaderText>{t("Date")}</HeaderText>
         <HeaderText>{t("Quantity")}</HeaderText>
         <HeaderText>{t("Total")}</HeaderText>
-      </DataFormText>
-      <CustomTable />
+        <HeaderText>{t("")}</HeaderText>
+      </DataFormText> */}
+      <CustomTable size="sm">
+        <Thead>
+          <Tr>
+            <Th>{t("Date")}</Th>
+            <Th isNumeric>{t("Quantity")}</Th>
+            <Th>{t("Total")}</Th>
+            <Th>{t("")}</Th> {/* Empty column for cancel buttons */}
+          </Tr>
+        </Thead>
+        <Tbody>
+          {}
+          <Tr>
+            <Td>inches</Td>
+            <Td>millimetres (mm)</Td>
+            <Td isNumeric>25.4</Td>
+          </Tr>
+          <Tr>
+            <Td>feet</Td>
+            <Td>centimetres (cm)</Td>
+            <Td isNumeric>30.48</Td>
+          </Tr>
+          <Tr>
+            <Td>yards</Td>
+            <Td>metres (m)</Td>
+            <Td isNumeric>0.91444</Td>
+          </Tr>
+        </Tbody>
+      </CustomTable>
     </BidBox>
   );
 };

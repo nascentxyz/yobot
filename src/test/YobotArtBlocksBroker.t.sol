@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.6;
+pragma solidity ^0.8.9;
 
 import {DSTestPlus} from "./utils/DSTestPlus.sol";
 

@@ -22,7 +22,12 @@ import { useYobot } from "src/contexts/YobotContext";
 import { ConnectWallet, NoShadowButton } from "src/components";
 import { useTranslation } from "react-i18next";
 
-import { onTxSubmitted, onTxFailed, userRejectedCallback, onTxConfirmed } from "src/utils";
+import {
+  onTxSubmitted,
+  onTxFailed,
+  userRejectedCallback,
+  onTxConfirmed,
+} from "src/utils";
 
 const PlaceBidFrame = () => {
   const { t } = useTranslation();
@@ -139,12 +144,13 @@ const PlaceBidFrame = () => {
       address, // sender
       onTxSubmitted, // txSubmitCallback
       onTxFailed, // txFailCallback
-      async (msg) => { // txFailCallback
+      async (msg) => {
+        // txFailCallback
         onTxConfirmed(msg);
       },
       userRejectedCallback // userRejectedCallback
     );
-    console.log('placeBidTx:', placeBidTx);
+    console.log("placeBidTx:", placeBidTx);
   };
 
   // ** Helper function to validate parameters
@@ -352,7 +358,6 @@ const PlaceBidFrame = () => {
     </BidBox>
   );
 };
-
 
 const BidBox = styled.div`
   min-width: 480px;
