@@ -15,26 +15,27 @@ const fetchAction = async (
       yobotERC721LimitOrder.options.address
     );
     // ** Extract cancelOrder method from the YobotERC721LimitOrder Contract **
-    let fetchedEvents = await yobotERC721LimitOrder.getPastEvents('Action',
-    {
-      // filter: {value: [117,50]},
-      fromBlock: 0 ,
-      toBlock: "latest"
-    }, (errors, events) => {
-         if (!errors) {
-          console.log("in callback, got events:", events)
+    let fetchedEvents = await yobotERC721LimitOrder.getPastEvents(
+      "Action",
+      {
+        // filter: {value: [117,50]},
+        fromBlock: 0,
+        toBlock: "latest",
+      },
+      (errors, events) => {
+        if (!errors) {
+          console.log("in callback, got events:", events);
           return events;
-         } else {
-           console.log("in callback got errors:", errors);
-         }
-
-     }
-    // {
+        } else {
+          console.log("in callback got errors:", errors);
+        }
+      }
+      // {
       // {filter: {myNumber: [12,13]}}
       // fromBlock: 0
       // toBlock: 0
       // topics: Array
-    // }
+      // }
     );
 
     console.log("Got all events:", fetchedEvents);

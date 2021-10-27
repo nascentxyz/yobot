@@ -36,36 +36,52 @@ const OpenBidsFrame = () => {
     console.log("got actions:", actions);
     let new_actions = [];
     actions.map((action) => {
-      /*
-        Action format:
-        event Action(
-          address indexed _user,
-          address indexed _tokenAddress,
-          uint256 _priceInWeiEach,
-          uint256 _quantity,
-          string _action,
-          uint256 _optionalTokenId
-        );
-      */
+      // ** Set the block timestamp **
+      let blockNumber = action["blockNumber"];
+      // ** Convert block number to date **
+      let timestamp = yobot.web3.eth.getBlock(blockNumber).timestamp;
+      console.log("got block number as a timestamp:", timestamp);
+      action["date"] = new Date(timestamp);
+
+      // ** Extract object entries **
       let values = action["returnValues"];
-      let _address = values['0'];
-      let _token_address = values['1'];
-      let _action = values['4'];
-      console.log(`Filtering action with: Address=${_address} TokenAddress=${_token_address} Action=${_action}`);
-      console.log(`Checking action against: Address=${address} TokenAddress=${TOKEN_ADDRESS} Action=ORDER_PLACED`);
-      let action_matches = _address.toUpperCase() == address.toUpperCase() && _token_address.toUpperCase() == TOKEN_ADDRESS.toUpperCase() && values['4'] == "ORDER_PLACED";
-      console.log("Does action match filter:", action_matches);
-      // return action_matches;
-      if(action_matches) {
-        let blockNumber = action['blockNumber'];
-        // ** Convert block number to date **
-        let timestamp = yobot.web3.eth.getBlock(blockNumber).timestamp;
-        console.log("got block number as a timestamp:", timestamp);
-        action['date'] = new Date(timestamp);
+      let _address = values["0"];
+      let _token_address = values["1"];
+      let _action = values["4"];
+      console.log(
+        `Filtering action with: Address=${_address} TokenAddress=${_token_address} Action=${_action}`
+      );
+      console.log(
+        `Checking action against: Address=${address} TokenAddress=${TOKEN_ADDRESS} Action=ORDER_PLACED`
+      );
+      let action_matches =
+        _address.toUpperCase() == address.toUpperCase() &&
+        _token_address.toUpperCase() == TOKEN_ADDRESS.toUpperCase() &&
+        values["4"] == "ORDER_PLACED";
+      
+      // ** Check if event Actions is ORDER_PLACED
+      if (_address.toUpperCase() == address.toUpperCase() &&
+        _token_address.toUpperCase() == TOKEN_ADDRESS.toUpperCase() &&
+        values["4"] == "ORDER_PLACED") {
         new_actions.push(action);
       }
+
+      // ** Check if event Actions is ORDER_CANCELLED
+      if (_address.toUpperCase() == address.toUpperCase() &&
+        _token_address.toUpperCase() == TOKEN_ADDRESS.toUpperCase() &&
+        values["4"] == "ORDER_CANCELLED") {
+          // ** Iterate over new_actions and try to remove cancelled order **
+          for (let i = new_actions.length - 1; i >= 0; --i) {
+            if (
+              new_actions[i]["returnValues"]["0"].toUpperCase() == address.toUpperCase() &&
+              new_actions[i]["returnValues"]["1"].toUpperCase() == TOKEN_ADDRESS.toUpperCase()
+            ) {
+              new_actions.splice(i, 1); // Remove even numbers
+            }
+        }
+      }
     });
-    console.log("got new actions:", new_actions)
+    console.log("got new actions:", new_actions);
     setMyOrders(new_actions);
   }, [actions]);
 
@@ -127,10 +143,11 @@ const OpenBidsFrame = () => {
               let date = "ORDER_DATE";
               let quantity = "";
               let price = "";
-              if(action) {
+              if (action) {
                 date = order["date"];
                 quantity = action["_quantity"];
-                price = action["_priceInWeiEach"];
+                // ** Convert from Wei to Ethers **
+                price = yobot.web3.utils.fromWei(action["_priceInWeiEach"], 'ether');
               }
 
               return (
@@ -143,13 +160,9 @@ const OpenBidsFrame = () => {
                       disabled={cancellingOrder}
                       colorScheme={"red"}
                       background={"red.800"}
-                      // _hover={
-                      //   color: "white.900",
-                      //   border: "0.4px",
-                      //   borderStyle: "solid",
-                      //   borderColor: "white.900",
-                      //   backgroundColor: "green.500",
-                      // }
+                      _hover={{
+                        backgroundColor: "red.900",
+                      }}
                       color={"red.100"}
                       variant={"outline"}
                       onClick={cancelOrder}
@@ -183,7 +196,9 @@ const OpenBidsFrame = () => {
 
 const CancelOrderButton = styled(Button)`
   width: 100%;
-  margin: auto;
+  max-width: 150px;
+  margin-left: auto;
+  margin-right: 0;
 
   &:focus {
     outline: 0 !important;
@@ -248,7 +263,7 @@ const CustomTable = styled(Table)`
   background-color: #212429;
 
   border-collapse: collapse;
-  border-radius: 30px;
+  border-radius: 10px;
   border-style: hidden; /* hide standard table (collapsed) border */
   box-shadow: 0 0 0 1px var(--chakra-colors-gray-700); /* this draws the table border  */
 `;
