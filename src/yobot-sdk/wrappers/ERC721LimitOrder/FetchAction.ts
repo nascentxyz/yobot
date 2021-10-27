@@ -7,13 +7,8 @@ const fetchAction = async (
   // tokenAddress: string,
   // sender: string
 ) => {
-  console.log("In fetchAction function...");
 
   if (yobotERC721LimitOrder && yobotERC721LimitOrder.options.address) {
-    console.log(
-      "Using contract with address:",
-      yobotERC721LimitOrder.options.address
-    );
     // ** Extract cancelOrder method from the YobotERC721LimitOrder Contract **
     let fetchedEvents = await yobotERC721LimitOrder.getPastEvents(
       "Action",
@@ -24,10 +19,7 @@ const fetchAction = async (
       },
       (errors, events) => {
         if (!errors) {
-          console.log("in callback, got events:", events);
           return events;
-        } else {
-          console.log("in callback got errors:", errors);
         }
       }
       // {
@@ -37,8 +29,6 @@ const fetchAction = async (
       // topics: Array
       // }
     );
-
-    console.log("Got all events:", fetchedEvents);
 
     return fetchedEvents;
   }

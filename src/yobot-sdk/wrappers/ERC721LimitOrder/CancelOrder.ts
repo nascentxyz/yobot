@@ -12,7 +12,6 @@ const cancelOrder = async (
   txConfirmedCallback: any,
   userRejectedCallback: any
 ) => {
-  console.log("In cancelOrder function...");
 
   // ** ERC721 Token Address must be valid **
   if (!tokenAddress) throw new Error("Invalid ERC721 Token address!");
@@ -20,16 +19,13 @@ const cancelOrder = async (
   // ** Extract cancelOrder method from the YobotERC721LimitOrder Contract **
   let cancelOrderMethod =
     yobotERC721LimitOrder.methods.cancelOrder(tokenAddress);
-  console.log("Sending cancel ArtBlocksBid to method:", cancelOrderMethod);
 
   // ** Send Transaction **
   let txn = await cancelOrderMethod
     .send(tokenAddress, { from: sender }, (err, transactionHash) => {
       if (err) {
-        console.log("TRANSACTION_FAILED:", err);
         userRejectedCallback();
       } else {
-        console.log("TRANSACTION_SUBMITTED:", transactionHash);
         txSubmitCallback();
       }
     })

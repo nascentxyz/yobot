@@ -51,7 +51,6 @@ class YobotArtBlocksBroker {
 
     // ** Initiate Contracts **
     this.web3.eth.getChainId().then((chain_id) => {
-      console.log("YobotArtBlocksBroker got web3 chain id:", chain_id);
       this.YobotArtBlocksBroker = new this.web3.eth.Contract(
         YobotArtBlocksBrokerAbi,
         DeployedContracts[chain_id]

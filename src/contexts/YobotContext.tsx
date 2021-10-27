@@ -73,21 +73,17 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
 
   // ** Refresh chain id **
   const refreshChainId = ({ yobotInstance = yobot }) => {
-    console.log("chain refresh...");
     if (!toastingNetwork) {
       setToastingNetwork(true);
       Promise.all([
         yobotInstance.web3.eth.net.getId(),
         yobotInstance.web3.eth.getChainId(),
       ]).then(([netId, currChainId]) => {
-        console.log("got netid, currchainid:", netId, currChainId);
         setChainId(currChainId);
 
         // ** We also want to automatically change selected chain id if the user manually changes their wallet network **
         // ** Check if supported chain **
-        console.log("checking is currChainId is supported...", currChainId);
         if (Yobot.isSupportedChain(currChainId)) {
-          console.log("curr chain id is supported!");
           // this will set the `selectedChainId`
           // which sets the network shown in the sushi button
           setSelectedChainId(currChainId);
@@ -174,7 +170,6 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
       yobotInstance.web3.eth.getAccounts().then((addresses) => {
         if (addresses.length === 0) {
           if (typeof window !== "undefined") {
-            console.log("reloading window");
             setIsAttemptingLogin(true);
             logout();
             setAddress(EmptyAddress);
@@ -229,11 +224,8 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     setWeb3ModalProvider((past: any) => {
       try {
-        past.clearCachedProvider().then((res) => {
-          console.log("Cleared past cached provider!", res);
+        past.clearCachedProvider().then((_res) => {
         });
-        console.log(past);
-        console.log(web3ModalProvider);
         past.request({
           method: "wallet_requestPermissions",
           params: [
@@ -283,7 +275,7 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
       isAttemptingLogin,
       actions,
       setSelectedChainId,
-      refreshEvents
+      refreshEvents,
     }),
     [
       yobot,
@@ -296,7 +288,7 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
       isAttemptingLogin,
       actions,
       setSelectedChainId,
-      refreshEvents
+      refreshEvents,
     ]
   );
 

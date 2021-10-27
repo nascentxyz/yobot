@@ -27,7 +27,6 @@ const placeOrder = async (
   txConfirmedCallback: any,
   userRejectedCallback: any
 ) => {
-  console.log("In Generalized ERC721 Place Order function...");
 
   // ** Price must be greater than 0 **
   if (!price || price <= 0)
@@ -60,10 +59,6 @@ const placeOrder = async (
     tokenAddress,
     quantity
   );
-  console.log(
-    "Sending place Generalized ERC721 Place Order to method:",
-    placeOrderMethod
-  );
 
   // ** Send Transaction **
   let txn = await placeOrderMethod
@@ -73,10 +68,8 @@ const placeOrder = async (
       { from: sender, value: amountToSend },
       (err, transactionHash) => {
         if (err) {
-          console.log("TRANSACTION_FAILED:", err);
           userRejectedCallback();
         } else {
-          console.log("TRANSACTION_SUBMITTED:", transactionHash);
           txSubmitCallback();
         }
       }

@@ -52,11 +52,8 @@ class YobotERC721LimitOrder {
     // ** Provider Logic **
     this.web3 = new Web3(web3Provider);
 
-    console.log("DeployedContracts:", DeployedContracts);
-
     // ** Initiate Contracts **
     this.web3.eth.getChainId().then((chain_id) => {
-      console.log("YobotERC721LimitOrder got web3 chain id:", chain_id);
       this.YobotERC721LimitOrder = new this.web3.eth.Contract(
         YobotERC721LimitOrderAbi,
         DeployedContracts[chain_id]

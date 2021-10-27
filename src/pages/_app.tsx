@@ -12,7 +12,6 @@ import { version } from "../../package.json";
 export { version };
 
 if (process.env.NODE_ENV === "production") {
-  console.log("Connecting to LogRocket...");
   LogRocket.init("vulxom/yobot", {
     console: {
       shouldAggregateConsoleErrors: true,

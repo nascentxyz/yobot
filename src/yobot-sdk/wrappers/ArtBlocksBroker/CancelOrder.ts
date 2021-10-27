@@ -12,7 +12,6 @@ const cancelOrder = async (
   txConfirmedCallback: any,
   userRejectedCallback: any
 ) => {
-  console.log("In cancelOrder function...");
 
   // ** ArtBlocks Project Id must be greater than 0 **
   if (!artBlocksProjectId || artBlocksProjectId <= 0)
@@ -21,16 +20,13 @@ const cancelOrder = async (
   // ** Extract cancelOrder method from the YobotArtBlocksBroker Contract **
   let cancelOrderMethod =
     yobotArtBlocksBroker.methods.cancelOrder(artBlocksProjectId);
-  console.log("Sending cancel ArtBlocksBid to method:", cancelOrderMethod);
 
   // ** Send Transaction **
   let txn = await cancelOrderMethod
     .send(artBlocksProjectId, { from: sender }, (err, transactionHash) => {
       if (err) {
-        console.log("TRANSACTION_FAILED:", err);
         userRejectedCallback();
       } else {
-        console.log("TRANSACTION_SUBMITTED:", transactionHash);
         txSubmitCallback();
       }
     })
