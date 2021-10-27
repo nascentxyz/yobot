@@ -38,6 +38,7 @@ export interface YobotContextData {
   // openOrders: Order[];
   // fetchOpenOrders: React.SFC<ViewOrdersProps>;
   setSelectedChainId: any; //React.SFC<[]>;
+  refreshEvents: any;
 }
 
 const EmptyAddress = "0x0000000000000000000000000000000000000000";
@@ -96,7 +97,7 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
             toast({
               title: "Wrong network!",
               description:
-                "You are on the wrong network! Switch to the mainnet and reload this page!",
+                "You are on the wrong network! Switch to a supported chain and reload this page!",
               status: "warning",
               position: "bottom",
               duration: 3000,
@@ -147,8 +148,8 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [chainId]);
 
-  // ** On auth login, try to fetch all events **
-  useEffect(() => {
+  // ** Refactored helper function to refresh events **
+  const refreshEvents = () => {
     if (yobot) {
       yobot.YobotERC721LimitOrder.fetchActions(
         yobot.web3,
@@ -157,6 +158,11 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
         setActions(events);
       });
     }
+  };
+
+  // ** On auth login, try to fetch all events **
+  useEffect(() => {
+    refreshEvents();
   }, [address]);
 
   const setYobotAndAddressFromModal = (modalProvider) => {
@@ -277,6 +283,7 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
       isAttemptingLogin,
       actions,
       setSelectedChainId,
+      refreshEvents
     }),
     [
       yobot,
@@ -289,6 +296,7 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
       isAttemptingLogin,
       actions,
       setSelectedChainId,
+      refreshEvents
     ]
   );
 

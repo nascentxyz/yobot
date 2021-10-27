@@ -31,7 +31,7 @@ import {
 
 const PlaceBidFrame = () => {
   const { t } = useTranslation();
-  const { yobot, isAuthed, balance, address } = useYobot();
+  const { yobot, isAuthed, balance, address, refreshEvents } = useYobot();
   const [validParams, setValidParams] = useState(false);
   const [placingBid, setPlacingBid] = useState(false);
 
@@ -156,6 +156,11 @@ const PlaceBidFrame = () => {
         async (msg) => {
           onTxConfirmed(msg);
           setPlacingBid(false);
+          // ** wait 10 seconds and refresh events **
+          setTimeout(() => {
+            refreshEvents()
+          }, 10 * 1000);
+
         },
         async (msg) => {
           userRejectedCallback();
@@ -387,7 +392,7 @@ const BidBox = styled.div`
 
 const PlaceBidText = styled.p`
   height: auto;
-  margin: 0.5em auto 0 0;
+  margin: 0 auto 0 0.2em;
   font-family: Roboto;
   font-size: 20px;
   font-weight: bold;

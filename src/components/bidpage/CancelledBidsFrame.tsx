@@ -21,6 +21,7 @@ import {
   onTxFailed,
   userRejectedCallback,
   onTxConfirmed,
+  getNetworkPrefix
 } from "src/utils";
 
 // TODO: change this - temporary erc721 token address for testing on rinkeby
@@ -28,7 +29,7 @@ const TOKEN_ADDRESS = "0xd8bbf8ceb445de814fb47547436b3cfeecadd4ec";
 
 const CancelledBidsFrame = () => {
   const { t } = useTranslation();
-  const { yobot, isAuthed, actions, address } = useYobot();
+  const { yobot, isAuthed, actions, address, chainId } = useYobot();
   const [cancelledOrders, setCancelledOrders] = useState([]);
 
   const fetchNewCancelledOrders = async () => {
@@ -84,7 +85,7 @@ const CancelledBidsFrame = () => {
 
   return (
     <BidBox>
-      <PlaceBidText>{t("Cancelled Orders")}</PlaceBidText>
+      <CancelBidText>{t("Cancelled Bids")}</CancelBidText>
       <CustomTable size="sm">
         <Thead>
           <Tr>
@@ -110,18 +111,18 @@ const CancelledBidsFrame = () => {
                     <CloseIcon w={4} h={4} color="red.700" />
                   </Td>
                   <Td>{date.toLocaleString().toString()}</Td>
-                  <Td>{_token_address}</Td>
+                  <Td>{`https://${chainId > 0 ? getNetworkPrefix(chainId) : ""}etherscan.io/address/${_token_address}`}</Td>
                 </Tr>
               );
             })
           ) : (
             <Tr p="1em">
-              <Td>{""}</Td>
-              <Td>
-                <Text padding="1em" align="center">
-                  {t("No cancelled orders :)")}
+                <Text padding="1em" marginLeft="1em" align="start">
+                  {t("No cancelled bids")}
                 </Text>
-              </Td>
+              {/* <Td>{""}</Td>
+              <Td>
+              </Td> */}
             </Tr>
           )}
         </Tbody>
@@ -155,8 +156,9 @@ const BidBox = styled.div`
   justify-content: space-between;
 `;
 
-const PlaceBidText = styled.p`
+const CancelBidText = styled.p`
   height: auto;
+  margin: 0 auto 0 0.2em;
   font-family: Roboto;
   font-size: 20px;
   font-weight: bold;

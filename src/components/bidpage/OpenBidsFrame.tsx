@@ -33,44 +33,55 @@ const OpenBidsFrame = () => {
 
   const fetchNewOrders = async () => {
     let new_actions = [];
-    for (const action in actions) {
-      // ** Set the block timestamp **
-      let blockNumber = action["blockNumber"];
-      // ** Convert block number to date **
-      let block = await yobot.web3.eth.getBlock(parseInt(blockNumber));
-      let block_timestamp: string = block.timestamp.toString();
-      action["date"] = new Date(parseInt(block_timestamp) * 1000);
+    for (const action of actions) {
+      try {
+        // ** Set the block timestamp **
+        let blockNumber = action["blockNumber"];
+        console.log("got blockNumber:", blockNumber)
+        console.log("action:", action);
+        // ** Convert block number to date **
+        let block = await yobot.web3.eth.getBlock(parseInt(blockNumber));
+        // @ts-ignore
+        let block_timestamp = parseInt(block.timestamp);
+        console.log("got block timestamp:", block_timestamp)
+        action["date"] = new Date(block_timestamp * 1000);
+      } catch (e) {
+        console.error(e);
+        console.error("Failed to set the event date");
+      }
 
       // ** Extract object entries **
       let values = action["returnValues"];
-      let _address = values["0"];
-      let _token_address = values["1"];
-      let _action = values["4"];
+      if(values !== undefined) {
+        let _address = values["0"];
+        let _token_address = values["1"];
+        let _action = values["4"];
 
-      // ** Check if event Actions is ORDER_PLACED
-      if (
-        _address.toUpperCase() == address.toUpperCase() &&
-        _token_address.toUpperCase() == TOKEN_ADDRESS.toUpperCase() &&
-        values["4"] == "ORDER_PLACED"
-      ) {
-        new_actions.push(action);
-      }
+        // ** Check if event Actions is ORDER_PLACED
+        if (
+          _address.toUpperCase() == address.toUpperCase() &&
+          _token_address.toUpperCase() == TOKEN_ADDRESS.toUpperCase() &&
+          values["4"] == "ORDER_PLACED"
+        ) {
+          new_actions.push(action);
+        }
 
-      // ** Check if event Actions is ORDER_CANCELLED
-      if (
-        _address.toUpperCase() == address.toUpperCase() &&
-        _token_address.toUpperCase() == TOKEN_ADDRESS.toUpperCase() &&
-        values["4"] == "ORDER_CANCELLED"
-      ) {
-        // ** Iterate over new_actions and try to remove cancelled order **
-        for (let i = new_actions.length - 1; i >= 0; --i) {
-          if (
-            new_actions[i]["returnValues"]["0"].toUpperCase() ==
-              address.toUpperCase() &&
-            new_actions[i]["returnValues"]["1"].toUpperCase() ==
-              TOKEN_ADDRESS.toUpperCase()
-          ) {
-            new_actions.splice(i, 1); // Remove even numbers
+        // ** Check if event Actions is ORDER_CANCELLED
+        if (
+          _address.toUpperCase() == address.toUpperCase() &&
+          _token_address.toUpperCase() == TOKEN_ADDRESS.toUpperCase() &&
+          values["4"] == "ORDER_CANCELLED"
+        ) {
+          // ** Iterate over new_actions and try to remove cancelled order **
+          for (let i = new_actions.length - 1; i >= 0; --i) {
+            if (
+              new_actions[i]["returnValues"]["0"].toUpperCase() ==
+                address.toUpperCase() &&
+              new_actions[i]["returnValues"]["1"].toUpperCase() ==
+                TOKEN_ADDRESS.toUpperCase()
+            ) {
+              new_actions.splice(i, 1); // Remove even numbers
+            }
           }
         }
       }
@@ -182,12 +193,12 @@ const OpenBidsFrame = () => {
             })
           ) : (
             <Tr p="1em">
-              <Td>{""}</Td>
-              <Td>
-                <Text padding="1em" align="center">
-                  {t("You've placed no orders...")}
+                <Text padding="1em" marginLeft="1em" align="start">
+                  {t("No open bids")}
                 </Text>
-              </Td>
+              {/* <Td>{""}</Td>
+              <Td>
+              </Td> */}
             </Tr>
           )}
         </Tbody>
@@ -223,6 +234,7 @@ const BidBox = styled.div`
 
 const PlaceBidText = styled.p`
   height: auto;
+  margin: 0 auto 0 0.2em;
   font-family: Roboto;
   font-size: 20px;
   font-weight: bold;

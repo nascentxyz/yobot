@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { PlaceBidFrame, NFTFrame, OpenBidsFrame, CancelledBidsFrame } from ".";
 
 const AppPageMain = () => (
-  <Flex minHeight="100px" height="auto" flexGrow={1} p={8}>
+  <Flex mt="0 !important" minHeight="100px" height="auto" flexGrow={1} p={8}>
     <PageGroup>
       <MarginEightPix>
         <BidRow>
