@@ -19,9 +19,6 @@ class Yobot {
 
   // ** Statically defined supported contract helper **
   public static isSupportedChain = (chainId: number) => {
-    console.log("in isSupportedChain, checking chain id:", chainId);
-    console.log(Object.keys(DeployedContracts));
-    console.log(Object.keys(DeployedContracts).includes(chainId.toString()));
     return Object.keys(DeployedContracts).includes(chainId.toString());
   };
 

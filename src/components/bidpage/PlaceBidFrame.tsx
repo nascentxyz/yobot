@@ -339,7 +339,7 @@ const PlaceBidFrame = () => {
               colorScheme="green"
               onClick={() => {
                 // ** If not a novice, make sure our localstorage is set
-                if(!notNovice) {
+                if (!notNovice) {
                   console.log("setting local storage...");
                   localStorage.setItem("BASED_YOBOT_APE_MODE", "I_AM_BASED");
                 }

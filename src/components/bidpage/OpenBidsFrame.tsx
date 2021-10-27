@@ -9,7 +9,7 @@ import {
   Button,
   Spinner,
   Text,
-  Flex
+  Flex,
 } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { useYobot } from "src/contexts/YobotContext";
@@ -22,6 +22,9 @@ import {
   onTxConfirmed,
 } from "src/utils";
 
+// TODO: change this - temporary erc721 token address for testing on rinkeby
+const TOKEN_ADDRESS = "0xd8bbf8ceb445de814fb47547436b3cfeecadd4ec";
+
 const OpenBidsFrame = () => {
   const { t } = useTranslation();
   const { yobot, isAuthed, actions, address } = useYobot();
@@ -31,11 +34,39 @@ const OpenBidsFrame = () => {
   // ** On actions refresh, filter and set a user's actions **
   useEffect(() => {
     console.log("got actions:", actions);
-    setMyOrders(
-      actions.filter((action) => {
-        // TODO
-      })
-    );
+    let new_actions = [];
+    actions.map((action) => {
+      /*
+        Action format:
+        event Action(
+          address indexed _user,
+          address indexed _tokenAddress,
+          uint256 _priceInWeiEach,
+          uint256 _quantity,
+          string _action,
+          uint256 _optionalTokenId
+        );
+      */
+      let values = action["returnValues"];
+      let _address = values['0'];
+      let _token_address = values['1'];
+      let _action = values['4'];
+      console.log(`Filtering action with: Address=${_address} TokenAddress=${_token_address} Action=${_action}`);
+      console.log(`Checking action against: Address=${address} TokenAddress=${TOKEN_ADDRESS} Action=ORDER_PLACED`);
+      let action_matches = _address.toUpperCase() == address.toUpperCase() && _token_address.toUpperCase() == TOKEN_ADDRESS.toUpperCase() && values['4'] == "ORDER_PLACED";
+      console.log("Does action match filter:", action_matches);
+      // return action_matches;
+      if(action_matches) {
+        let blockNumber = action['blockNumber'];
+        // ** Convert block number to date **
+        let timestamp = yobot.web3.eth.getBlock(blockNumber).timestamp;
+        console.log("got block number as a timestamp:", timestamp);
+        action['date'] = new Date(timestamp);
+        new_actions.push(action);
+      }
+    });
+    console.log("got new actions:", new_actions)
+    setMyOrders(new_actions);
   }, [actions]);
 
   const cancelOrder = async () => {
@@ -48,7 +79,7 @@ const OpenBidsFrame = () => {
       yobot.YobotERC721LimitOrder.YobotERC721LimitOrder, // yobotERC721LimitOrder
       // TODO: dynamically pull token address from query string parameters
       // tokenAddress, // tokenAddress
-      "0xd8bbf8ceb445de814fb47547436b3cfeecadd4ec",
+      TOKEN_ADDRESS,
       address, // sender
       async () => {
         onTxSubmitted();
@@ -90,47 +121,57 @@ const OpenBidsFrame = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {myOrders.length > 0 ? myOrders.map((order) => {
-            let date = "ORDER_DATE";
-            let quantity = "ORDER_QUANTITY";
-            let price = "ORDER_PRICE";
+          {myOrders.length > 0 ? (
+            myOrders.map((order) => {
+              let action = order["returnValues"];
+              let date = "ORDER_DATE";
+              let quantity = "";
+              let price = "";
+              if(action) {
+                date = order["date"];
+                quantity = action["_quantity"];
+                price = action["_priceInWeiEach"];
+              }
 
-            return (
-              <Tr key={Object.entries(order).toString()}>
-                <Td>{date}</Td>
-                <Td isNumeric>{quantity}</Td>
-                <Td>{price}</Td>
-                <Td>
-                  <CancelOrderButton
-                    disabled={cancellingOrder}
-                    colorScheme={"red"}
-                    background={"red.800"}
-                    // _hover={
-                    //   color: "white.900",
-                    //   border: "0.4px",
-                    //   borderStyle: "solid",
-                    //   borderColor: "white.900",
-                    //   backgroundColor: "green.500",
-                    // }
-                    color={"red.100"}
-                    variant={"outline"}
-                    onClick={cancelOrder}
-                    display={"flex"}
-                  >
-                    {!cancellingOrder ? (
-                      <>{t("Cancel Order")}</>
-                    ) : (
-                      <Spinner margin={"auto"} color={"red.400"} />
-                    )}
-                  </CancelOrderButton>
-                </Td>
-              </Tr>
-            );
-          }) : (
+              return (
+                <Tr key={Object.entries(order).toString()}>
+                  <Td>{date.toString()}</Td>
+                  <Td isNumeric>{quantity}</Td>
+                  <Td>{price}</Td>
+                  <Td>
+                    <CancelOrderButton
+                      disabled={cancellingOrder}
+                      colorScheme={"red"}
+                      background={"red.800"}
+                      // _hover={
+                      //   color: "white.900",
+                      //   border: "0.4px",
+                      //   borderStyle: "solid",
+                      //   borderColor: "white.900",
+                      //   backgroundColor: "green.500",
+                      // }
+                      color={"red.100"}
+                      variant={"outline"}
+                      onClick={cancelOrder}
+                      display={"flex"}
+                    >
+                      {!cancellingOrder ? (
+                        <>{t("Cancel Order")}</>
+                      ) : (
+                        <Spinner margin={"auto"} color={"red.400"} />
+                      )}
+                    </CancelOrderButton>
+                  </Td>
+                </Tr>
+              );
+            })
+          ) : (
             <Tr p="1em">
               <Td>{""}</Td>
               <Td>
-                <Text padding="1em" align="center">{t("You've placed no orders...")}</Text>
+                <Text padding="1em" align="center">
+                  {t("You've placed no orders...")}
+                </Text>
               </Td>
             </Tr>
           )}
@@ -209,7 +250,7 @@ const CustomTable = styled(Table)`
   border-collapse: collapse;
   border-radius: 30px;
   border-style: hidden; /* hide standard table (collapsed) border */
-  box-shadow: 0 0 0 1px var(--chakra-colors-gray-700); /* this draws the table border  */ 
+  box-shadow: 0 0 0 1px var(--chakra-colors-gray-700); /* this draws the table border  */
 `;
 
 export default OpenBidsFrame;

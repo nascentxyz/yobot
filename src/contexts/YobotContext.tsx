@@ -149,15 +149,12 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
 
   // ** On auth login, try to fetch all events **
   useEffect(() => {
-    console.log("Trying to load all events from inside the YobotContext");
     if (yobot) {
-      console.log("Found yobot!", yobot);
       yobot.YobotERC721LimitOrder.fetchActions(
         yobot.web3,
         yobot.YobotERC721LimitOrder.YobotERC721LimitOrder
       ).then((events) => {
-        console.log("GOT ACTIONS!!!", actions);
-        setActions(actions);
+        setActions(events);
       });
     }
   }, [address]);

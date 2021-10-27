@@ -9,30 +9,38 @@ const fetchAction = async (
 ) => {
   console.log("In fetchAction function...");
 
-  // ** ERC721 Token Address must be valid **
-  // if (!tokenAddress) throw new Error("Invalid ERC721 Token address!");
-
   if (yobotERC721LimitOrder && yobotERC721LimitOrder.options.address) {
     console.log(
       "Using contract with address:",
       yobotERC721LimitOrder.options.address
     );
     // ** Extract cancelOrder method from the YobotERC721LimitOrder Contract **
-    let fetchedEvents = await yobotERC721LimitOrder.getPastEvents("Action", {
+    let fetchedEvents = await yobotERC721LimitOrder.getPastEvents('Action',
+    {
+      // filter: {value: [117,50]},
+      fromBlock: 0 ,
+      toBlock: "latest"
+    }, (errors, events) => {
+         if (!errors) {
+          console.log("in callback, got events:", events)
+          return events;
+         } else {
+           console.log("in callback got errors:", errors);
+         }
+
+     }
+    // {
       // {filter: {myNumber: [12,13]}}
       // fromBlock: 0
       // toBlock: 0
       // topics: Array
-    });
+    // }
+    );
 
     console.log("Got all events:", fetchedEvents);
 
     return fetchedEvents;
-  } else {
-    console.log("no address set... returning empty actions array")
   }
-
-  console.log("returning empty array from fetchAction")
 
   // ** Otherwise, empty result **
   return [];
