@@ -13,7 +13,7 @@ contract Deadline {
 
     /// @dev constructor takes an initial deadline
     /// @param _initialDeadline the initial deadline value
-    constructor(uint256 _initialDeadline) public {
+    constructor(uint256 _initialDeadline) {
         _deadline = _initialDeadline;
     }
 
@@ -22,7 +22,7 @@ contract Deadline {
     function _setDeadline(uint256 deadline) internal {
         // CHECKS
         require(!isAfterDeadline(), "IMMUTABLE_PASSED_DEADLINE");
-        require(deadline > now, "PAST_DEADLINE");
+        require(deadline > block.timestamp, "PAST_DEADLINE");
 
         // EFFECTS
         _deadline = deadline;
@@ -35,11 +35,9 @@ contract Deadline {
         return _deadline;
     }
 
-    // if the _deadline is not set yet, isAfterDeadline will return true
-    // due to now - 0 = now
     /// @notice checks if deadline is past
-    /// @return whether the deadline is passed or not
+    /// @return status whether the deadline is passed or not
     function isAfterDeadline() public view returns (bool status) {
-        return now >= _deadline;
+        return block.timestamp >= _deadline;
     }
 }
