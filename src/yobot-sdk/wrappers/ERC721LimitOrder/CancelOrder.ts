@@ -12,7 +12,6 @@ const cancelOrder = async (
   txConfirmedCallback: any,
   userRejectedCallback: any
 ) => {
-
   // ** ERC721 Token Address must be valid **
   if (!tokenAddress) throw new Error("Invalid ERC721 Token address!");
 

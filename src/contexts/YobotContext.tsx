@@ -224,8 +224,7 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     setWeb3ModalProvider((past: any) => {
       try {
-        past.clearCachedProvider().then((_res) => {
-        });
+        past.clearCachedProvider().then((_res) => {});
         past.request({
           method: "wallet_requestPermissions",
           params: [
