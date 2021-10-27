@@ -31,58 +31,57 @@ const OpenBidsFrame = () => {
   const [myOrders, setMyOrders] = useState([{}]);
   const [cancellingOrder, setCancellingOrder] = useState(false);
 
-  // ** On actions refresh, filter and set a user's actions **
-  useEffect(() => {
-    console.log("got actions:", actions);
+  const fetchNewOrders = async () => {
     let new_actions = [];
-    actions.map((action) => {
+    for (const action in actions) {
       // ** Set the block timestamp **
       let blockNumber = action["blockNumber"];
       // ** Convert block number to date **
-      let timestamp = yobot.web3.eth.getBlock(blockNumber).timestamp;
-      console.log("got block number as a timestamp:", timestamp);
-      action["date"] = new Date(timestamp);
+      let block = await yobot.web3.eth.getBlock(parseInt(blockNumber));
+      let block_timestamp: string = block.timestamp.toString();
+      action["date"] = new Date(parseInt(block_timestamp) * 1000);
 
       // ** Extract object entries **
       let values = action["returnValues"];
       let _address = values["0"];
       let _token_address = values["1"];
       let _action = values["4"];
-      console.log(
-        `Filtering action with: Address=${_address} TokenAddress=${_token_address} Action=${_action}`
-      );
-      console.log(
-        `Checking action against: Address=${address} TokenAddress=${TOKEN_ADDRESS} Action=ORDER_PLACED`
-      );
-      let action_matches =
+
+      // ** Check if event Actions is ORDER_PLACED
+      if (
         _address.toUpperCase() == address.toUpperCase() &&
         _token_address.toUpperCase() == TOKEN_ADDRESS.toUpperCase() &&
-        values["4"] == "ORDER_PLACED";
-      
-      // ** Check if event Actions is ORDER_PLACED
-      if (_address.toUpperCase() == address.toUpperCase() &&
-        _token_address.toUpperCase() == TOKEN_ADDRESS.toUpperCase() &&
-        values["4"] == "ORDER_PLACED") {
+        values["4"] == "ORDER_PLACED"
+      ) {
         new_actions.push(action);
       }
 
       // ** Check if event Actions is ORDER_CANCELLED
-      if (_address.toUpperCase() == address.toUpperCase() &&
+      if (
+        _address.toUpperCase() == address.toUpperCase() &&
         _token_address.toUpperCase() == TOKEN_ADDRESS.toUpperCase() &&
-        values["4"] == "ORDER_CANCELLED") {
-          // ** Iterate over new_actions and try to remove cancelled order **
-          for (let i = new_actions.length - 1; i >= 0; --i) {
-            if (
-              new_actions[i]["returnValues"]["0"].toUpperCase() == address.toUpperCase() &&
-              new_actions[i]["returnValues"]["1"].toUpperCase() == TOKEN_ADDRESS.toUpperCase()
-            ) {
-              new_actions.splice(i, 1); // Remove even numbers
-            }
+        values["4"] == "ORDER_CANCELLED"
+      ) {
+        // ** Iterate over new_actions and try to remove cancelled order **
+        for (let i = new_actions.length - 1; i >= 0; --i) {
+          if (
+            new_actions[i]["returnValues"]["0"].toUpperCase() ==
+              address.toUpperCase() &&
+            new_actions[i]["returnValues"]["1"].toUpperCase() ==
+              TOKEN_ADDRESS.toUpperCase()
+          ) {
+            new_actions.splice(i, 1); // Remove even numbers
+          }
         }
       }
-    });
-    console.log("got new actions:", new_actions);
+    };
+    
     setMyOrders(new_actions);
+  }
+
+  // ** On actions refresh, filter and set a user's actions **
+  useEffect(() => {
+    fetchNewOrders();
   }, [actions]);
 
   const cancelOrder = async () => {
@@ -147,7 +146,10 @@ const OpenBidsFrame = () => {
                 date = order["date"];
                 quantity = action["_quantity"];
                 // ** Convert from Wei to Ethers **
-                price = yobot.web3.utils.fromWei(action["_priceInWeiEach"], 'ether');
+                price = yobot.web3.utils.fromWei(
+                  action["_priceInWeiEach"],
+                  "ether"
+                );
               }
 
               return (

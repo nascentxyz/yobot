@@ -9,7 +9,7 @@ import {
   Button,
   Spinner,
   Text,
-  Flex
+  Flex,
 } from "@chakra-ui/react";
 import { CloseIcon } from "@chakra-ui/icons";
 import styled from "@emotion/styled";
@@ -38,22 +38,23 @@ const CancelledBidsFrame = () => {
       // ** Set the block timestamp **
       let blockNumber = action["blockNumber"];
       // ** Convert block number to date **
-      console.log("got block number:", blockNumber)
       let block = await yobot.web3.eth.getBlock(parseInt(blockNumber));
-      console.log("got block number as a timestamp:", block.timestamp);
-      action["date"] = new Date(block.timestamp * 1000);
+      let block_timestamp: string = block.timestamp.toString();
+      action["date"] = new Date(parseInt(block_timestamp) * 1000);
 
       // ** Extract object entries **
       let values = action["returnValues"];
       let _address = values["0"];
       let _token_address = values["1"];
       let _action = values["4"];
-      
+
       // ** Check if event Actions is ORDER_CANCELLED
-      if (_address.toUpperCase() == address.toUpperCase() &&
+      if (
+        _address.toUpperCase() == address.toUpperCase() &&
         _token_address.toUpperCase() == TOKEN_ADDRESS.toUpperCase() &&
-        values["4"] == "ORDER_CANCELLED") {
-          console.log("pushing cancelled order:", action);
+        values["4"] == "ORDER_CANCELLED"
+      ) {
+        console.log("pushing cancelled order:", action);
         _cancelled_orders.push(action);
       }
 
@@ -71,10 +72,10 @@ const CancelledBidsFrame = () => {
       //       }
       //   }
       // }
-    };
+    }
 
     setCancelledOrders(_cancelled_orders);
-  }
+  };
 
   // ** On actions refresh, filter and set a user's actions **
   useEffect(() => {
