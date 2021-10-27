@@ -20,7 +20,7 @@ import {
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { useTranslation } from "react-i18next";
 
-import { NascentBadge } from "..";
+import { NascentBadge, AnonBadge } from "src/components";
 
 const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
   const { t } = useTranslation();
@@ -51,7 +51,7 @@ const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
                 >
                   Artbotter
                   <span style={{ margin: "auto", paddingLeft: "0.2em" }}>
-                    <ExternalLinkIcon />
+                    <ExternalLinkIcon marginTop="-4px" />
                   </span>
                 </ChakraLink>
               </Stack>
@@ -109,7 +109,7 @@ const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
                   >
                     Dan Elitzer
                     <span style={{ margin: "auto", paddingLeft: "0.2em" }}>
-                      <ExternalLinkIcon />
+                      <ExternalLinkIcon marginTop="-4px" />
                     </span>
                   </ChakraLink>
                   <NascentBadge />
@@ -126,10 +126,29 @@ const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
                   >
                     Andreas Bigger
                     <span style={{ margin: "auto", paddingLeft: "0.2em" }}>
-                      <ExternalLinkIcon />
+                      <ExternalLinkIcon marginTop="-4px" />
                     </span>
                   </ChakraLink>
                   <NascentBadge />
+                </Stack>
+              </ListItem>
+              <ListItem>
+                <Stack direction="row">
+                  <ChakraLink
+                    display="flex"
+                    mr="0.2em"
+                    color="blue.400"
+                    isExternal
+                    href="https://twitter.com/permaetheus"
+                  >
+                    Permaetheus
+                    <span style={{ margin: "auto", paddingLeft: "0.2em" }}>
+                      <ExternalLinkIcon marginTop="-4px" />
+                    </span>
+                  </ChakraLink>
+                  <Flex pt="2px">
+                    <AnonBadge />
+                  </Flex>
                 </Stack>
               </ListItem>
             </UnorderedList>
@@ -158,7 +177,7 @@ const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
                 >
                   Discord
                   <span style={{ margin: "auto", paddingLeft: "0.2em" }}>
-                    <ExternalLinkIcon />
+                    <ExternalLinkIcon marginTop="-4px" />
                   </span>
                 </ChakraLink>
                 !

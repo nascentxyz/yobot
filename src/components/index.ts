@@ -5,6 +5,7 @@ export * from "./landingpage";
 export * from "./about";
 
 // ** Base Reexports **
+export { default as AnonBadge } from "./AnonBadge";
 export { default as ConnectWallet } from "./ConnectWallet";
 export { default as Container } from "./Container";
 export { default as DarkModeSwitch } from "./DarkModeSwitch";

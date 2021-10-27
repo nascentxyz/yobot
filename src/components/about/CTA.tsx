@@ -1,10 +1,5 @@
-import {
-  Link as ChakraLink,
-  Text,
-  Flex,
-  Stack
-} from "@chakra-ui/react";
-import { ExternalLinkIcon } from "@chakra-ui/icons"
+import { Link as ChakraLink, Text, Flex, Stack } from "@chakra-ui/react";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { useTranslation } from "react-i18next";
 
 import { FAQModal, GrayButton } from "src/components";
@@ -45,11 +40,9 @@ const CTA = ({ onOpen }) => {
               style={{ textDecoration: "none" }}
             >
               <GrayButton width="100%">
-                <Text textDecoration="none">
-                  {t("Github")}
-                </Text>{" "}
+                <Text textDecoration="none">{t("Github")}</Text>{" "}
                 <span style={{ margin: "auto", paddingLeft: "0.4em" }}>
-                  <ExternalLinkIcon marginTop="-5px" />
+                  <ExternalLinkIcon marginTop="-4px" />
                 </span>
               </GrayButton>
             </ChakraLink>
@@ -62,11 +55,9 @@ const CTA = ({ onOpen }) => {
               style={{ textDecoration: "none" }}
             >
               <GrayButton width="100%">
-                <Text textDecoration="none">
-                  {t("Feedback")}
-                </Text>{" "}
+                <Text textDecoration="none">{t("Feedback")}</Text>{" "}
                 <span style={{ margin: "auto", paddingLeft: "0.4em" }}>
-                  <ExternalLinkIcon marginTop="-5px" />
+                  <ExternalLinkIcon marginTop="-4px" />
                 </span>
               </GrayButton>
             </ChakraLink>
@@ -96,9 +87,9 @@ const CTA = ({ onOpen }) => {
             <ChakraLink
               color="blue.500"
               isExternal
-              href="https://twitter.com/andreasbigger"
+              href="https://twitter.com/permaetheus"
             >
-              Jamaal
+              Permaetheus
             </ChakraLink>{" "}
           </Text>
         </Flex>
