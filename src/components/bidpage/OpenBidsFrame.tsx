@@ -27,7 +27,7 @@ const TOKEN_ADDRESS = "0xd8bbf8ceb445de814fb47547436b3cfeecadd4ec";
 
 const OpenBidsFrame = () => {
   const { t } = useTranslation();
-  const { yobot, isAuthed, actions, address } = useYobot();
+  const { yobot, isAuthed, actions, address, refreshEvents } = useYobot();
   const [myOrders, setMyOrders] = useState([{}]);
   const [cancellingOrder, setCancellingOrder] = useState(false);
 
@@ -37,17 +37,13 @@ const OpenBidsFrame = () => {
       try {
         // ** Set the block timestamp **
         let blockNumber = action["blockNumber"];
-        console.log("got blockNumber:", blockNumber);
-        console.log("action:", action);
         // ** Convert block number to date **
         let block = await yobot.web3.eth.getBlock(parseInt(blockNumber));
         // @ts-ignore
         let block_timestamp = parseInt(block.timestamp);
-        console.log("got block timestamp:", block_timestamp);
         action["date"] = new Date(block_timestamp * 1000);
       } catch (e) {
         console.error(e);
-        console.error("Failed to set the event date");
       }
 
       // ** Extract object entries **
@@ -96,7 +92,6 @@ const OpenBidsFrame = () => {
   }, [actions]);
 
   const cancelOrder = async () => {
-    console.log("cancelling order...");
     setCancellingOrder(true);
 
     // TODO: depending on the erc721 - art blocks or general - this should change
@@ -119,13 +114,14 @@ const OpenBidsFrame = () => {
         // txFailCallback
         onTxConfirmed(msg);
         setCancellingOrder(false);
+        refreshEvents();
       },
       async () => {
         userRejectedCallback();
         setCancellingOrder(false);
       } // userRejectedCallback
     );
-    console.log("cancel order tx:", cancelOrderTx);
+    // console.log("Cancelled order tx:", cancelOrderTx);
   };
 
   return (

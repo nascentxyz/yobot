@@ -27,7 +27,6 @@ const placeOrder = async (
   txConfirmedCallback: any,
   userRejectedCallback: any
 ) => {
-  console.log("In placeArtBlocksOrder function...");
 
   // ** Price must be greater than 0 **
   if (!price || price <= 0)
@@ -61,7 +60,6 @@ const placeOrder = async (
     artBlocksProjectId,
     quantity
   );
-  console.log("Sending place ArtBlocksOrder to method:", placeOrderMethod);
 
   // ** Send Transaction **
   let txn = await placeOrderMethod
@@ -71,10 +69,8 @@ const placeOrder = async (
       { from: sender, value: amountToSend },
       (err, transactionHash) => {
         if (err) {
-          console.log("TRANSACTION_FAILED:", err);
           userRejectedCallback();
         } else {
-          console.log("TRANSACTION_SUBMITTED:", transactionHash);
           txSubmitCallback();
         }
       }

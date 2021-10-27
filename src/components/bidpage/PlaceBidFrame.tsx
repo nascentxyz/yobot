@@ -45,8 +45,6 @@ const PlaceBidFrame = () => {
   }, [isOpen]);
 
   useEffect(() => {
-    console.log("BASED_YOBOT:", localStorage.getItem("BASED_YOBOT_APE_MODE"));
-    console.log("looking for:", "I_AM_BASED");
     setNotNovice(localStorage.getItem("BASED_YOBOT_APE_MODE") !== "I_AM_BASED");
   }, []);
 
@@ -83,7 +81,7 @@ const PlaceBidFrame = () => {
   // ** Helper function to fetch gas timeouts **
   const updateGasEstimates = () => {
     // TODO::::
-    console.log("updating gas estimates...");
+    // console.log("updating gas estimates...");
   };
 
   // ** Every 15 seconds, update gas estimates **
@@ -156,17 +154,13 @@ const PlaceBidFrame = () => {
         async (msg) => {
           onTxConfirmed(msg);
           setPlacingBid(false);
-          // ** wait 10 seconds and refresh events **
-          setTimeout(() => {
-            refreshEvents();
-          }, 10 * 1000);
+          refreshEvents();
         },
         async (msg) => {
           userRejectedCallback();
           setPlacingBid(false);
         } // userRejectedCallback
       );
-      console.log("placeBidTx:", placeBidTx);
     } catch (e) {
       onTxFailed();
       setPlacingBid(false);
@@ -344,7 +338,6 @@ const PlaceBidFrame = () => {
               onClick={() => {
                 // ** If not a novice, make sure our localstorage is set
                 if (!notNovice) {
-                  console.log("setting local storage...");
                   localStorage.setItem("BASED_YOBOT_APE_MODE", "I_AM_BASED");
                 }
                 if (!transactionTimedOut) {

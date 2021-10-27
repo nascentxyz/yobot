@@ -10,8 +10,10 @@ import {
   Spinner,
   Text,
   Flex,
+  Stack,
+  Link as ChakraLink
 } from "@chakra-ui/react";
-import { CloseIcon } from "@chakra-ui/icons";
+import { CloseIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import styled from "@emotion/styled";
 import { useYobot } from "src/contexts/YobotContext";
 import { ConnectWallet, NoShadowButton } from "src/components";
@@ -55,7 +57,6 @@ const CancelledBidsFrame = () => {
         _token_address.toUpperCase() == TOKEN_ADDRESS.toUpperCase() &&
         values["4"] == "ORDER_CANCELLED"
       ) {
-        console.log("pushing cancelled order:", action);
         _cancelled_orders.push(action);
       }
 
@@ -111,9 +112,24 @@ const CancelledBidsFrame = () => {
                     <CloseIcon w={4} h={4} color="red.700" />
                   </Td>
                   <Td>{date.toLocaleString().toString()}</Td>
-                  <Td>{`https://${
-                    chainId > 0 ? getNetworkPrefix(chainId) : ""
-                  }etherscan.io/address/${_token_address}`}</Td>
+                  <Td>
+                    <Stack direction="row">
+                      <ChakraLink
+                        display="flex"
+                        mr="0.2em"
+                        color="blue.400"
+                        isExternal
+                        href={`https://${
+                          chainId > 0 ? getNetworkPrefix(chainId) : ""
+                        }etherscan.io/address/${_token_address}`}
+                      >
+                        {_token_address}
+                        <span style={{ margin: "auto", paddingLeft: "0.2em" }}>
+                          <ExternalLinkIcon />
+                        </span>
+                      </ChakraLink>
+                    </Stack>
+                  </Td>
                 </Tr>
               );
             })
