@@ -37,13 +37,13 @@ const OpenBidsFrame = () => {
       try {
         // ** Set the block timestamp **
         let blockNumber = action["blockNumber"];
-        console.log("got blockNumber:", blockNumber)
+        console.log("got blockNumber:", blockNumber);
         console.log("action:", action);
         // ** Convert block number to date **
         let block = await yobot.web3.eth.getBlock(parseInt(blockNumber));
         // @ts-ignore
         let block_timestamp = parseInt(block.timestamp);
-        console.log("got block timestamp:", block_timestamp)
+        console.log("got block timestamp:", block_timestamp);
         action["date"] = new Date(block_timestamp * 1000);
       } catch (e) {
         console.error(e);
@@ -52,7 +52,7 @@ const OpenBidsFrame = () => {
 
       // ** Extract object entries **
       let values = action["returnValues"];
-      if(values !== undefined) {
+      if (values !== undefined) {
         let _address = values["0"];
         let _token_address = values["1"];
         let _action = values["4"];
@@ -193,9 +193,9 @@ const OpenBidsFrame = () => {
             })
           ) : (
             <Tr p="1em">
-                <Text padding="1em" marginLeft="1em" align="start">
-                  {t("No open bids")}
-                </Text>
+              <Text padding="1em" marginLeft="1em" align="start">
+                {t("No open bids")}
+              </Text>
               {/* <Td>{""}</Td>
               <Td>
               </Td> */}

@@ -283,7 +283,7 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
       isAttemptingLogin,
       actions,
       setSelectedChainId,
-      refreshEvents
+      refreshEvents,
     }),
     [
       yobot,
@@ -296,7 +296,7 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
       isAttemptingLogin,
       actions,
       setSelectedChainId,
-      refreshEvents
+      refreshEvents,
     ]
   );
 

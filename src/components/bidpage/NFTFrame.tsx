@@ -76,7 +76,7 @@ const NFTFrame = ({
       <LeftAutoMarginWrapper>
         <Flex m="auto" w="auto" d="grid" padding="0 0 1em 0">
           <ShadowBackground />
-          <TrippyImage src="/logo.png" alt="Placeholder Art Piece" />
+          <TrippyImage src="/trippy-art.png" alt="Placeholder Art Piece" />
         </Flex>
         <DropTitle>{title}</DropTitle>
         <DropDateTime>{dateTime}</DropDateTime>

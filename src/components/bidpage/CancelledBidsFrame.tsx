@@ -21,7 +21,7 @@ import {
   onTxFailed,
   userRejectedCallback,
   onTxConfirmed,
-  getNetworkPrefix
+  getNetworkPrefix,
 } from "src/utils";
 
 // TODO: change this - temporary erc721 token address for testing on rinkeby
@@ -111,15 +111,17 @@ const CancelledBidsFrame = () => {
                     <CloseIcon w={4} h={4} color="red.700" />
                   </Td>
                   <Td>{date.toLocaleString().toString()}</Td>
-                  <Td>{`https://${chainId > 0 ? getNetworkPrefix(chainId) : ""}etherscan.io/address/${_token_address}`}</Td>
+                  <Td>{`https://${
+                    chainId > 0 ? getNetworkPrefix(chainId) : ""
+                  }etherscan.io/address/${_token_address}`}</Td>
                 </Tr>
               );
             })
           ) : (
             <Tr p="1em">
-                <Text padding="1em" marginLeft="1em" align="start">
-                  {t("No cancelled bids")}
-                </Text>
+              <Text padding="1em" marginLeft="1em" align="start">
+                {t("No cancelled bids")}
+              </Text>
               {/* <Td>{""}</Td>
               <Td>
               </Td> */}

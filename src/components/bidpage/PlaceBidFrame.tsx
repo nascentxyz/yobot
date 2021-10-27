@@ -158,9 +158,8 @@ const PlaceBidFrame = () => {
           setPlacingBid(false);
           // ** wait 10 seconds and refresh events **
           setTimeout(() => {
-            refreshEvents()
+            refreshEvents();
           }, 10 * 1000);
-
         },
         async (msg) => {
           userRejectedCallback();

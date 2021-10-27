@@ -1,18 +1,17 @@
-
 const getNetworkPrefix = (chainId: number) => {
   let prefix = "";
-  switch(chainId) {
+  switch (chainId) {
     case 5:
-      prefix = "goerli."
+      prefix = "goerli.";
       break;
     case 4:
-      prefix = "rinkeby."
+      prefix = "rinkeby.";
       break;
     default:
-      prefix = ""
+      prefix = "";
   }
 
   return prefix;
-}
+};
 
 export default getNetworkPrefix;
