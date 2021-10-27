@@ -18,7 +18,8 @@ const cancelOrder = async (
   if (!tokenAddress) throw new Error("Invalid ERC721 Token address!");
 
   // ** Extract cancelOrder method from the YobotERC721LimitOrder Contract **
-  let cancelOrderMethod = yobotERC721LimitOrder.methods.cancelOrder();
+  let cancelOrderMethod =
+    yobotERC721LimitOrder.methods.cancelOrder(tokenAddress);
   console.log("Sending cancel ArtBlocksBid to method:", cancelOrderMethod);
 
   // ** Send Transaction **

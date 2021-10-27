@@ -57,7 +57,10 @@ const placeOrder = async (
     );
 
   // ** Extract placeOrder method from the YobotArtBlocksBroker Contract **
-  let placeOrderMethod = yobotArtBlocksBroker.methods.placeOrder();
+  let placeOrderMethod = yobotArtBlocksBroker.methods.placeOrder(
+    artBlocksProjectId,
+    quantity
+  );
   console.log("Sending place ArtBlocksOrder to method:", placeOrderMethod);
 
   // ** Send Transaction **

@@ -2,7 +2,7 @@
 import Web3 from "web3";
 
 import { DeployedContracts } from "../../";
-import { placeOrder, cancelOrder } from ".";
+import { placeOrder, cancelOrder, fetchAction } from ".";
 
 // ** Import the Contract Abis **
 var YobotERC721LimitOrderAbi = require(".." +
@@ -41,6 +41,11 @@ class YobotERC721LimitOrder {
     userRejectedCallback: any
   ) => Promise<any>;
 
+  fetchActions: (
+    web3: Web3,
+    yobotERC721LimitOrder: any
+  ) => Promise<any>;
+
   // ** Class Statics **
   static Web3 = Web3;
   static YOBOT_ERC721_LIMIT_ORDER_ABI = YobotERC721LimitOrderAbi;
@@ -50,15 +55,25 @@ class YobotERC721LimitOrder {
     // ** Provider Logic **
     this.web3 = new Web3(web3Provider);
 
-    // ** Initiate Contracts **
-    this.YobotERC721LimitOrder = new this.web3.eth.Contract(
-      YobotERC721LimitOrderAbi,
-      DeployedContracts["mainnet"]["YobotERC721LimitOrder"]
-    );
+    console.log("DeployedContracts:", DeployedContracts);
 
-    // ** Contract Functions **
+    // ** Initiate Contracts **
+    this.web3.eth.getChainId().then((chain_id) => {
+      console.log("YobotERC721LimitOrder got web3 chain id:", chain_id);
+      this.YobotERC721LimitOrder = new this.web3.eth.Contract(
+        YobotERC721LimitOrderAbi,
+        DeployedContracts[chain_id]
+          ? DeployedContracts[chain_id]["YobotERC721LimitOrder"]
+          : ""
+      );
+    });
+
+    // ** Functions **
     this.placeOrder = placeOrder;
     this.cancelOrder = cancelOrder;
+
+    // ** Events **
+    this.fetchActions = fetchAction;
   }
 }
 

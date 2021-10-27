@@ -31,7 +31,7 @@ import {
 
 const PlaceBidFrame = () => {
   const { t } = useTranslation();
-  const { yobot, isAuthed, balance } = useYobot();
+  const { yobot, isAuthed, balance, address } = useYobot();
   const [validParams, setValidParams] = useState(false);
   const [placingBid, setPlacingBid] = useState(false);
 
@@ -45,6 +45,8 @@ const PlaceBidFrame = () => {
   }, [isOpen]);
 
   useEffect(() => {
+    console.log("BASED_YOBOT:", localStorage.getItem("BASED_YOBOT_APE_MODE"));
+    console.log("looking for:", "I_AM_BASED");
     setIsNovice(localStorage.getItem("BASED_YOBOT_APE_MODE") !== "I_AM_BASED");
   }, []);
 
@@ -93,7 +95,7 @@ const PlaceBidFrame = () => {
   }, []);
 
   // ** Bid placed helper function **
-  const placeBid = () => {
+  const placeBid = async () => {
     setPlacingBid(true);
 
     // ** Freeze Inputs **
@@ -131,26 +133,41 @@ const PlaceBidFrame = () => {
     }
   };
 
-  const submitBid = (_frozenBidPrice, _frozenBidQty) => {
-    console.log("placing bid...");
-
+  const submitBid = async (_frozenBidPrice, _frozenBidQty) => {
     // TODO: depending on the erc721 - art blocks or general - this should change
-    let placeBidTx = await yobot.YobotERC721LimitOrder.placeOrder(
-      yobot.web3, // web3
-      yobot.yobotERC721LimitOrder, // yobotERC721LimitOrder
-      _frozenBidPrice, // price
-      _frozenBidQty, // quantity
-      tokenAddress, // tokenAddress
-      address, // sender
-      onTxSubmitted, // txSubmitCallback
-      onTxFailed, // txFailCallback
-      async (msg) => {
-        // txFailCallback
-        onTxConfirmed(msg);
-      },
-      userRejectedCallback // userRejectedCallback
-    );
-    console.log("placeBidTx:", placeBidTx);
+    try {
+      let placeBidTx = await yobot.YobotERC721LimitOrder.placeOrder(
+        yobot.web3, // web3
+        yobot.YobotERC721LimitOrder.YobotERC721LimitOrder, // yobotERC721LimitOrder
+        _frozenBidPrice, // price
+        _frozenBidQty, // quantity
+        // TODO: dynamically pull token address from query string parameters
+        // tokenAddress, // tokenAddress
+        "0xd8bbf8ceb445de814fb47547436b3cfeecadd4ec",
+        address, // sender
+        async (msg) => {
+          onTxSubmitted(msg);
+          setPlacingBid(false);
+        },
+        async (msg) => {
+          onTxFailed(msg);
+          setPlacingBid(false);
+        },
+        async (msg) => {
+          onTxConfirmed(msg);
+          setPlacingBid(false);
+        },
+        async (msg) => {
+          userRejectedCallback();
+          setPlacingBid(false);
+        } // userRejectedCallback
+      );
+      console.log("placeBidTx:", placeBidTx);
+    } catch (e) {
+      onTxFailed();
+      setPlacingBid(false);
+      console.error("Placing bid returned:", e);
+    }
   };
 
   // ** Helper function to validate parameters
@@ -310,7 +327,7 @@ const PlaceBidFrame = () => {
               colorScheme="red"
               defaultIsChecked={
                 typeof window !== "undefined"
-                  ? localStorage.getItem("BASED_YOBOT_APE_MODE") !==
+                  ? localStorage.getItem("BASED_YOBOT_APE_MODE") ===
                     "I_AM_BASED"
                   : false
               }

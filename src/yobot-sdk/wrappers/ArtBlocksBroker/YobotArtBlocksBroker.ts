@@ -50,10 +50,15 @@ class YobotArtBlocksBroker {
     this.web3 = new Web3(web3Provider);
 
     // ** Initiate Contracts **
-    this.YobotArtBlocksBroker = new this.web3.eth.Contract(
-      YobotArtBlocksBrokerAbi,
-      DeployedContracts["mainnet"]["YobotArtBlocksBroker"]
-    );
+    this.web3.eth.getChainId().then((chain_id) => {
+      console.log("YobotArtBlocksBroker got web3 chain id:", chain_id);
+      this.YobotArtBlocksBroker = new this.web3.eth.Contract(
+        YobotArtBlocksBrokerAbi,
+        DeployedContracts[chain_id]
+          ? DeployedContracts[chain_id]["YobotArtBlocksBroker"]
+          : ""
+      );
+    });
 
     // ** Contract Functions **
     this.placeOrder = placeOrder;

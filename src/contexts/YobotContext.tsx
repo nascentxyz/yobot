@@ -13,9 +13,14 @@ import { useToast } from "@chakra-ui/react";
 import { formatEther } from "@ethersproject/units";
 import Web3Modal from "web3modal";
 
-import { launchModalLazy, ViewOrdersProps } from "./utils";
+import { launchModalLazy, /* ViewOrdersProps */ } from "./utils";
 import { Yobot } from "src/yobot-sdk/index";
 import { chooseBestWeb3Provider } from "src/utils";
+
+export interface Order {
+  priceInWeiEach: number;
+  quantity: number;
+}
 
 export interface YobotContextData {
   yobot: Yobot;
@@ -29,8 +34,10 @@ export interface YobotContextData {
   chainId: number;
   isAttemptingLogin: boolean;
   // ** YobotERC721LimitOrder Specific Contract Data **
-  openOrders: Order[];
-  fetchOpenOrders: React.SFC<ViewOrdersProps>
+  actions: any[];
+  // openOrders: Order[];
+  // fetchOpenOrders: React.SFC<ViewOrdersProps>;
+  setSelectedChainId: any; //React.SFC<[]>;
 }
 
 const EmptyAddress = "0x0000000000000000000000000000000000000000";
@@ -49,7 +56,7 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
   const toast = useToast();
 
   // ** Save chainId for context switches **
-  const [chainId, setChainId] = useState<number>(-1);
+  const [chainId, setChainId] = useState<number>(1);
 
   // ** Only allow one network toast notification at a time **
   const [toastingNetwork, setToastingNetwork] = useState(false);
@@ -57,22 +64,33 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
   // ** Lock setting yobot and address
   const [updatingLock, setUpdatingLock] = useState(false);
 
+  // ** Action store for all events **
+  const [actions, setActions] = useState<any[]>([]);
+
+  // ** Selected Chain ID **
+  const [selectedChainId, setSelectedChainId] = useState<number>(1);
+
   // ** Refresh chain id **
   const refreshChainId = ({ yobotInstance = yobot }) => {
+    console.log("chain refresh...");
     if (!toastingNetwork) {
       setToastingNetwork(true);
       Promise.all([
         yobotInstance.web3.eth.net.getId(),
         yobotInstance.web3.eth.getChainId(),
       ]).then(([netId, currChainId]) => {
+        console.log("got netid, currchainid:", netId, currChainId);
         setChainId(currChainId);
-        // ** Don't show "wrong network" toasts if dev
-        // if (process.env.NODE_ENV === "development") {
-        //   console.log("[NODE_ENV] Development")
-        //   return;
-        // }
 
-        if (netId !== 4 || currChainId !== 4) {
+        // ** We also want to automatically change selected chain id if the user manually changes their wallet network **
+        // ** Check if supported chain **
+        console.log("checking is currChainId is supported...", currChainId);
+        if (Yobot.isSupportedChain(currChainId)) {
+          console.log("curr chain id is supported!");
+          // this will set the `selectedChainId`
+          // which sets the network shown in the sushi button
+          setSelectedChainId(currChainId);
+        } else {
           // ** Prevent Fast Reentrancy
           setTimeout(() => {
             toast({
@@ -108,6 +126,7 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
   const [web3ModalProvider, setWeb3ModalProvider] = useState<any | null>(null);
 
   const [chainChange, setChainChange] = useState<boolean>(false);
+
   // ** For successfuly chain change toast
   useEffect(() => {
     if (chainChange) {
@@ -127,6 +146,21 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
       }
     }
   }, [chainId]);
+
+  // ** On auth login, try to fetch all events **
+  useEffect(() => {
+    console.log("Trying to load all events from inside the YobotContext");
+    if (yobot) {
+      console.log("Found yobot!", yobot);
+      yobot.YobotERC721LimitOrder.fetchActions(
+        yobot.web3,
+        yobot.YobotERC721LimitOrder.YobotERC721LimitOrder
+      ).then((events) => {
+        console.log("GOT ACTIONS!!!", actions);
+        setActions(actions);
+      });
+    }
+  }, [yobot]);
 
   const setYobotAndAddressFromModal = (modalProvider) => {
     if (!updatingLock) {
@@ -244,6 +278,8 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
       balance,
       chainId,
       isAttemptingLogin,
+      actions,
+      setSelectedChainId,
     }),
     [
       yobot,
@@ -254,6 +290,8 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
       balance,
       chainId,
       isAttemptingLogin,
+      actions,
+      setSelectedChainId,
     ]
   );
 

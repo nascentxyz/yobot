@@ -19,7 +19,8 @@ const cancelOrder = async (
     throw new Error("ArtBlocks Project Id must be greater than 0!");
 
   // ** Extract cancelOrder method from the YobotArtBlocksBroker Contract **
-  let cancelOrderMethod = yobotArtBlocksBroker.methods.cancelOrder();
+  let cancelOrderMethod =
+    yobotArtBlocksBroker.methods.cancelOrder(artBlocksProjectId);
   console.log("Sending cancel ArtBlocksBid to method:", cancelOrderMethod);
 
   // ** Send Transaction **

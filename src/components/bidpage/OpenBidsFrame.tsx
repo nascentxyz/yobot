@@ -1,39 +1,71 @@
 import { useEffect, useState } from "react";
-import { Table, Thead, Tr, Th, Tbody, Td } from "@chakra-ui/react";
+import {
+  Table,
+  Thead,
+  Tr,
+  Th,
+  Tbody,
+  Td,
+  Button,
+  Spinner
+} from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { useYobot } from "src/contexts/YobotContext";
 import { ConnectWallet, NoShadowButton } from "src/components";
 import { useTranslation } from "react-i18next";
+import {
+  onTxSubmitted,
+  onTxFailed,
+  userRejectedCallback,
+  onTxConfirmed,
+} from "src/utils";
 
 const OpenBidsFrame = () => {
   const { t } = useTranslation();
-  const { yobot, isAuthed, openOrders, fetchOpenOrders } = useYobot();
+  const { yobot, isAuthed, actions, address } = useYobot();
+  const [myOrders, setMyOrders] = useState([{}]);
+  const [cancellingOrder, setCancellingOrder] = useState(false);
 
-  // ** On component render, fetch a user's current open orders
+  // ** On actions refresh, filter and set a user's actions **
   useEffect(() => {
-    (async () => {
-      await fetchOrders();
-    })();
-  }, []);
+    setMyOrders(
+      actions.filter((action) => {
+        // TODO
+      })
+    );
+  }, [actions]);
 
-  const cancelBid = () => {
-    console.log("cancelling bid...");
+  const cancelOrder = async () => {
+    console.log("cancelling order...");
+    setCancellingOrder(true);
 
     // TODO: depending on the erc721 - art blocks or general - this should change
-    let cancelBidTx = await yobot.YobotERC721LimitOrder.cancelOrder(
+    let cancelOrderTx = await yobot.YobotERC721LimitOrder.cancelOrder(
       yobot.web3, // web3
-      yobot.yobotERC721LimitOrder, // yobotERC721LimitOrder
-      tokenAddress, // tokenAddress
+      yobot.YobotERC721LimitOrder.YobotERC721LimitOrder, // yobotERC721LimitOrder
+      // TODO: dynamically pull token address from query string parameters
+      // tokenAddress, // tokenAddress
+      "0xd8bbf8ceb445de814fb47547436b3cfeecadd4ec",
       address, // sender
-      onTxSubmitted, // txSubmitCallback
-      onTxFailed, // txFailCallback
+      async () => {
+        onTxSubmitted();
+        setCancellingOrder(false);
+      }, // txSubmitCallback
+      async () => {
+        onTxFailed();
+        setCancellingOrder(false);
+      }, // txFailCallback
       async (msg) => {
         // txFailCallback
         onTxConfirmed(msg);
+        setCancellingOrder(false);
       },
-      userRejectedCallback // userRejectedCallback
+      async () => {
+        userRejectedCallback();
+        setCancellingOrder(false);
+      } // userRejectedCallback
     );
-    console.log("cancel bid tx:", cancelBidTx);
+    console.log("cancel order tx:", cancelOrderTx);
   };
 
   return (
@@ -50,32 +82,63 @@ const OpenBidsFrame = () => {
           <Tr>
             <Th>{t("Date")}</Th>
             <Th isNumeric>{t("Quantity")}</Th>
-            <Th>{t("Total")}</Th>
+            <Th>{t("Price")}</Th>
             <Th>{t("")}</Th> {/* Empty column for cancel buttons */}
           </Tr>
         </Thead>
         <Tbody>
-          {}
-          <Tr>
-            <Td>inches</Td>
-            <Td>millimetres (mm)</Td>
-            <Td isNumeric>25.4</Td>
-          </Tr>
-          <Tr>
-            <Td>feet</Td>
-            <Td>centimetres (cm)</Td>
-            <Td isNumeric>30.48</Td>
-          </Tr>
-          <Tr>
-            <Td>yards</Td>
-            <Td>metres (m)</Td>
-            <Td isNumeric>0.91444</Td>
-          </Tr>
+          {myOrders.map((order) => {
+            let date = "ORDER_DATE";
+            let quantity = "ORDER_QUANTITY";
+            let price = "ORDER_PRICE";
+
+            return (
+              <Tr key={Object.entries(order).toString()}>
+                <Td>{date}</Td>
+                <Td isNumeric>{quantity}</Td>
+                <Td>{price}</Td>
+                <Td>
+                  <CancelOrderButton
+                    disabled={cancellingOrder}
+                    colorScheme={"red"}
+                    background={"red.800"}
+                    // _hover={
+                    //   color: "white.900",
+                    //   border: "0.4px",
+                    //   borderStyle: "solid",
+                    //   borderColor: "white.900",
+                    //   backgroundColor: "green.500",
+                    // }
+                    color={"red.100"}
+                    variant={"outline"}
+                    onClick={cancelOrder}
+                    display={"flex"}
+                  >
+                    {!cancellingOrder ? (
+                      <>{t("Cancel Order")}</>
+                    ) : (
+                      <Spinner margin={"auto"} color={"red.400"} />
+                    )}
+                  </CancelOrderButton>
+                </Td>
+              </Tr>
+            );
+          })}
         </Tbody>
       </CustomTable>
     </BidBox>
   );
 };
+
+const CancelOrderButton = styled(Button)`
+  width: 100%;
+  margin: auto;
+
+  &:focus {
+    outline: 0 !important;
+    box-shadow: none !important;
+  }
+`;
 
 const BidBox = styled.div`
   min-width: 480px;

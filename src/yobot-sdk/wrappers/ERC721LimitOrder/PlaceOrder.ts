@@ -56,7 +56,10 @@ const placeOrder = async (
     );
 
   // ** Extract placeOrder method from the YobotERC721LimitOrder Contract **
-  let placeOrderMethod = yobotERC721LimitOrder.methods.placeOrder();
+  let placeOrderMethod = yobotERC721LimitOrder.methods.placeOrder(
+    tokenAddress,
+    quantity
+  );
   console.log(
     "Sending place Generalized ERC721 Place Order to method:",
     placeOrderMethod

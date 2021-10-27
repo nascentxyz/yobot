@@ -1,4 +1,5 @@
 import WalletConnectProvider from "@walletconnect/web3-provider";
+import Web3Modal from "web3modal";
 import { alchemyURL } from "src/utils";
 
 // ** Launch a Lazy Modal **
