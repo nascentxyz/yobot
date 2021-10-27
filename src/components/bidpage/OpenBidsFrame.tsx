@@ -74,10 +74,10 @@ const OpenBidsFrame = () => {
           }
         }
       }
-    };
-    
+    }
+
     setMyOrders(new_actions);
-  }
+  };
 
   // ** On actions refresh, filter and set a user's actions **
   useEffect(() => {
