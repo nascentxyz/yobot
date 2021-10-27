@@ -35,6 +35,9 @@ jobs:
         id: make-dependencies
         run: nix-shell --run 'make'
 
+      - name: Update Openzeppelin contracts directory
+        run: yarn fix-oz
+
       - name: Build the contracts
         id: make-build
         run: nix-shell --run 'make build'

@@ -75,7 +75,7 @@ const Navbar = ({ accountButton = false, launchApp = false, onOpen }) => {
             height="min-content"
             margin="auto"
             isExternal
-            href="https://twitter.com/yobotco"
+            href="https://twitter.com/yobotmarket"
           >
             <TwitterSVG mx="0.5em" />
           </ChakraLink>
