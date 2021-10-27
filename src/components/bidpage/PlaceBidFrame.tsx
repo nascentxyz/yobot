@@ -36,7 +36,7 @@ const PlaceBidFrame = () => {
   const [placingBid, setPlacingBid] = useState(false);
 
   // ** Does the user want to see a modal to confirm placing bids? **
-  const [isNovice, setIsNovice] = useState(true);
+  const [notNovice, setNotNovice] = useState(true);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [transactionTimedOut, setTransactionTimedOut] = useState(false);
 
@@ -47,7 +47,7 @@ const PlaceBidFrame = () => {
   useEffect(() => {
     console.log("BASED_YOBOT:", localStorage.getItem("BASED_YOBOT_APE_MODE"));
     console.log("looking for:", "I_AM_BASED");
-    setIsNovice(localStorage.getItem("BASED_YOBOT_APE_MODE") !== "I_AM_BASED");
+    setNotNovice(localStorage.getItem("BASED_YOBOT_APE_MODE") !== "I_AM_BASED");
   }, []);
 
   // ** Insufficient Funds **
@@ -107,7 +107,7 @@ const PlaceBidFrame = () => {
     // ** Validate Frozen Inputs (sanity check) **
     if (validateParams(_frozenBidPrice, _frozenBidQty)) {
       // ** If novice, Pop up modal and await confirmation to continue **
-      if (isNovice) {
+      if (notNovice) {
         onOpen();
 
         // Set a 1 minute transaction timeout
@@ -325,17 +325,9 @@ const PlaceBidFrame = () => {
           <ModalBody>
             <Checkbox
               colorScheme="red"
-              defaultIsChecked={
-                typeof window !== "undefined"
-                  ? localStorage.getItem("BASED_YOBOT_APE_MODE") ===
-                    "I_AM_BASED"
-                  : false
-              }
+              checked={notNovice}
               onChange={(e) => {
-                if (e.target.checked) {
-                  localStorage.setItem("BASED_YOBOT_APE_MODE", "I_AM_BASED");
-                  setIsNovice(false);
-                }
+                setNotNovice(!notNovice);
               }}
             >
               {t("Don't show this message in the future")}
@@ -346,6 +338,11 @@ const PlaceBidFrame = () => {
             <NoShadowButton
               colorScheme="green"
               onClick={() => {
+                // ** If not a novice, make sure our localstorage is set
+                if(!notNovice) {
+                  console.log("setting local storage...");
+                  localStorage.setItem("BASED_YOBOT_APE_MODE", "I_AM_BASED");
+                }
                 if (!transactionTimedOut) {
                   // SUBMIT
                   submitBid(frozenBidPrice, frozenBidQty);

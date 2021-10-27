@@ -28,7 +28,11 @@ const fetchAction = async (
     console.log("Got all events:", fetchedEvents);
 
     return fetchedEvents;
+  } else {
+    console.log("no address set... returning empty actions array")
   }
+
+  console.log("returning empty array from fetchAction")
 
   // ** Otherwise, empty result **
   return [];

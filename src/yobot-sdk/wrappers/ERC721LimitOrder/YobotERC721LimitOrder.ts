@@ -41,10 +41,7 @@ class YobotERC721LimitOrder {
     userRejectedCallback: any
   ) => Promise<any>;
 
-  fetchActions: (
-    web3: Web3,
-    yobotERC721LimitOrder: any
-  ) => Promise<any>;
+  fetchActions: (web3: Web3, yobotERC721LimitOrder: any) => Promise<any>;
 
   // ** Class Statics **
   static Web3 = Web3;

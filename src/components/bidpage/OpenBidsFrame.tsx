@@ -7,7 +7,9 @@ import {
   Tbody,
   Td,
   Button,
-  Spinner
+  Spinner,
+  Text,
+  Flex
 } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { useYobot } from "src/contexts/YobotContext";
@@ -28,6 +30,7 @@ const OpenBidsFrame = () => {
 
   // ** On actions refresh, filter and set a user's actions **
   useEffect(() => {
+    console.log("got actions:", actions);
     setMyOrders(
       actions.filter((action) => {
         // TODO
@@ -87,7 +90,7 @@ const OpenBidsFrame = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {myOrders.map((order) => {
+          {myOrders.length > 0 ? myOrders.map((order) => {
             let date = "ORDER_DATE";
             let quantity = "ORDER_QUANTITY";
             let price = "ORDER_PRICE";
@@ -123,7 +126,14 @@ const OpenBidsFrame = () => {
                 </Td>
               </Tr>
             );
-          })}
+          }) : (
+            <Tr p="1em">
+              <Td>{""}</Td>
+              <Td>
+                <Text padding="1em" align="center">{t("You've placed no orders...")}</Text>
+              </Td>
+            </Tr>
+          )}
         </Tbody>
       </CustomTable>
     </BidBox>
@@ -155,7 +165,6 @@ const BidBox = styled.div`
 
 const PlaceBidText = styled.p`
   height: auto;
-  // margin: auto;
   font-family: Roboto;
   font-size: 20px;
   font-weight: bold;
@@ -178,7 +187,6 @@ const DataFormText = styled.div`
 
 const HeaderText = styled.p`
   height: auto;
-  // margin: auto;
   font-family: Roboto;
   font-size: 18px;
   font-weight: 300;
@@ -197,6 +205,11 @@ const CustomTable = styled(Table)`
   border-radius: 1em;
   border: solid 1px #2c2f36;
   background-color: #212429;
+
+  border-collapse: collapse;
+  border-radius: 30px;
+  border-style: hidden; /* hide standard table (collapsed) border */
+  box-shadow: 0 0 0 1px var(--chakra-colors-gray-700); /* this draws the table border  */ 
 `;
 
 export default OpenBidsFrame;

@@ -13,7 +13,7 @@ import { useToast } from "@chakra-ui/react";
 import { formatEther } from "@ethersproject/units";
 import Web3Modal from "web3modal";
 
-import { launchModalLazy, /* ViewOrdersProps */ } from "./utils";
+import { launchModalLazy /* ViewOrdersProps */ } from "./utils";
 import { Yobot } from "src/yobot-sdk/index";
 import { chooseBestWeb3Provider } from "src/utils";
 
@@ -160,7 +160,7 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
         setActions(actions);
       });
     }
-  }, [yobot]);
+  }, [address]);
 
   const setYobotAndAddressFromModal = (modalProvider) => {
     if (!updatingLock) {
