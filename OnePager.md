@@ -37,6 +37,6 @@ Bot Operatooors 🤖
 - If you have ever run a flashbots searcher bot, hit us up!
 - We are looking for highly skilled bot operators to build out a decentralized bot infrastructure for Yobot.
 
-Ape Mintoors
+Ape Mintoors 🦍
 
 - To make Yobot successful, we need people to mint NFTs!!
