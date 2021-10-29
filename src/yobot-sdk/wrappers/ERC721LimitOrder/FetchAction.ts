@@ -7,7 +7,6 @@ const fetchAction = async (
   // tokenAddress: string,
   // sender: string
 ) => {
-
   if (yobotERC721LimitOrder && yobotERC721LimitOrder.options.address) {
     // ** Extract cancelOrder method from the YobotERC721LimitOrder Contract **
     let fetchedEvents = await yobotERC721LimitOrder.getPastEvents(

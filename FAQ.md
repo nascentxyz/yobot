@@ -65,3 +65,12 @@ Yes, Yobot can fill orders for NFTs that require something other than ETH to min
 
 **How do I get in touch with someone about Yobot?**
 Reach out over [discord](https://discord.gg/Kg2ca95cXf) and feel free to shout out to the team with an @team.
+
+**Community Asks**
+
+- Say gm.
+- Share feedback!
+- Become a memooor #🎨-memes
+- Help other community members.
+- Follow the rules 🙄 #📝-rules
+- Have Fun and Mint NFTs!
