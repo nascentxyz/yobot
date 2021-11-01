@@ -205,8 +205,10 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const login = async (cacheProvider: boolean = true) => {
+    console.log("logging in...")
     try {
       setIsAttemptingLogin(true);
+      console.log("launching lazy modal...")
       let provider = await launchModalLazy(t, cacheProvider);
       setWeb3ModalProvider(provider);
       setYobotAndAddressFromModal(provider);
@@ -222,6 +224,9 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = () => {
+    localStorage.removeItem("WEB3_CONNECT_CACHED_PROVIDER");
+    localStorage.removeItem("walletconnect");
+    setAddress(EmptyAddress);
     setWeb3ModalProvider((past: any) => {
       try {
         past.clearCachedProvider().then((_res) => {});
@@ -243,9 +248,6 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
       }
       return null;
     });
-    localStorage.removeItem("WEB3_CONNECT_CACHED_PROVIDER");
-    localStorage.removeItem("walletconnect");
-    setAddress(EmptyAddress);
   };
 
   useEffect(() => {

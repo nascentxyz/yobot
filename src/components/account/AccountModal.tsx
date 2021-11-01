@@ -1,4 +1,5 @@
 // AccountModal.tsx
+import React from "react";
 import {
   Box,
   Button,
@@ -16,8 +17,11 @@ import {
 import { ExternalLinkIcon, CopyIcon } from "@chakra-ui/icons";
 import Identicon from "./Identicon";
 import { useYobot } from "src/contexts/YobotContext";
-import { NoShadowButton } from "src/components";
+import { NoShadowButton, NoShadowLink } from "src/components";
 import useClippy from "use-clippy";
+import {
+  getNetworkPrefix,
+} from "src/utils";
 
 type AccountModalProps = {
   isOpen: any;
@@ -25,7 +29,7 @@ type AccountModalProps = {
 };
 
 const AccountModal = ({ isOpen, onClose }: AccountModalProps) => {
-  const { address, logout } = useYobot();
+  const { address, logout, chainId, login } = useYobot();
   const [clipboard, setClipboard] = useClippy();
 
   // ** Deactivate/logout with Disclosure **
@@ -34,17 +38,12 @@ const AccountModal = ({ isOpen, onClose }: AccountModalProps) => {
     onClose();
   }
 
-  // const handleCopyClick = (e) => {
-  //   try {
-  //     e.preventDefault();
-  //     if(typeof window !== "undefined") {
-  //       window.clipboardData.setData('text/plain', address);
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //     console.error("Failed to copy address to clipboard!");
-  //   }
-  // }
+  // ** Switch Wallet with Disclosure **
+  const handleSwitchWallet = async () => {
+    // logout();
+    onClose();
+    setTimeout(async () => await login(false), 500);
+  }
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered size="md">
@@ -94,30 +93,51 @@ const AccountModal = ({ isOpen, onClose }: AccountModalProps) => {
                 _hover={{
                   background: "none",
                   borderColor: "blue.300",
-                  textDecoration: "underline",
+                  textDecoration: "none",
                 }}
                 onClick={handleDeactivateAccount}
               >
                 Disconnect
               </NoShadowButton>
             </Flex>
-            <Flex alignItems="center" mt={2} mb={4} lineHeight={1}>
-              <Identicon />
-              <Text
-                color="white"
-                fontSize="xl"
-                fontWeight="semibold"
-                ml="2"
-                lineHeight="1.1"
+            <Flex justifyContent="space-between" alignItems="center">
+              <Flex alignItems="center" lineHeight={1}>
+                <Identicon />
+                <Text
+                  color="white"
+                  fontSize="xl"
+                  fontWeight="semibold"
+                  ml="2"
+                  lineHeight="1.1"
+                >
+                  {address &&
+                    `${address.slice(0, 6)}...${address.slice(
+                      address.length - 4,
+                      address.length
+                    )}`}
+                </Text>
+              </Flex>
+              {/* <NoShadowButton
+                variant="outline"
+                size="sm"
+                borderColor="blue.800"
+                borderRadius="3xl"
+                color="blue.500"
+                fontSize="13px"
+                fontWeight="normal"
+                px={2}
+                height="26px"
+                _hover={{
+                  background: "none",
+                  borderColor: "blue.300",
+                  textDecoration: "none",
+                }}
+                onClick={handleSwitchWallet}
               >
-                {address &&
-                  `${address.slice(0, 6)}...${address.slice(
-                    address.length - 4,
-                    address.length
-                  )}`}
-              </Text>
+                Switch Wallet
+              </NoShadowButton> */}
             </Flex>
-            <Flex alignContent="center" m={3}>
+            <Flex alignContent="center" my={3}>
               <NoShadowButton
                 variant="link"
                 color="gray.400"
@@ -127,27 +147,36 @@ const AccountModal = ({ isOpen, onClose }: AccountModalProps) => {
                   textDecoration: "none",
                   color: "whiteAlpha.800",
                 }}
-                onClick={(_e) => setClipboard(`${address}`)}
+                onClick={() => {
+                  try {
+                    navigator.clipboard.writeText(`${address}`)
+                  } catch (error) {
+                    console.error(error);
+                  }
+                  setClipboard(`${address}`)
+                  }}
               >
                 <CopyIcon mr={1} />
                 Copy Address
               </NoShadowButton>
-              <Link
+              <NoShadowLink
                 fontSize="sm"
                 display="flex"
                 alignItems="center"
-                href={`https://etherscan.io/address/${address}`}
+                href={`https://${
+                  chainId > 0 ? getNetworkPrefix(chainId) : ""
+                }etherscan.io/address/${address}`}
                 isExternal
                 color="gray.400"
                 ml={6}
                 _hover={{
                   color: "whiteAlpha.800",
-                  textDecoration: "underline",
+                  // textDecoration: "underline",
                 }}
               >
                 <ExternalLinkIcon mr={1} />
                 View on Explorer
-              </Link>
+              </NoShadowLink>
             </Flex>
           </Box>
         </ModalBody>
@@ -164,6 +193,7 @@ const AccountModal = ({ isOpen, onClose }: AccountModalProps) => {
             textAlign="left"
             fontWeight="medium"
             fontSize="md"
+            width="100%"
           >
             Your transactions willl appear here...
           </Text>

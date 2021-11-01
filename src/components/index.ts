@@ -17,3 +17,4 @@ export { default as Main } from "./Main";
 export { default as NascentBadge } from "./NascentBadge";
 export { default as Navbar } from "./Navbar";
 export { default as NoShadowButton } from "./NoShadowButton";
+export { default as NoShadowLink } from "./NoShadowLink";
