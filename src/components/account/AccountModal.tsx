@@ -17,7 +17,7 @@ import { ExternalLinkIcon, CopyIcon } from "@chakra-ui/icons";
 import Identicon from "./Identicon";
 import { useYobot } from "src/contexts/YobotContext";
 import { NoShadowButton } from "src/components";
-import useClippy from 'use-clippy';
+import useClippy from "use-clippy";
 
 type AccountModalProps = {
   isOpen: any;
@@ -45,7 +45,6 @@ const AccountModal = ({ isOpen, onClose }: AccountModalProps) => {
   //     console.error("Failed to copy address to clipboard!");
   //   }
   // }
-
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered size="md">

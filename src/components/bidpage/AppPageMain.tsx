@@ -9,7 +9,14 @@ import {
 } from ".";
 
 const AppPageMain = () => (
-  <Flex mt="0 !important" minHeight="100px" height="auto" flexGrow={1} p={4} pb={8}>
+  <Flex
+    mt="0 !important"
+    minHeight="100px"
+    height="auto"
+    flexGrow={1}
+    p={4}
+    pb={8}
+  >
     <PageGroup>
       <MarginEightPix>
         <BidRow>
