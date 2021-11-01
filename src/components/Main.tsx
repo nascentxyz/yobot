@@ -5,7 +5,7 @@ const Main = (props: StackProps) => (
     spacing="1.5em"
     width="100%"
     mt="0"
-    pt="2em"
+    // pt="2em"
     px="1em"
     flexGrow={1}
     {...props}

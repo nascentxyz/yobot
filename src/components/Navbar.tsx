@@ -13,6 +13,7 @@ const LaunchGroup = styled.div`
   display: flex;
   flex-direction: row;
   min-width: 300px;
+  justify-content: flex-end;
 
   @media (max-width: 600px) {
     min-width: 100px;

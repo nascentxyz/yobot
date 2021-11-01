@@ -380,6 +380,10 @@ const BidBox = styled.div`
   background-color: #191b1f;
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 900px) {
+    margin: auto;
+  }
 `;
 
 const PlaceBidText = styled.p`

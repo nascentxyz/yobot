@@ -16,6 +16,8 @@ import {
 import { ExternalLinkIcon, CopyIcon } from "@chakra-ui/icons";
 import Identicon from "./Identicon";
 import { useYobot } from "src/contexts/YobotContext";
+import { NoShadowButton } from "src/components";
+import useClippy from 'use-clippy';
 
 type AccountModalProps = {
   isOpen: any;
@@ -24,12 +26,26 @@ type AccountModalProps = {
 
 const AccountModal = ({ isOpen, onClose }: AccountModalProps) => {
   const { address, logout } = useYobot();
+  const [clipboard, setClipboard] = useClippy();
 
   // ** Deactivate/logout with Disclosure **
   function handleDeactivateAccount() {
     logout();
     onClose();
   }
+
+  // const handleCopyClick = (e) => {
+  //   try {
+  //     e.preventDefault();
+  //     if(typeof window !== "undefined") {
+  //       window.clipboardData.setData('text/plain', address);
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //     console.error("Failed to copy address to clipboard!");
+  //   }
+  // }
+
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered size="md">
@@ -66,7 +82,7 @@ const AccountModal = ({ isOpen, onClose }: AccountModalProps) => {
               <Text color="gray.400" fontSize="sm">
                 Connected with MetaMask
               </Text>
-              <Button
+              <NoShadowButton
                 variant="outline"
                 size="sm"
                 borderColor="blue.800"
@@ -84,7 +100,7 @@ const AccountModal = ({ isOpen, onClose }: AccountModalProps) => {
                 onClick={handleDeactivateAccount}
               >
                 Disconnect
-              </Button>
+              </NoShadowButton>
             </Flex>
             <Flex alignItems="center" mt={2} mb={4} lineHeight={1}>
               <Identicon />
@@ -103,7 +119,7 @@ const AccountModal = ({ isOpen, onClose }: AccountModalProps) => {
               </Text>
             </Flex>
             <Flex alignContent="center" m={3}>
-              <Button
+              <NoShadowButton
                 variant="link"
                 color="gray.400"
                 fontWeight="normal"
@@ -112,10 +128,11 @@ const AccountModal = ({ isOpen, onClose }: AccountModalProps) => {
                   textDecoration: "none",
                   color: "whiteAlpha.800",
                 }}
+                onClick={(_e) => setClipboard(`${address}`)}
               >
                 <CopyIcon mr={1} />
                 Copy Address
-              </Button>
+              </NoShadowButton>
               <Link
                 fontSize="sm"
                 display="flex"

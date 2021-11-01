@@ -7,6 +7,10 @@ const NFTBox = styled.div`
   border-radius: 24px;
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 900px) {
+    margin: auto;
+  }
 `;
 
 const TrippyImage = styled.img`
@@ -45,6 +49,10 @@ const DropTitle = styled.p`
   text-align: left;
   color: #fff;
   padding: 0.5em 0 0.5em 0;
+
+  @media (max-width: 900px) {
+    text-align: center;
+  }
 `;
 
 const DropDateTime = styled.p`
@@ -61,6 +69,10 @@ const DropDateTime = styled.p`
   text-align: left;
   color: #fff;
   padding: 0.2em 0 0 0;
+
+  @media (max-width: 900px) {
+    text-align: center;
+  }
 `;
 
 const LeftAutoMarginWrapper = styled.div`

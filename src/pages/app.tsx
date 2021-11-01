@@ -19,7 +19,7 @@ const App = () => {
       <Main>
         <Navbar onOpen={onOpen} accountButton={true} />
         <AppPageMain />
-        <CTA onOpen={onOpen} />
+        {/* <CTA onOpen={onOpen} /> */}
         <FAQModal isOpen={isOpen} onClose={onClose} />
       </Main>
     </GradientContainer>
