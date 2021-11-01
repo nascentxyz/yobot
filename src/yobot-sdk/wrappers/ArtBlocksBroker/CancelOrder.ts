@@ -12,7 +12,6 @@ const cancelOrder = async (
   txConfirmedCallback: any,
   userRejectedCallback: any
 ) => {
-
   // ** ArtBlocks Project Id must be greater than 0 **
   if (!artBlocksProjectId || artBlocksProjectId <= 0)
     throw new Error("ArtBlocks Project Id must be greater than 0!");

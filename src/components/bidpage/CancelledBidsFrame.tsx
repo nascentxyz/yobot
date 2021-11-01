@@ -11,7 +11,7 @@ import {
   Text,
   Flex,
   Stack,
-  Link as ChakraLink
+  Link as ChakraLink,
 } from "@chakra-ui/react";
 import { CloseIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import styled from "@emotion/styled";

@@ -1,6 +1,6 @@
 # <h1 align="center"> Yobot </h1>
 
-<p align="center">A trustless broker to match Flashbots searchers with user bids.</p>
+<p align="center">A trustless marketplace to match searchers with user bids.</p>
 
 <div align="center">
 

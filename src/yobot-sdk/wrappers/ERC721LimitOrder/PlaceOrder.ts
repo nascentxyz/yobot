@@ -27,7 +27,6 @@ const placeOrder = async (
   txConfirmedCallback: any,
   userRejectedCallback: any
 ) => {
-
   // ** Price must be greater than 0 **
   if (!price || price <= 0)
     throw new Error("NFT price must be greater than 0!");
