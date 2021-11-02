@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
-import { ERC721 } from "zeppelin-solidity/token/ERC721/ERC721.sol";
+import {ERC721} from "zeppelin-solidity/token/ERC721/ERC721.sol";
 
 /// @title MockERC721
 /// @author Andreas Bigger <andreas@nascent.xyz>
