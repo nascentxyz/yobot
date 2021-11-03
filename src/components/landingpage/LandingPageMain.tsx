@@ -1,6 +1,8 @@
 import { Flex } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { TrippyArt } from "..";
+import { Waitlist } from 'waitlistapi'
+
 
 const PageGroup = styled.div`
   margin-left: 0px;
@@ -93,8 +95,17 @@ const LandingPageImage = styled.img`
   right: 96.5px;
 `;
 
+const WaitlistForm = styled.div`
+`;
+
 const LandingPageMain = () => (
-  <Flex minHeight="100px" height="auto" paddingLeft="106px" paddingRight="106px" flexGrow={1}>
+  <Flex
+    minHeight="100px"
+    height="auto"
+    paddingLeft="106px"
+    paddingRight="106px"
+    flexGrow={1}
+  >
     <PageGroup>
       <LandingPageMainBlurb>Mint NFTs Before The Crowd</LandingPageMainBlurb>
       <MinorHeading>
@@ -107,6 +118,11 @@ const LandingPageMain = () => (
       src="/LandingPageImage.png"
       alt="Landing Page Background Image"
     />
+
+    {/* <WaitlistForm>
+      <Waitlist api_key="EXAMPLE" waitlist_link="https://example.com" />
+    </WaitlistForm> */}
+    
   </Flex>
 );
 
