@@ -3,14 +3,15 @@ import styled from "@emotion/styled";
 import { TrippyArt } from "..";
 
 const PageGroup = styled.div`
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 0px;
+  margin-right: 0px;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 2em;
   padding-bottom: 2em;
   max-width: 800px;
+  z-index: 1;
 
   @media (max-width: 900px) {
     max-width: 600px;
@@ -23,12 +24,13 @@ const MinorHeading = styled.p`
   font-weight: lighter;
   line-height: 1.35;
   letter-spacing: 0.028em;
-  text-align: center;
+  text-align: left;
   color: #fff;
   padding-top: 1em;
   padding-bottom: 1em;
   max-width: 600px;
-  margin-left: auto;
+  margin-top: 0px;
+  margin-left: 0px;
   margin-right: auto;
 
   @media (max-width: 900px) {
@@ -44,11 +46,10 @@ const BigBreak = styled.div`
 const LandingPageMainBlurb = styled.h1`
   padding-top: 0.5em;
   padding-bottom: 0.5em;
-  font-family: Impact;
   font-size: 90px;
-  line-height: 90px;
+  line-height: 70px;
   font-weight: 900;
-  font-stretch: normal;
+  font-stretch: 200%;
   font-style: normal;
   background-image: linear-gradient(
     70deg,
@@ -60,7 +61,7 @@ const LandingPageMainBlurb = styled.h1`
   text-transform: uppercase;
   background-clip: text;
   color: transparent !important;
-  text-align: center;
+  text-align: left;
   letter-spacing: 0.02em;
   text-decoration: none;
   display: inline-block;
@@ -80,19 +81,33 @@ const LandingPageMainBlurb = styled.h1`
   }
 `;
 
+const LandingPageImage = styled.img`
+  width: 485.5px;
+  height: 459.8px;
+  flex-grow: 0;
+  margin-right: 0;
+  grid-column-start: 1;
+  grid-row-start: 1;
+  z-index: 0;
+  position: absolute;
+  right: 96.5px;
+`;
+
+
 const LandingPageMain = () => (
   <Flex minHeight="100px" height="auto" flexGrow={1} p={8}>
     <PageGroup>
       <LandingPageMainBlurb>
-        Mint Artblocks Before The Crowd
+        Mint NFTs Before The Crowd
       </LandingPageMainBlurb>
       <MinorHeading>
         Leverage the power of Ethereum flashbots to mint before the rush, and
         get the NFTs you want.
       </MinorHeading>
       <BigBreak />
-      <TrippyArt />
     </PageGroup>
+    <LandingPageImage src="/LandingPageImage.png" alt="Landing Page Background Image" />
+
   </Flex>
 );
 
