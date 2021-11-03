@@ -93,21 +93,20 @@ const LandingPageImage = styled.img`
   right: 96.5px;
 `;
 
-
 const LandingPageMain = () => (
-  <Flex minHeight="100px" height="auto" flexGrow={1} p={8}>
+  <Flex minHeight="100px" height="auto" paddingLeft="106px" paddingRight="106px" flexGrow={1}>
     <PageGroup>
-      <LandingPageMainBlurb>
-        Mint NFTs Before The Crowd
-      </LandingPageMainBlurb>
+      <LandingPageMainBlurb>Mint NFTs Before The Crowd</LandingPageMainBlurb>
       <MinorHeading>
         Leverage the power of Ethereum flashbots to mint before the rush, and
         get the NFTs you want.
       </MinorHeading>
       <BigBreak />
     </PageGroup>
-    <LandingPageImage src="/LandingPageImage.png" alt="Landing Page Background Image" />
-
+    <LandingPageImage
+      src="/LandingPageImage.png"
+      alt="Landing Page Background Image"
+    />
   </Flex>
 );
 

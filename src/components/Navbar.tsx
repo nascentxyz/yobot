@@ -5,14 +5,13 @@ import { ConnectWallet, FAQ, LaunchAppButton } from ".";
 
 const StyledYobot = styled(YobotSVG)`
   margin-right: auto;
-  margin-left: 1em;
+  margin-left: 0px;
 `;
 
 const LaunchGroup = styled.div`
   margin-left: auto;
   display: flex;
   flex-direction: row;
-  min-width: 300px;
 
   @media (max-width: 600px) {
     min-width: 100px;
@@ -26,6 +25,8 @@ const NavbarFlex = styled(Flex)`
   height: auto;
   max-height: 150px;
   padding: var(--chakra-space-8);
+  padding-right: 106px;
+  padding-left: 106px;
 
   @media (max-width: 600px) {
     padding: var(--chakra-space-4);
