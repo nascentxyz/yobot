@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { TrippyArt } from "..";
-import { Waitlist } from 'waitlistapi'
+// import { Waitlist } from 'waitlistapi'
 
 
 const PageGroup = styled.div`
@@ -21,9 +21,8 @@ const PageGroup = styled.div`
 `;
 
 const MinorHeading = styled.p`
-  font-family: Impact;
-  font-size: 26px;
-  font-weight: lighter;
+  font-family: "Helvetica Neue";
+  font-size: 24px;
   line-height: 1.35;
   letter-spacing: 0.028em;
   text-align: left;
@@ -31,7 +30,7 @@ const MinorHeading = styled.p`
   padding-top: 1em;
   padding-bottom: 1em;
   max-width: 600px;
-  margin-top: 0px;
+  margin-top: 12px;
   margin-left: 0px;
   margin-right: auto;
 
@@ -46,10 +45,11 @@ const BigBreak = styled.div`
 `;
 
 const LandingPageMainBlurb = styled.h1`
+  font-family: "Impact";
   padding-top: 0.5em;
   padding-bottom: 0.5em;
-  font-size: 90px;
-  line-height: 70px;
+  font-size: 100px;
+  line-height: 90px;
   font-weight: 900;
   font-stretch: 200%;
   font-style: normal;

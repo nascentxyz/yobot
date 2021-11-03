@@ -55,6 +55,7 @@ const Navbar = ({ accountButton = false, launchApp = false, onOpen }) => {
       <LaunchGroup>
         <LinkWrapper>
           <ChakraLink
+            fontFamily="Helvetica Neue"
             textDecoration="none !important"
             height="min-content"
             margin="auto"
