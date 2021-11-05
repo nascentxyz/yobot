@@ -38,10 +38,6 @@ const MinorHeading = styled.p`
   }
 `;
 
-const BigBreak = styled.div`
-  padding: 2em;
-`;
-
 const LandingPageMainBlurb = styled.h1`
   font-family: "Impact";
   padding-top: 0.5em;

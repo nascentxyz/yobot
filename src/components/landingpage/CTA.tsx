@@ -32,11 +32,6 @@ const CTAButton = styled(Button)`
     border-color: var(--chakra-colors-blue-800);
     background-color: var(--chakra-colors-gray-600);
   }
-
-  &:focus {
-    outline: 0 !important;
-    box-shadow: none !important;
-  }
 `;
 
 const CTA = () => {
