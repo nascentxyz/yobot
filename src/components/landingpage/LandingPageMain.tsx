@@ -20,7 +20,7 @@ const PageGroup = styled.div`
 
 const MinorHeading = styled.p`
   font-family: "Helvetica Neue";
-  font-size: 24px;
+  font-size: 22px;
   line-height: 1.35;
   letter-spacing: 0.028em;
   text-align: left;
@@ -33,7 +33,7 @@ const MinorHeading = styled.p`
   margin-right: auto;
 
   @media (max-width: 900px) {
-    font-size: 22px;
+    font-size: 20px;
     max-width: 400px;
   }
 `;
@@ -46,8 +46,8 @@ const LandingPageMainBlurb = styled.h1`
   font-family: "Impact";
   padding-top: 0.5em;
   padding-bottom: 0.5em;
-  font-size: 100px;
-  line-height: 90px;
+  font-size: 90px;
+  line-height: 85px;
   font-weight: 900;
   font-stretch: 200%;
   font-style: normal;

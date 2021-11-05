@@ -3,6 +3,13 @@ import { Button } from "@chakra-ui/react";
 import React from "react";
 import styled from "styled-components";
 
+const CTABox = styled(Flex)`
+  z-index: 1;
+  @media (max-width: 900px) {
+    max-width: 600px;
+  }
+`;
+
 const CTACopy = styled.p`
   font-family: "Helvetica Neue";
   font-size: 16px;
@@ -34,10 +41,10 @@ const CTAButton = styled(Button)`
 
 const CTA = () => {
   return (
-    <Flex
+    <CTABox
       bg="#191b1f"
-      m="80px 117px 146px 117px"
-      w="auto"
+      m="40px auto 146px auto"
+      w="675px"
       d="grid"
       p="24px 52px 24px 52px"
       borderRadius="8px"
@@ -45,7 +52,7 @@ const CTA = () => {
       align="center"
     >
       <CTACopy>
-        We build tools to help NFT collectors. Join the Discord to get notified
+        We build tools for NFT collectors. Join the Discord to get notified
         about new drops and tools, and tell us what tools you want us to build.
       </CTACopy>
       <Link href="https://discord.gg/Wm3W6ggHgF" isExternal m="auto">
@@ -53,7 +60,7 @@ const CTA = () => {
           Join Discord
         </CTAButton>
       </Link>
-    </Flex>
+    </CTABox>
   );
 };
 
