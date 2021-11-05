@@ -1,8 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import styled from "@emotion/styled";
-import { TrippyArt } from "..";
-// import { Waitlist } from 'waitlistapi'
-
+import { default as CTA } from "./CTA";
 
 const PageGroup = styled.div`
   margin-left: 0px;
@@ -95,9 +93,6 @@ const LandingPageImage = styled.img`
   right: 96.5px;
 `;
 
-const WaitlistForm = styled.div`
-`;
-
 const LandingPageMain = () => (
   <Flex
     minHeight="100px"
@@ -105,6 +100,7 @@ const LandingPageMain = () => (
     paddingLeft="106px"
     paddingRight="106px"
     flexGrow={1}
+    display="grid"
   >
     <PageGroup>
       <LandingPageMainBlurb>Mint NFTs Before The Crowd</LandingPageMainBlurb>
@@ -112,17 +108,12 @@ const LandingPageMain = () => (
         Leverage the power of Ethereum flashbots to mint before the rush, and
         get the NFTs you want.
       </MinorHeading>
-      <BigBreak />
     </PageGroup>
+    <CTA />
     <LandingPageImage
       src="/LandingPageImage.png"
       alt="Landing Page Background Image"
     />
-
-    {/* <WaitlistForm>
-      <Waitlist api_key="EXAMPLE" waitlist_link="https://example.com" />
-    </WaitlistForm> */}
-    
   </Flex>
 );
 
