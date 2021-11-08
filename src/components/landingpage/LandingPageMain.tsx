@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import styled from "@emotion/styled";
-import { default as CTA } from "./CTA";
+import { default as LandingPageCTA } from "./LandingPageCTA";
 
 const PageGroup = styled.div`
   margin-left: 0px;
@@ -105,7 +105,7 @@ const LandingPageMain = () => (
         get the NFTs you want.
       </MinorHeading>
     </PageGroup>
-    <CTA />
+    <LandingPageCTA />
     <LandingPageImage
       src="/LandingPageImage.png"
       alt="Landing Page Background Image"

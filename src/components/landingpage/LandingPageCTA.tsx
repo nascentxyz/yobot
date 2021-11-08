@@ -34,7 +34,7 @@ const CTAButton = styled(Button)`
   }
 `;
 
-const CTA = () => {
+const LandingPageCTA = () => {
   return (
     <CTABox
       bg="#191b1f"
@@ -59,4 +59,4 @@ const CTA = () => {
   );
 };
 
-export default CTA;
+export default LandingPageCTA;
