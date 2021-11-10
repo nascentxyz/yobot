@@ -115,8 +115,7 @@ const LandingPageMain = () => (
     <PageGroup>
       <LandingPageMainBlurb>Mint NFTs Before The Crowd</LandingPageMainBlurb>
       <MinorHeading>
-        Leverage the power of Ethereum flashbots to mint before the rush, and
-        get the NFTs you want.
+        Leverage the power of Flashbots to mint before the crowd, and secure the NFTs you desire.
       </MinorHeading>
     </PageGroup>
     <LandingPageCTA />
