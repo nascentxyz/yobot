@@ -5,13 +5,10 @@ import styled from "styled-components";
 
 const CTABox = styled(Flex)`
   z-index: 1;
-  @media (max-width: 900px) {
-    max-width: 600px;
-  }
 `;
 
 const CTACopy = styled.p`
-  font-family: "Helvetica Neue";
+  font-family: "Roboto-Regular";
   font-size: 16px;
   font-weight: normal;
   font-stretch: normal;

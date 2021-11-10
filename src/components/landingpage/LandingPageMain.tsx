@@ -1,5 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import styled from "@emotion/styled";
+import { createGlobalStyle } from "styled-components";
 import { default as LandingPageCTA } from "./LandingPageCTA";
 
 const PageGroup = styled.div`
@@ -12,14 +13,10 @@ const PageGroup = styled.div`
   padding-bottom: 2em;
   max-width: 800px;
   z-index: 1;
-
-  @media (max-width: 900px) {
-    max-width: 600px;
-  }
 `;
 
 const MinorHeading = styled.p`
-  font-family: "Helvetica Neue";
+  font-family: "Roboto-Regular";
   font-size: 22px;
   line-height: 1.35;
   letter-spacing: 0.028em;
@@ -31,11 +28,6 @@ const MinorHeading = styled.p`
   margin-top: 12px;
   margin-left: 0px;
   margin-right: auto;
-
-  @media (max-width: 900px) {
-    font-size: 20px;
-    max-width: 400px;
-  }
 `;
 
 const LandingPageMainBlurb = styled.h1`
@@ -66,15 +58,6 @@ const LandingPageMainBlurb = styled.h1`
   -moz-transform: scale(1, 1.6); /* Firefox */
   -ms-transform: scale(1, 1.6); /* IE 9+ */
   -o-transform: scale(1, 1.6); /* Opera */
-
-  @media (max-width: 900px) {
-    font-size: 60px;
-    line-height: 60px;
-  }
-
-  @media (max-width: 600px) {
-    padding-bottom: 1em;
-  }
 `;
 
 const LandingPageImage = styled.img`
@@ -86,7 +69,34 @@ const LandingPageImage = styled.img`
   grid-row-start: 1;
   z-index: 0;
   position: absolute;
-  right: 96.5px;
+  right: 0px;
+`;
+
+// fixme for Nimbus link
+const FontStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'Roboto-Regular';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
+  @font-face {
+    font-family: 'Roboto-Medium';
+    font-style: normal;
+    font-weight: 500;
+    src: url(https://fonts.gstatic.com/s/roboto/v29/KFOlCnqEu92Fr1MmEU9fBBc4AMP6lQ.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
+  @font-face {
+    font-family: 'Nimbus Sans Extd';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
 `;
 
 const LandingPageMain = () => (
@@ -95,9 +105,13 @@ const LandingPageMain = () => (
     height="auto"
     paddingLeft="106px"
     paddingRight="106px"
+    width="960px"
+    min-width="960px"
     flexGrow={1}
     display="grid"
+    position="relative"
   >
+    <FontStyle />
     <PageGroup>
       <LandingPageMainBlurb>Mint NFTs Before The Crowd</LandingPageMainBlurb>
       <MinorHeading>
