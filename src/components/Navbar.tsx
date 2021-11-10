@@ -20,8 +20,8 @@ const NavbarFlex = styled(Flex)`
   height: auto;
   max-height: 150px;
   padding: var(--chakra-space-8);
-  padding-left: 106px;
-  padding-right: 106px;
+  padding-left: 26px;
+  padding-right: 26px;
   width: 960px;
 `;
 

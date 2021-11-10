@@ -98,8 +98,8 @@ const LandingPageMain = () => (
   <Flex
     minHeight="100px"
     height="auto"
-    paddingLeft="106px"
-    paddingRight="106px"
+    paddingLeft="26px"
+    paddingRight="26px"
     width="960px"
     min-width="960px"
     flexGrow={1}
