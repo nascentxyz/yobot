@@ -9,7 +9,7 @@ const PageGroup = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 2em;
+  padding-top: 3.5em;
   padding-bottom: 2em;
   max-width: 800px;
   z-index: 1;
@@ -17,7 +17,7 @@ const PageGroup = styled.div`
 
 const MinorHeading = styled.p`
   font-family: "Roboto-Regular";
-  font-size: 22px;
+  font-size: 21px;
   line-height: 1.35;
   letter-spacing: 0.028em;
   text-align: left;
@@ -31,13 +31,13 @@ const MinorHeading = styled.p`
 `;
 
 const LandingPageMainBlurb = styled.h1`
-  font-family: "Impact";
+  font-family: "Nimbus-Sans-Extd";
   padding-top: 0.5em;
   padding-bottom: 0.5em;
-  font-size: 90px;
-  line-height: 85px;
+  font-size: 65px;
+  line-height: 55px;
   font-weight: 900;
-  font-stretch: 200%;
+  font-stretch: ultra-expanded;
   font-style: normal;
   background-image: linear-gradient(
     70deg,
@@ -50,7 +50,6 @@ const LandingPageMainBlurb = styled.h1`
   background-clip: text;
   color: transparent !important;
   text-align: left;
-  letter-spacing: 0.02em;
   text-decoration: none;
   display: inline-block;
   transform: scale(1, 1.6);
@@ -72,7 +71,6 @@ const LandingPageImage = styled.img`
   right: 0px;
 `;
 
-// fixme for Nimbus link
 const FontStyle = createGlobalStyle`
   @font-face {
     font-family: 'Roboto-Regular';
@@ -91,11 +89,8 @@ const FontStyle = createGlobalStyle`
   }
 
   @font-face {
-    font-family: 'Nimbus Sans Extd';
-    font-style: normal;
-    font-weight: 400;
-    src: url(https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2) format('woff2');
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    font-family: 'Nimbus-Sans-Extd';
+    src: url('./fonts/Nimbus-Sans-D-OT-Black-Extended_32740.ttf') format('truetype');
   }
 `;
 
@@ -115,7 +110,8 @@ const LandingPageMain = () => (
     <PageGroup>
       <LandingPageMainBlurb>Mint NFTs Before The Crowd</LandingPageMainBlurb>
       <MinorHeading>
-        Leverage the power of Flashbots to mint before the crowd, and secure the NFTs you desire.
+        Leverage the power of Flashbots to mint before the crowd, and secure the
+        NFTs you desire.
       </MinorHeading>
     </PageGroup>
     <LandingPageCTA />
