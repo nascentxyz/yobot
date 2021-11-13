@@ -25,9 +25,9 @@ import { NascentBadge } from "..";
 const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
   const { t } = useTranslation();
   return (
-    <Modal isOpen={isOpen} onClose={onClose} scrollBehavior={"inside"}>
-      <ModalOverlay />
-      <ModalContent pt={0} maxWidth={"800px"}>
+    <Modal isOpen={isOpen} onClose={onClose} scrollBehavior={"inside"} isCentered={true}>
+      <ModalOverlay width={"100%"} height={"100%"}/>
+      <ModalContent pt={0} alignItems={"center"}>
         <ModalHeader fontSize="3xl" pb={2} pt={8}>
           {t("FAQ")}
         </ModalHeader>
@@ -443,11 +443,7 @@ const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
               {t("How to reach out to the Yobot team?")}
             </Heading>
             <Stack direction="row">
-              <Text>
-                {t(
-                  "Reach out to the team on"
-                )}
-              </Text>
+              <Text>{t("Reach out to the team on")}</Text>
               <Stack
                 marginInlineStart="0.2em"
                 width="min-content"
@@ -466,11 +462,7 @@ const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
                 </ChakraLink>
                 !
               </Stack>
-              <Text>
-                {t(
-                  "or hop in our"
-                )}
-              </Text>
+              <Text>{t("or hop in our")}</Text>
               <Stack
                 marginInlineStart="0.2em"
                 width="min-content"
