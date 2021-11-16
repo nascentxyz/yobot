@@ -1,1 +1,1 @@
-export { default as ProviderOptions } from './ProviderOptions';
+export { default as ProviderOptions } from "./ProviderOptions";

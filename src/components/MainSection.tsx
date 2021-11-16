@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Web3 from "web3";
 import Web3Modal from "web3modal";
-import { ConnectButtons } from './';
+import { ConnectButtons } from "./";
 import { useWeb3React, Web3ReactProvider } from "@web3-react/core";
 import { Button, Container, useColorMode } from "@chakra-ui/react";
 import styled from "@emotion/styled";
@@ -17,18 +17,20 @@ const MainSection = () => {
   const [connected, setConnected] = useState(false);
 
   useEffect(() => {
-    if(provider) {
+    if (provider) {
       setConnected(provider.isConnected());
     }
-  }, [provider])
+  }, [provider]);
 
   useEffect(() => {
-    if(window !== undefined) {
-      setWeb3Modal(new Web3Modal({
-        cacheProvider: false,
-        providerOptions: ProviderOptions,
-        theme: colorMode == 'light' ? 'light' : 'dark'
-      }));
+    if (window !== undefined) {
+      setWeb3Modal(
+        new Web3Modal({
+          cacheProvider: false,
+          providerOptions: ProviderOptions,
+          theme: colorMode == "light" ? "light" : "dark",
+        })
+      );
     }
   }, []);
 
@@ -36,18 +38,18 @@ const MainSection = () => {
   const getAccount = async (curr_web3) => {
     const accounts = await curr_web3.eth.getAccounts();
     setAccount(accounts[0]);
-  }
+  };
 
   // ** Function to open web3 modal
   const openModal = async () => {
-    if(web3Modal) {
+    if (web3Modal) {
       const new_provider = await web3Modal.connect();
       const new_web3 = new Web3(new_provider);
       getAccount(new_web3);
 
       // ** Subscribe to accounts change
       new_provider.on("accountsChanged", (accounts) => {
-        console.log("account changed!")
+        console.log("account changed!");
         getAccount(new_web3);
       });
 
@@ -67,7 +69,7 @@ const MainSection = () => {
       setProvider(new_provider);
       setWeb3(new_web3);
     }
-  }
+  };
 
   // ** Function to disconnect web3 account
   const disconnectModal = async () => {
@@ -80,38 +82,37 @@ const MainSection = () => {
       await web3Modal.clearCachedProvider();
       setProvider(null);
     } catch (e) {
-      console.error("Failed to close provider:", e)
+      console.error("Failed to close provider:", e);
     }
-
-  }
+  };
 
   return (
     <Web3ReactProvider getLibrary={() => web3}>
       <NoMarginContainer
-        position='absolute'
-        margin='0'
-        padding='0'
-        top='1rem'
-        right='1rem'
-        justifyContent='right'
-        d='flex'
+        position="absolute"
+        margin="0"
+        padding="0"
+        top="1rem"
+        right="1rem"
+        justifyContent="right"
+        d="flex"
       >
         <Button
-          width='auto'
-          maxWidth='300px'
-          ml='auto'
-          cursor='pointer'
-          variant='outline'
-          colorScheme='blue.600'
-          color='blue.600'
+          width="auto"
+          maxWidth="300px"
+          ml="auto"
+          cursor="pointer"
+          variant="outline"
+          colorScheme="blue.600"
+          color="blue.600"
           onClick={!connected ? openModal : disconnectModal}
         >
-          {!connected ? 'Connect Wallet' : 'Disconnect Wallet'}
+          {!connected ? "Connect Wallet" : "Disconnect Wallet"}
         </Button>
       </NoMarginContainer>
     </Web3ReactProvider>
-  )
-}
+  );
+};
 
 const NoMarginContainer = styled(Container)`
   margin-top: 0 !important;
