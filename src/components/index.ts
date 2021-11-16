@@ -8,6 +8,7 @@ export { default as FAQ } from "./FAQ";
 export { default as FAQModal } from "./FAQModal";
 export { default as Footer } from "./Footer";
 export { default as GradientContainer } from "./GradientContainer";
+export { default as GrayButton } from "./GrayButton";
 export { default as TrippyArt } from "./TrippyArt";
 export { default as Header } from "./Header";
 export { default as Headline } from "./Headline";
