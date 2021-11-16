@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/layout";
 import React from "react";
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const TrippyImage = styled.img`
   // position: relative;
@@ -29,23 +29,14 @@ const ShadowBackground = styled.div`
 `;
 
 const TrippyArt = () => {
-
   return (
-    <Flex
-      w='100%'
-      p='relative'
-    >
-      <Flex
-        m='auto'
-        w='auto'
-        p='relative'
-        d='grid'
-      >
+    <Flex w="100%" p="relative">
+      <Flex m="auto" w="auto" p="relative" d="grid">
         <ShadowBackground />
         <TrippyImage src="/logo.png" alt="Main Art Piece" />
       </Flex>
     </Flex>
-  )
-}
+  );
+};
 
 export default TrippyArt;

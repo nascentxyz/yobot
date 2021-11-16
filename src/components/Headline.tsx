@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 
-
 const HeadlineImage = styled.img`
   width: auto;
   // height: 213px;
@@ -12,8 +11,8 @@ const HeadlineImage = styled.img`
 
 const Headline = () => {
   return (
-    <HeadlineImage src='/headline.png' alt='MINT ARTBLOCKS BEFORE THE CROWD' />
-  )
-}
+    <HeadlineImage src="/headline.png" alt="MINT ARTBLOCKS BEFORE THE CROWD" />
+  );
+};
 
 export default Headline;

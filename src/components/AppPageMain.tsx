@@ -1,7 +1,6 @@
-import { Flex } from '@chakra-ui/react'
-import styled from '@emotion/styled';
-import { PlaceBidFrame, NFTFrame, OpenBidsFrame } from '.';
-
+import { Flex } from "@chakra-ui/react";
+import styled from "@emotion/styled";
+import { PlaceBidFrame, NFTFrame, OpenBidsFrame } from ".";
 
 const PageGroup = styled.div`
   flex-grow: 1;
@@ -36,24 +35,19 @@ const MarginEightPix = styled.div`
 `;
 
 const AppPageMain = () => (
-    <Flex
-      minHeight='100px'
-      height="auto"
-      flexGrow={1}
-      p={8}
-    >
-      <PageGroup>
-        <MarginEightPix>
-          <BidRow>
-            <PlaceBidFrame />
-            <NFTFrame />
-          </BidRow>
-          <OpenBidRow>
-            <OpenBidsFrame />
-          </OpenBidRow>
-        </MarginEightPix>
-      </PageGroup>
-    </Flex>
-  )
+  <Flex minHeight="100px" height="auto" flexGrow={1} p={8}>
+    <PageGroup>
+      <MarginEightPix>
+        <BidRow>
+          <PlaceBidFrame />
+          <NFTFrame />
+        </BidRow>
+        <OpenBidRow>
+          <OpenBidsFrame />
+        </OpenBidRow>
+      </MarginEightPix>
+    </PageGroup>
+  </Flex>
+);
 
 export default AppPageMain;
