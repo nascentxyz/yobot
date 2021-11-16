@@ -1,11 +1,10 @@
 import styled from "@emotion/styled";
 
-
 const FAQP = styled.p`
   width: auto;
   height: auto;
   flex-grow: 0;
-  font-family: Roboto;
+  font-family: "Helvetica Neue";
   font-size: 16px;
   font-weight: bold;
   font-stretch: normal;
@@ -18,8 +17,8 @@ const FAQP = styled.p`
   margin: auto;
 `;
 
-const FAQ = () => (
-  <FAQP>FAQ</FAQP>
-)
+const FAQ = ({ mx = "0.5em" }) => (
+  <FAQP style={{ marginLeft: mx, marginRight: mx }}>FAQ</FAQP>
+);
 
 export default FAQ;

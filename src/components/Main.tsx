@@ -7,6 +7,7 @@ const Main = (props: StackProps) => (
     mt="0"
     pt="2em"
     px="1em"
+    alignItems="center"
     flexGrow={1}
     {...props}
   />

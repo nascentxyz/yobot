@@ -2,16 +2,24 @@ import {
   Navbar,
   Main,
   GradientContainer,
-  LandingPageMain
-} from 'src/components';
+  LandingPageMain,
+  FAQModal,
+} from "src/components";
 
-const Index = () => (
-  <GradientContainer>
-    <Main>
-      <Navbar />
-      <LandingPageMain />
-    </Main>
-  </GradientContainer>
-)
+import { useDisclosure } from "@chakra-ui/react";
+
+const Index = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  return (
+    <GradientContainer>
+      <Main>
+        <Navbar onOpen={onOpen} launchApp={false} />
+        <LandingPageMain />
+        <FAQModal isOpen={isOpen} onClose={onClose} />
+      </Main>
+    </GradientContainer>
+  );
+};
 
 export default Index;
