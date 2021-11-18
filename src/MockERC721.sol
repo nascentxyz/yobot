@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.0;
 
-import {ERC721} from "zeppelin-solidity/token/ERC721/ERC721.sol";
+import { ERC721 } from "zeppelin-solidity/token/ERC721/ERC721.sol";
 
 /// @title MockERC721
 /// @author Andreas Bigger <andreas@nascent.xyz>
@@ -45,6 +45,7 @@ contract MockERC721 is ERC721 {
         _safeMint(msg.sender, newToken);
 
         // Try to send value to the developooor
-        payable(developer).call{value: msg.value}("");
+        (bool _success,) = payable(developer).call{value: msg.value}("");
+        require(_success, "UNSUCCESSFULLY_PAYED_THE_DEVS_:(");
     }
 }
