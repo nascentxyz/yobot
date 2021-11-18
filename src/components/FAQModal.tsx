@@ -32,7 +32,12 @@ const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
       isCentered={true}
     >
       <ModalOverlay width={"100%"} height={"100%"} />
-      <ModalContent pt={0} alignItems={"center"}>
+      <ModalContent
+        pt={0}
+        mx={"3rem"}
+        maxWidth={"1000px"}
+        alignItems={"center"}
+      >
         <ModalHeader fontSize="3xl" pb={2} pt={8}>
           {t("FAQ")}
         </ModalHeader>
