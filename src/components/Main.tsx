@@ -1,4 +1,4 @@
-import { Stack, StackProps } from '@chakra-ui/react'
+import { Stack, StackProps } from "@chakra-ui/react";
 
 const Main = (props: StackProps) => (
   <Stack
@@ -7,9 +7,10 @@ const Main = (props: StackProps) => (
     mt="0"
     pt="2em"
     px="1em"
+    alignItems="center"
     flexGrow={1}
     {...props}
   />
-)
+);
 
 export default Main;

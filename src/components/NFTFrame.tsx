@@ -70,18 +70,14 @@ const LeftAutoMarginWrapper = styled.div`
   margin-left: auto;
 `;
 
-const NFTFrame = ({title='ArtBlocks Launch', dateTime='04/02/2021 16:40 PST'}) => {
-
+const NFTFrame = ({
+  title = "ArtBlocks Launch",
+  dateTime = "04/02/2021 16:40 PST",
+}) => {
   return (
     <NFTBox>
       <LeftAutoMarginWrapper>
-        <Flex
-          m='auto'
-          w='auto'
-          p='relative'
-          d='grid'
-          padding="0 0 1em 0"
-        >
+        <Flex m="auto" w="auto" p="relative" d="grid" padding="0 0 1em 0">
           <ShadowBackground />
           <TrippyImage src="/logo.png" alt="Main Art Piece" />
         </Flex>
@@ -89,7 +85,7 @@ const NFTFrame = ({title='ArtBlocks Launch', dateTime='04/02/2021 16:40 PST'}) =
         <DropDateTime>{dateTime}</DropDateTime>
       </LeftAutoMarginWrapper>
     </NFTBox>
-  )
-}
+  );
+};
 
 export default NFTFrame;

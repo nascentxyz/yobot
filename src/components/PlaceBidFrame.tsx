@@ -94,13 +94,14 @@ const ConnectWalletWrapper = styled.div`
 `;
 
 const PlaceBidFrame = () => {
-
   return (
     <BidBox>
       <PlaceBidText>Place Bid</PlaceBidText>
       <DataForm>
         <PriceText>Price per NFT (ETH)</PriceText>
-        <PriceSubText>Include gas fees in your bid price. Higher bids will be filled first!</PriceSubText>
+        <PriceSubText>
+          Include gas fees in your bid price. Higher bids will be filled first!
+        </PriceSubText>
         <CustomInput placeholder="0.00" size="lg" />
         <QuantityText>Quantity</QuantityText>
         <CustomInput placeholder="0" size="lg" />
@@ -109,7 +110,7 @@ const PlaceBidFrame = () => {
         <ConnectWallet />
       </ConnectWalletWrapper>
     </BidBox>
-  )
+  );
 };
 
 export default PlaceBidFrame;
