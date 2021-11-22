@@ -59,7 +59,7 @@
     "debounce": "^1.2.1",
     "dotenv": "^10.0.0",
     "ethers": "^5.4.7",
-    "framer-motion": "^4.0.3",
+    "framer-motion": "^5.2.0",
     "logrocket": "^2.1.1",
     "material-react-toastify": "^1.0.1",
     "next": "^12.0.1",
@@ -68,7 +68,7 @@
     "react-dom": "^17.0.2",
     "react-i18next": "^11.12.0",
     "react-toastify": "^8.0.3",
-    "styled-components": "^5.3.1",
+    "styled-components": "^4.0.0",
     "web3": "^1.5.3",
     "web3modal": "^1.9.4"
   },
