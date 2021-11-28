@@ -59,7 +59,7 @@
     "debounce": "^1.2.1",
     "dotenv": "^10.0.0",
     "ethers": "^5.4.7",
-    "framer-motion": "^4.0.3",
+    "framer-motion": "^5.2.0",
     "logrocket": "^2.1.1",
     "material-react-toastify": "^1.0.1",
     "next": "^12.0.1",

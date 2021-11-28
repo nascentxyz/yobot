@@ -4,7 +4,7 @@ const FAQP = styled.p`
   width: auto;
   height: auto;
   flex-grow: 0;
-  font-family: Roboto;
+  font-family: "Helvetica Neue";
   font-size: 16px;
   font-weight: bold;
   font-stretch: normal;
