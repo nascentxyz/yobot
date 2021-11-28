@@ -318,7 +318,12 @@ const PlaceBidFrame = () => {
         <ModalContent>
           <ModalHeader>
             <Heading>🚨 Place Bid? 🚨</Heading>
-            <ModalCloseButton />
+            <ModalCloseButton
+              onClick={() => {
+                setPlacingBid(false);
+                onClose();
+              }}
+            />
           </ModalHeader>
           <ModalBody>
             <Checkbox
