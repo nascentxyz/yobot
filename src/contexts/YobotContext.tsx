@@ -1,5 +1,6 @@
 import React, {
   createContext,
+  useCallback,
   useContext,
   useState,
   useEffect,
@@ -106,18 +107,6 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  useEffect(() => {
-    // refreshChainId({});
-    if (localStorage.WEB3_CONNECT_CACHED_PROVIDER) {
-      // if(!isAttemptingLogin) {
-      login();
-      // }
-    } else {
-      // ** If we weren't previously connected, let's try to logout **
-      logout();
-    }
-  }, []);
-
   const [address, setAddress] = useState<string>(EmptyAddress);
   const [balance, setBalance] = useState<number>(0);
   const [web3ModalProvider, setWeb3ModalProvider] = useState<any | null>(null);
@@ -161,9 +150,8 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
     refreshEvents();
   }, [address]);
 
-  const setYobotAndAddressFromModal = (modalProvider) => {
-    if (!updatingLock) {
-      setUpdatingLock(true);
+  const setYobotAndAddressFromModal = useCallback(
+    (modalProvider) => {
       const yobotInstance = new Yobot(modalProvider);
       setYobot(yobotInstance);
 
@@ -201,52 +189,54 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
             )
           );
       });
-    }
-  };
+    },
+    [setYobot, setAddress]
+  );
 
-  const login = async (cacheProvider: boolean = true) => {
-    try {
-      setIsAttemptingLogin(true);
-      let provider = await launchModalLazy(t, cacheProvider);
-      setWeb3ModalProvider(provider);
-      setYobotAndAddressFromModal(provider);
-      setIsAttemptingLogin(false);
-    } catch (err) {
-      setIsAttemptingLogin(false);
-      return console.error(err);
-    }
-  };
-
-  const refetchAccountData = () => {
-    setYobotAndAddressFromModal(web3ModalProvider);
-  };
-
-  const logout = () => {
-    setWeb3ModalProvider((past: any) => {
+  const login = useCallback(
+    async (cacheProvider: boolean = true) => {
       try {
-        past.clearCachedProvider().then((_res) => {});
-        past.request({
-          method: "wallet_requestPermissions",
-          params: [
-            {
-              eth_accounts: {},
-            },
-          ],
-        });
-      } catch (e) {
-        console.error("Failed to close web3 modal provider");
-        console.error(e);
+        setIsAttemptingLogin(true);
+        let provider = await launchModalLazy(t, cacheProvider);
+        setWeb3ModalProvider(provider);
+        setYobotAndAddressFromModal(provider);
+        setIsAttemptingLogin(false);
+      } catch (err) {
+        // TODO: should display error toast if failed to login/connect?
+        setIsAttemptingLogin(false);
+        return console.error(err);
       }
+    },
+    // fixme: add `t` to hook dependencies list
+    [setWeb3ModalProvider, setYobotAndAddressFromModal, setIsAttemptingLogin]
+  );
+
+  const refetchAccountData = useCallback(() => {
+    setYobotAndAddressFromModal(web3ModalProvider);
+  }, [setYobotAndAddressFromModal, web3ModalProvider]);
+
+  const logout = useCallback(() => {
+    setWeb3ModalProvider((past: any) => {
       if (past?.off) {
         past.off("accountsChanged", refetchAccountData);
         past.off("chainChanged", refetchAccountData);
       }
+
       return null;
     });
+
     localStorage.removeItem("WEB3_CONNECT_CACHED_PROVIDER");
     localStorage.removeItem("walletconnect");
     setAddress(EmptyAddress);
-  };
+  }, [setWeb3ModalProvider, refetchAccountData]);
+
+  // Use this effect only when `login` callback fxn changes
+  useEffect(() => {
+    // refreshChainId({});
+    if (localStorage.WEB3_CONNECT_CACHED_PROVIDER && !isAttemptingLogin) {
+      login();
+    }
+  }, [login]);
 
   useEffect(() => {
     if (web3ModalProvider !== null && web3ModalProvider.on) {
