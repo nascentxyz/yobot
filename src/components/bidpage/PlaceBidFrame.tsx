@@ -134,6 +134,7 @@ const PlaceBidFrame = () => {
   const submitBid = async (_frozenBidPrice, _frozenBidQty) => {
     // TODO: depending on the erc721 - art blocks or general - this should change
     try {
+      setPlacingBid(true);
       let placeBidTx = await yobot.YobotERC721LimitOrder.placeOrder(
         yobot.web3, // web3
         yobot.YobotERC721LimitOrder.YobotERC721LimitOrder, // yobotERC721LimitOrder
@@ -149,11 +150,9 @@ const PlaceBidFrame = () => {
         },
         async (msg) => {
           onTxFailed(msg);
-          setPlacingBid(false);
         },
         async (msg) => {
           onTxConfirmed(msg);
-          setPlacingBid(false);
           refreshEvents();
         },
         async (msg) => {
