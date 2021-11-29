@@ -30,7 +30,7 @@ const cancelOrder = async (
       }
     })
     .on("receipt", () => {
-      txConfirmedCallback("⚔️ Placed Order ⚔️");
+      txConfirmedCallback("⚔️ Cancelled Order ⚔️");
     });
 
   // ** Just return the txn object **

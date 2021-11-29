@@ -177,7 +177,7 @@ const AccountModal = ({ isOpen, onClose }: AccountModalProps) => {
         </ModalBody>
 
         <ModalFooter
-          justifyContent="end"
+          justifyContent="begin"
           background="gray.700"
           borderBottomLeftRadius="3xl"
           borderBottomRightRadius="3xl"
@@ -190,7 +190,7 @@ const AccountModal = ({ isOpen, onClose }: AccountModalProps) => {
             fontSize="md"
             width="100%"
           >
-            Your transactions willl appear here...
+            Your transactions will appear here...
           </Text>
         </ModalFooter>
       </ModalContent>
