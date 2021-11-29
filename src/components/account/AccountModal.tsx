@@ -18,10 +18,7 @@ import { ExternalLinkIcon, CopyIcon } from "@chakra-ui/icons";
 import Identicon from "./Identicon";
 import { useYobot } from "src/contexts/YobotContext";
 import { NoShadowButton, NoShadowLink } from "src/components";
-import useClippy from "use-clippy";
-import {
-  getNetworkPrefix,
-} from "src/utils";
+import { getNetworkPrefix } from "src/utils";
 
 type AccountModalProps = {
   isOpen: any;
@@ -30,7 +27,6 @@ type AccountModalProps = {
 
 const AccountModal = ({ isOpen, onClose }: AccountModalProps) => {
   const { address, logout, chainId, login } = useYobot();
-  const [clipboard, setClipboard] = useClippy();
 
   // ** Deactivate/logout with Disclosure **
   function handleDeactivateAccount() {
@@ -43,7 +39,7 @@ const AccountModal = ({ isOpen, onClose }: AccountModalProps) => {
     // logout();
     onClose();
     setTimeout(async () => await login(false), 500);
-  }
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered size="md">
@@ -149,12 +145,11 @@ const AccountModal = ({ isOpen, onClose }: AccountModalProps) => {
                 }}
                 onClick={() => {
                   try {
-                    navigator.clipboard.writeText(`${address}`)
+                    navigator.clipboard.writeText(`${address}`);
                   } catch (error) {
                     console.error(error);
                   }
-                  setClipboard(`${address}`)
-                  }}
+                }}
               >
                 <CopyIcon mr={1} />
                 Copy Address

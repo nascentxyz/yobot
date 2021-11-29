@@ -205,10 +205,10 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const login = async (cacheProvider: boolean = true) => {
-    console.log("logging in...")
+    console.log("logging in...");
     try {
       setIsAttemptingLogin(true);
-      console.log("launching lazy modal...")
+      console.log("launching lazy modal...");
       let provider = await launchModalLazy(t, cacheProvider);
       setWeb3ModalProvider(provider);
       setYobotAndAddressFromModal(provider);
