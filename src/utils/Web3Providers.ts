@@ -1,11 +1,14 @@
-export const alchemyURL = `https://eth-mainnet.alchemyapi.io/v2/${
+export const alchemyMainnetURL = `https://eth-mainnet.alchemyapi.io/v2/${
+  process.env.ALCHEMY_PROD_API_KEY ? process.env.ALCHEMY_PROD_API_KEY : ""
+}`;
+export const alchemyRinkebyURL = `https://eth-rinkeby.alchemyapi.io/v2/${
   process.env.ALCHEMY_PROD_API_KEY ? process.env.ALCHEMY_PROD_API_KEY : ""
 }`;
 export const testnetURL = `http://localhost:8545`;
 
 export function chooseBestWeb3Provider() {
   if (typeof window === "undefined") {
-    return alchemyURL;
+    return alchemyMainnetURL;
   }
 
   if (window.ethereum) {
@@ -13,6 +16,6 @@ export function chooseBestWeb3Provider() {
   } else if (window.web3) {
     return window.web3.currentProvider;
   } else {
-    return alchemyURL;
+    return alchemyMainnetURL;
   }
 }
