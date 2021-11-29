@@ -20,14 +20,19 @@ import {
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { useTranslation } from "react-i18next";
 
-import { NascentBadge } from "..";
+import { NascentBadge, AnonBadge } from "src/components";
 
 const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
   const { t } = useTranslation();
   return (
-    <Modal isOpen={isOpen} onClose={onClose} scrollBehavior={"inside"}>
-      <ModalOverlay />
-      <ModalContent pt={0} maxWidth={"800px"}>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      scrollBehavior={"inside"}
+      isCentered={true}
+    >
+      <ModalOverlay width={"100%"} height={"100%"} />
+      <ModalContent pt={0} alignItems={"center"}>
         <ModalHeader fontSize="3xl" pb={2} pt={8}>
           {t("FAQ")}
         </ModalHeader>
@@ -39,7 +44,7 @@ const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
             </Heading>
             <Text>
               {t(
-                "Yobot is a completely trustless marketplace. You can place bids, where your eth is escrowed by Yobot contracts until either:"
+                "Yobot is a completely trustless marketplace. You can place bids, where your ETH is escrowed by Yobot contracts until either:"
               )}
             </Text>
             <OrderedList pl="1em" maxWidth="calc(100% - 1em)">
@@ -63,7 +68,7 @@ const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
               </ListItem>
               <ListItem>
                 {t(
-                  "You either get you bidded nfts filled or your locked eth is returned once gas drops post-mint."
+                  "You either get you bidded NFTs filled, or your locked ETH is returned once gas drops post-mint."
                 )}
               </ListItem>
               <ListItem>{t("You can circumvent mint limits.")}</ListItem>
@@ -76,7 +81,7 @@ const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
             </Heading>
             <Text>
               {t(
-                "Yobot makes minting nfts via bots accessible to all NFT buyers, so you have the best chance at securing the art you love!"
+                "Yobot makes minting NFTs via bots accessible to all NFT buyers, so you have the best chance at securing the art you love!"
               )}
             </Text>
             <Text>
@@ -111,7 +116,7 @@ const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
                 >
                   Artbotter
                   <span style={{ margin: "auto", paddingLeft: "0.2em" }}>
-                    <ExternalLinkIcon />
+                    <ExternalLinkIcon marginTop="-4px" />
                   </span>
                 </ChakraLink>
               </Stack>
@@ -379,7 +384,7 @@ const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
                   >
                     Dan Elitzer
                     <span style={{ margin: "auto", paddingLeft: "0.2em" }}>
-                      <ExternalLinkIcon />
+                      <ExternalLinkIcon marginTop="-4px" />
                     </span>
                   </ChakraLink>
                   <NascentBadge />
@@ -396,7 +401,43 @@ const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
                   >
                     Andreas Bigger
                     <span style={{ margin: "auto", paddingLeft: "0.2em" }}>
-                      <ExternalLinkIcon />
+                      <ExternalLinkIcon marginTop="-4px" />
+                    </span>
+                  </ChakraLink>
+                  <NascentBadge />
+                </Stack>
+              </ListItem>
+              <ListItem>
+                <Stack direction="row">
+                  <ChakraLink
+                    display="flex"
+                    mr="0.2em"
+                    color="blue.400"
+                    isExternal
+                    href="https://twitter.com/permaetheus"
+                  >
+                    Permaetheus
+                    <span style={{ margin: "auto", paddingLeft: "0.2em" }}>
+                      <ExternalLinkIcon marginTop="-4px" />
+                    </span>
+                  </ChakraLink>
+                  <Flex pt="2px">
+                    <AnonBadge />
+                  </Flex>
+                </Stack>
+              </ListItem>
+              <ListItem>
+                <Stack direction="row">
+                  <ChakraLink
+                    display="flex"
+                    mr="0.2em"
+                    color="blue.400"
+                    isExternal
+                    href="https://twitter.com/kristiehuang"
+                  >
+                    Kristie Huang
+                    <span style={{ margin: "auto", paddingLeft: "0.2em" }}>
+                      <ExternalLinkIcon marginTop="-4px" />
                     </span>
                   </ChakraLink>
                   <NascentBadge />
@@ -410,11 +451,26 @@ const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
               {t("How to reach out to the Yobot team?")}
             </Heading>
             <Stack direction="row">
-              <Text>
-                {t(
-                  "Reach out to the team on Twitter (links above) or hop in our"
-                )}
-              </Text>
+              <Text>{t("Reach out to the team on")}</Text>
+              <Stack
+                marginInlineStart="0.2em"
+                width="min-content"
+                direction="row"
+              >
+                <ChakraLink
+                  display="flex"
+                  color="blue.400"
+                  isExternal
+                  href="https://twitter.com/yobotmarket"
+                >
+                  Twitter
+                  <span style={{ margin: "auto", paddingLeft: "0.2em" }}>
+                    <ExternalLinkIcon />
+                  </span>
+                </ChakraLink>
+                !
+              </Stack>
+              <Text>{t("or hop in our")}</Text>
               <Stack
                 marginInlineStart="0.2em"
                 width="min-content"
@@ -428,7 +484,7 @@ const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
                 >
                   Discord
                   <span style={{ margin: "auto", paddingLeft: "0.2em" }}>
-                    <ExternalLinkIcon />
+                    <ExternalLinkIcon marginTop="-4px" />
                   </span>
                 </ChakraLink>
                 !

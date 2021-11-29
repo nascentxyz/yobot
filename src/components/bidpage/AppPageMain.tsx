@@ -1,9 +1,22 @@
 import { Flex } from "@chakra-ui/react";
 import styled from "@emotion/styled";
-import { PlaceBidFrame, NFTFrame, OpenBidsFrame, CancelledBidsFrame } from ".";
+import {
+  PlaceBidFrame,
+  NFTFrame,
+  OpenBidsFrame,
+  CancelledBidsFrame,
+  SuccessfulBidsFrame,
+} from ".";
 
 const AppPageMain = () => (
-  <Flex mt="0 !important" minHeight="100px" height="auto" flexGrow={1} p={8}>
+  <Flex
+    mt="0 !important"
+    minHeight="100px"
+    height="auto"
+    flexGrow={1}
+    p={4}
+    pb={8}
+  >
     <PageGroup>
       <MarginEightPix>
         <BidRow>
@@ -16,6 +29,9 @@ const AppPageMain = () => (
         <CancelledBidRow>
           <CancelledBidsFrame />
         </CancelledBidRow>
+        <SuccessfulBidRow>
+          <SuccessfulBidsFrame />
+        </SuccessfulBidRow>
       </MarginEightPix>
     </PageGroup>
   </Flex>
@@ -35,6 +51,10 @@ const BidRow = styled.div`
   align-items: center;
   justify-content: space-between;
   padding-bottom: 2em;
+
+  @media (max-width: 900px) {
+    flex-direction: column-reverse;
+  }
 `;
 
 const OpenBidRow = styled.div`
@@ -48,6 +68,8 @@ const OpenBidRow = styled.div`
 `;
 
 const CancelledBidRow = styled(OpenBidRow)``;
+
+const SuccessfulBidRow = styled(OpenBidRow)``;
 
 const MarginEightPix = styled.div`
   max-width: 800px;

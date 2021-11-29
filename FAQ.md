@@ -1,11 +1,11 @@
 **What is Yobot?**
-Yobot is a completely trustless marketplace. You can place bids, where your eth is escrowed by Yobot contracts until either:
+Yobot is a completely trustless marketplace. You can place bids, where your ETH is escrowed by Yobot contracts until either:
 
 1. A bot comes along and mints your NFT, sending it to your address and receiving the escrowed funds from the Yobot Contracts.
 2. You cancel your order either before the minting, or after (in case you were outbid and no bot was able to fill your order).
 
 **Why Yobot?**
-Yobot makes minting nfts via bots accessible to all NFT buyers, so you have the best chance at securing the art you love!
+Yobot makes minting NFTs via bots accessible to all NFT buyers, so you have the best chance at securing the art you love!
 Place a bid on an NFT project before it drops and bots will compete to mint an NFT for you as soon as they become available at your specified price.
 If the drop sells out before your order is filled, you can cancel your bid at any time for a full refund (minus gas)!
 

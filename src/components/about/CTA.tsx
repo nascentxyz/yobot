@@ -1,7 +1,10 @@
-import { Link as ChakraLink, Text, Flex } from "@chakra-ui/react";
+import { Link as ChakraLink, Text, Flex, Stack } from "@chakra-ui/react";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { useTranslation } from "react-i18next";
 
-import { FAQModal, GrayButton } from "../";
+import { FAQModal, GrayButton } from "src/components";
+
+const YobotInterestForm = "https://forms.gle/BJLeGxdtCjL9kEtc8";
 
 const CTA = ({ onOpen }) => {
   const { t } = useTranslation();
@@ -22,7 +25,6 @@ const CTA = ({ onOpen }) => {
           margin="auto"
           width="100%"
           maxWidth="48rem"
-          // pt={2}
           pb={4}
         >
           <Flex flexGrow={0} mx={2} minWidth="100px">
@@ -30,15 +32,36 @@ const CTA = ({ onOpen }) => {
               {t("FAQ")}
             </GrayButton>
           </Flex>
-          <ChakraLink
-            isExternal
-            href="https://github.com/nascentxyz/yobot"
-            flexGrow={0}
-            mx={2}
-            minWidth="100px"
-          >
-            <GrayButton width="100%">Github</GrayButton>
-          </ChakraLink>
+          <Stack direction="row" mx={2}>
+            <ChakraLink
+              display="flex"
+              isExternal
+              href="https://github.com/nascentxyz/yobot"
+              style={{ textDecoration: "none" }}
+            >
+              <GrayButton width="100%">
+                <Text textDecoration="none">{t("Github")}</Text>{" "}
+                <span style={{ margin: "auto", paddingLeft: "0.4em" }}>
+                  <ExternalLinkIcon marginTop="-4px" />
+                </span>
+              </GrayButton>
+            </ChakraLink>
+          </Stack>
+          <Stack direction="row" mx={2}>
+            <ChakraLink
+              display="flex"
+              isExternal
+              href={YobotInterestForm}
+              style={{ textDecoration: "none" }}
+            >
+              <GrayButton width="100%">
+                <Text textDecoration="none">{t("Feedback")}</Text>{" "}
+                <span style={{ margin: "auto", paddingLeft: "0.4em" }}>
+                  <ExternalLinkIcon marginTop="-4px" />
+                </span>
+              </GrayButton>
+            </ChakraLink>
+          </Stack>
         </Flex>
         <Flex
           direction="row"
@@ -64,9 +87,9 @@ const CTA = ({ onOpen }) => {
             <ChakraLink
               color="blue.500"
               isExternal
-              href="https://twitter.com/andreasbigger"
+              href="https://twitter.com/permaetheus"
             >
-              Jamaal
+              Permaetheus
             </ChakraLink>{" "}
           </Text>
         </Flex>

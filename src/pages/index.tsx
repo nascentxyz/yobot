@@ -14,7 +14,7 @@ const Index = () => {
   return (
     <GradientContainer>
       <Main>
-        <Navbar onOpen={onOpen} launchApp={true} />
+        <Navbar onOpen={onOpen} launchApp={false} />
         <LandingPageMain />
         <FAQModal isOpen={isOpen} onClose={onClose} />
       </Main>
