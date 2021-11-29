@@ -36,7 +36,7 @@ const ConnectWallet = ({ fullWidth = false, darkerBackground = false }) => {
   const isMobile = useIsSmallScreen();
 
   const handleAccountButtonClick = useCallback(() => {
-    console.log("is authed:", isAuthed);
+    // console.log("is authed:", isAuthed);
     if (isAuthed) {
       openModal();
     } else login(false);
