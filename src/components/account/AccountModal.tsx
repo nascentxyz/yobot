@@ -19,6 +19,7 @@ import Identicon from "./Identicon";
 import { useYobot } from "src/contexts/YobotContext";
 import { NoShadowButton, NoShadowLink } from "src/components";
 import { getNetworkPrefix } from "src/utils";
+import TransactionsModalFooter from "./TransactionsModalFooter";
 
 type AccountModalProps = {
   isOpen: any;
@@ -176,23 +177,7 @@ const AccountModal = ({ isOpen, onClose }: AccountModalProps) => {
           </Box>
         </ModalBody>
 
-        <ModalFooter
-          justifyContent="begin"
-          background="gray.700"
-          borderBottomLeftRadius="3xl"
-          borderBottomRightRadius="3xl"
-          p={6}
-        >
-          <Text
-            color="white"
-            textAlign="left"
-            fontWeight="medium"
-            fontSize="md"
-            width="100%"
-          >
-            Your transactions will appear here...
-          </Text>
-        </ModalFooter>
+        <TransactionsModalFooter />
       </ModalContent>
     </Modal>
   );
