@@ -1,10 +1,8 @@
-import React from 'react';
-import render from '../images/3drender.jpg'
+import React from "react";
+import render from "../images/3drender.jpg";
 
 function ProjectCardDisabled() {
-
   return (
-   
     <div className="flex flex-col pb-3 overflow-hidden bg-gray-800 rounded shadow-sm  pointer-events-none">
       <div className="flex-grow w-full text-center ">
         <a
@@ -17,14 +15,10 @@ function ProjectCardDisabled() {
             className="inline-block rounded filter grayscale blur"
           />
         </a>
-        <h3 className="text-lg font-semibold text-gray-200">
-          COMING SOON
-        </h3>
-
+        <h3 className="text-lg font-semibold text-gray-200">COMING SOON</h3>
       </div>
     </div>
-
-   )
+  );
 }
 
-export default ProjectCardDisabled
+export default ProjectCardDisabled;

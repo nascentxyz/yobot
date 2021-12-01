@@ -18,7 +18,7 @@ const App = () => {
       <ToastContainer />
       <Navbar onOpen={onOpen} accountButton={true} />
       <AppPageMain />
-    </ GradientContainer>
+    </GradientContainer>
 
     // <GradientContainer>
     //   <ToastContainer />
