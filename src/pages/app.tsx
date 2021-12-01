@@ -16,13 +16,19 @@ const App = () => {
   return (
     <GradientContainer>
       <ToastContainer />
-      <Main>
-        <Navbar onOpen={onOpen} accountButton={true} />
-        <AppPageMain />
-        {/* <CTA onOpen={onOpen} /> */}
-        <FAQModal isOpen={isOpen} onClose={onClose} />
-      </Main>
-    </GradientContainer>
+      <Navbar onOpen={onOpen} accountButton={true} />
+      <AppPageMain />
+    </ GradientContainer>
+
+    // <GradientContainer>
+    //   <ToastContainer />
+    //   <Main>
+    //     <Navbar onOpen={onOpen} accountButton={true} />
+    //     <AppPageMain />
+    //     {/* <CTA onOpen={onOpen} /> */}
+    //     <FAQModal isOpen={isOpen} onClose={onClose} />
+    //   </Main>
+    // </GradientContainer>
   );
 };
 
