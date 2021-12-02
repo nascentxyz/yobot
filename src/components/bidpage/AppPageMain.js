@@ -1,6 +1,6 @@
 import React from "react";
 import ProjectDetails from "../jamaal-components/ProjectDetails";
-import ProjectBidTable from "../jamaal-components/ProjectBidTable";
+import ProjectBidTable from "./ProjectBidTable";
 import BidForm from "./BidForm";
 
 function AppPageMain() {

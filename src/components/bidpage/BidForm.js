@@ -274,7 +274,7 @@ const BidForm = () => {
           </Text>
         ) : (
           ""
-        )} 
+        )}
         {!isAuthed ? (
           <ConnectWallet fullWidth={true} darkerBackground={true} />
         ) : (
