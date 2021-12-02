@@ -29,7 +29,7 @@ const TOKEN_ADDRESS = "0xd8bbf8ceb445de814fb47547436b3cfeecadd4ec";
 const ProjectBidTable = () => {
   const { t } = useTranslation();
   const { yobot, isAuthed, actions, address, refreshEvents } = useYobot();
-  
+
   const [myOrders, setMyOrders] = useState([{}]);
   const [successfulOrders, setSuccessfulOrders] = useState([]);
   const [cancelledOrders, setCancelledOrders] = useState([]);
@@ -221,97 +221,83 @@ const ProjectBidTable = () => {
     // console.log("Cancelled order tx:", cancelOrderTx);
   };
 
-
   return (
     <div className="container mx-auto xl:max-w-7xl ">
       <div className="rounded-xl min-w-full  overflow-x-auto bg-gray-800  ">
-
         <table className="min-w-full text-sm align-middle text-center">
-
           <thead>
             <tr className="bg-gray-700">
-              <th
-                className="p-3 text-sm font-semibold tracking-wider  text-gray-300 uppercase bg-gray-700"
-              >
+              <th className="p-3 text-sm font-semibold tracking-wider  text-gray-300 uppercase bg-gray-700">
                 Date
               </th>
-              <th
-                className="p-3 text-sm text-center font-semibold tracking-wider sm:text-left text-gray-300 uppercase bg-gray-700"
-              >
+              <th className="p-3 text-sm text-center font-semibold tracking-wider sm:text-left text-gray-300 uppercase bg-gray-700">
                 Quantity
               </th>
-              <th
-                className="hidden p-3 text-sm font-semibold tracking-wider text-center text-gray-300 uppercase bg-gray-700 md:table-cell"
-              >
+              <th className="hidden p-3 text-sm font-semibold tracking-wider text-center text-gray-300 uppercase bg-gray-700 md:table-cell">
                 Total (ETH)
               </th>
-              <th
-                className="p-3 text-sm font-semibold tracking-wider text-center text-gray-300 uppercase bg-gray-700"
-              >
+              <th className="p-3 text-sm font-semibold tracking-wider text-center text-gray-300 uppercase bg-gray-700">
                 Status
               </th>
-              <th
-                className="p-3 text-sm font-semibold tracking-wider text-center text-gray-300 uppercase bg-gray-700"
-              >
+              <th className="p-3 text-sm font-semibold tracking-wider text-center text-gray-300 uppercase bg-gray-700">
                 Cancel
               </th>
             </tr>
           </thead>
 
           <tbody>
-          {myOrders.length > 0 ? (
-            myOrders.map((order) => {
-              let action = order["returnValues"];
-              let date = "ORDER_DATE";
-              let quantity = "";
-              let price = "";
-              if (action) {
-                date = order["date"];
-                quantity = action["_quantity"];
-                // ** Convert from Wei to Ethers **
-                price = yobot.web3.utils.fromWei(
-                  action["_priceInWeiEach"],
-                  "ether"
+            {myOrders.length > 0 ? (
+              myOrders.map((order) => {
+                let action = order["returnValues"];
+                let date = "ORDER_DATE";
+                let quantity = "";
+                let price = "";
+                if (action) {
+                  date = order["date"];
+                  quantity = action["_quantity"];
+                  // ** Convert from Wei to Ethers **
+                  price = yobot.web3.utils.fromWei(
+                    action["_priceInWeiEach"],
+                    "ether"
+                  );
+                }
+
+                return (
+                  <tr accesskey={Object.entries(order).toString()}>
+                    <td>{date.toString()}</td>
+                    <td>{quantity}</td>
+                    <td>{price}</td>
+                    <td>
+                      <CancelOrderButton
+                        disabled={cancellingOrder}
+                        colorScheme={"red"}
+                        background={"red.800"}
+                        _hover={{
+                          backgroundColor: "red.900",
+                        }}
+                        color={"red.100"}
+                        variant={"outline"}
+                        onClick={cancelOrder}
+                        display={"flex"}
+                      >
+                        {!cancellingOrder ? (
+                          <>{t("Cancel Order")}</>
+                        ) : (
+                          <Spinner margin={"auto"} color={"red.400"} />
+                        )}
+                      </CancelOrderButton>
+                    </td>
+                  </tr>
                 );
-              }
-
-              return (
-                <tr accesskey={Object.entries(order).toString()}>
-                  <td>{date.toString()}</td>
-                  <td>{quantity}</td>
-                  <td>{price}</td>
-                  <td>
-                    <CancelOrderButton
-                      disabled={cancellingOrder}
-                      colorScheme={"red"}
-                      background={"red.800"}
-                      _hover={{
-                        backgroundColor: "red.900",
-                      }}
-                      color={"red.100"}
-                      variant={"outline"}
-                      onClick={cancelOrder}
-                      display={"flex"}
-                    >
-                      {!cancellingOrder ? (
-                        <>{t("Cancel Order")}</>
-                      ) : (
-                        <Spinner margin={"auto"} color={"red.400"} />
-                      )}
-                    </CancelOrderButton>
-                  </td>
-                </tr>
-              );
-            })
-          ) : (
-            <tr className="p-4">
-              <Text padding="1em" marginLeft="1em" align="start">
-                {t("No open bids")}
-              </Text>
-            </tr>
-          )}
+              })
+            ) : (
+              <tr className="p-4">
+                <Text padding="1em" marginLeft="1em" align="start">
+                  {t("No open bids")}
+                </Text>
+              </tr>
+            )}
           </tbody>
-
 
           {/* <tbody>
             <tr>
@@ -380,9 +366,9 @@ const ProjectBidTable = () => {
           </tbody> */}
         </table>
       </div>
-    </ div>
+    </div>
   );
-}
+};
 
 const CancelOrderButton = styled(Button)`
   width: 100%;
@@ -395,6 +381,5 @@ const CancelOrderButton = styled(Button)`
     box-shadow: none !important;
   }
 `;
-
 
 export default ProjectBidTable;
