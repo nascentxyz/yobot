@@ -39,7 +39,7 @@ const ProjectBidTable = () => {
   const [cancellingOrder, setCancellingOrder] = useState(false);
 
   const fetchOrders = async () => {
-    let new_orders = [];
+    let _placed_orders = [];
     let _successful_orders = [];
     let _cancelled_orders = [];
     let all_orders = [];
@@ -69,7 +69,7 @@ const ProjectBidTable = () => {
           _token_address.toUpperCase() == TOKEN_ADDRESS.toUpperCase() &&
           values["4"] == "ORDER_PLACED"
         ) {
-          new_orders.push(action);
+          _placed_orders.push(action);
         }
 
         if (
@@ -86,120 +86,40 @@ const ProjectBidTable = () => {
           _token_address.toUpperCase() == TOKEN_ADDRESS.toUpperCase() &&
           values["4"] == "ORDER_CANCELLED"
         ) {
-          _cancelled_orders.push(action);
           // ** Iterate over new_actions and try to remove cancelled order **
-          for (let i = new_orders.length - 1; i >= 0; --i) {
+          for (let i = _placed_orders.length - 1; i >= 0; --i) {
+            const cancelledOrder = _placed_orders[i];
             if (
-              new_orders[i]["returnValues"]["0"].toUpperCase() ==
+              cancelledOrder["returnValues"]["0"].toUpperCase() ==
                 address.toUpperCase() &&
-              new_orders[i]["returnValues"]["1"].toUpperCase() ==
+              cancelledOrder["returnValues"]["1"].toUpperCase() ==
                 TOKEN_ADDRESS.toUpperCase()
             ) {
-              new_orders.splice(i, 1); // Remove even numbers
+              // Set cancelled action date-placed, price, quantity for bid table display
+              action["date"] = cancelledOrder["date"];
+              action["returnValues"]["_priceInWeiEach"] =
+                cancelledOrder["returnValues"]["_priceInWeiEach"];
+              action["returnValues"]["_quantity"] =
+                cancelledOrder["returnValues"]["_quantity"];
+
+              // Remove even numbers from _placed_orders array
+              _placed_orders.splice(i, 1);
             }
           }
+          _cancelled_orders.push(action);
         }
       }
     }
-    all_orders = new_orders.concat(_successful_orders, _cancelled_orders);
+    all_orders = _placed_orders.concat(
+      _successful_orders,
+      _cancelled_orders.reverse()
+    );
     setOrders(all_orders);
-  };
-
-  const fetchNewSuccessfulOrders = async () => {
-    let _successful_orders = [];
-
-    for (const action of actions) {
-      // ** Set the block timestamp **
-      let blockNumber = action["blockNumber"];
-      // ** Convert block number to date **
-      let block = await yobot.web3.eth.getBlock(parseInt(blockNumber));
-      let block_timestamp: string = block.timestamp.toString();
-      action["date"] = new Date(parseInt(block_timestamp) * 1000);
-
-      // ** Extract object entries **
-      let values = action["returnValues"];
-      let _address = values["0"];
-      let _token_address = values["1"];
-      let _action = values["4"];
-
-      // ** Check if event Actions is ORDER_FILLED
-      if (
-        _address.toUpperCase() == address.toUpperCase() &&
-        _token_address.toUpperCase() == TOKEN_ADDRESS.toUpperCase() &&
-        values["4"] == "ORDER_FILLED"
-      ) {
-        _successful_orders.push(action);
-      }
-
-      // ** Check if event Actions is ORDER_PLACED
-      // if (_address.toUpperCase() == address.toUpperCase() &&
-      //   _token_address.toUpperCase() == TOKEN_ADDRESS.toUpperCase() &&
-      //   values["4"] == "ORDER_PLACED") {
-      //     // ** Iterate over _successful_orders and try to add
-      //     for (let i = _successful_orders.length - 1; i >= 0; --i) {
-      //       if (
-      //         _successful_orders[i]["returnValues"]["0"].toUpperCase() == address.toUpperCase() &&
-      //         _successful_orders[i]["returnValues"]["1"].toUpperCase() == TOKEN_ADDRESS.toUpperCase()
-      //       ) {
-      //         _successful_orders.splice(i, 1); // Remove even numbers
-      //       }
-      //   }
-      // }
-    }
-
-    setSuccessfulOrders(_successful_orders);
-  };
-
-  const fetchNewCancelledOrders = async () => {
-    let _cancelled_orders = [];
-
-    for (const action of actions) {
-      // ** Set the block timestamp **
-      let blockNumber = action["blockNumber"];
-      // ** Convert block number to date **
-      let block = await yobot.web3.eth.getBlock(parseInt(blockNumber));
-      let block_timestamp: string = block.timestamp.toString();
-      action["date"] = new Date(parseInt(block_timestamp) * 1000);
-
-      // ** Extract object entries **
-      let values = action["returnValues"];
-      let _address = values["0"];
-      let _token_address = values["1"];
-      let _action = values["4"];
-
-      // ** Check if event Actions is ORDER_CANCELLED
-      if (
-        _address.toUpperCase() == address.toUpperCase() &&
-        _token_address.toUpperCase() == TOKEN_ADDRESS.toUpperCase() &&
-        values["4"] == "ORDER_CANCELLED"
-      ) {
-        _cancelled_orders.push(action);
-      }
-
-      // ** Check if event Actions is ORDER_PLACED
-      // if (_address.toUpperCase() == address.toUpperCase() &&
-      //   _token_address.toUpperCase() == TOKEN_ADDRESS.toUpperCase() &&
-      //   values["4"] == "ORDER_PLACED") {
-      //     // ** Iterate over _cancelled_orders and try to add
-      //     for (let i = _cancelled_orders.length - 1; i >= 0; --i) {
-      //       if (
-      //         _cancelled_orders[i]["returnValues"]["0"].toUpperCase() == address.toUpperCase() &&
-      //         _cancelled_orders[i]["returnValues"]["1"].toUpperCase() == TOKEN_ADDRESS.toUpperCase()
-      //       ) {
-      //         _cancelled_orders.splice(i, 1); // Remove even numbers
-      //       }
-      //   }
-      // }
-    }
-
-    setCancelledOrders(_cancelled_orders);
   };
 
   // ** On actions refresh, filter and set a user's actions **
   useEffect(() => {
     fetchOrders();
-    // fetchNewSuccessfulOrders();
-    // fetchNewCancelledOrders();
   }, [actions]);
 
   const cancelOrder = async () => {
@@ -282,7 +202,7 @@ const ProjectBidTable = () => {
           <thead>
             <tr className="bg-gray-700">
               <th className="p-3 text-sm font-semibold tracking-wider  text-gray-300 uppercase bg-gray-700">
-                Date
+                Date Placed
               </th>
               <th className="p-3 text-sm text-center font-semibold tracking-wider sm:text-left text-gray-300 uppercase bg-gray-700">
                 Quantity
@@ -303,12 +223,24 @@ const ProjectBidTable = () => {
             {orders.length > 0 ? (
               orders.map((order) => {
                 let action = order["returnValues"];
-                let date = "ORDER_DATE";
+                let date = Date.now();
                 let quantity = "";
                 let price = "";
                 let status = "";
+                let date_year = "";
+                let date_time = "";
                 if (action) {
-                  date = order["date"].toString();
+                  date = order["date"];
+                  const options = {
+                    month: "short",
+                    day: "numeric",
+                    hour: "numeric",
+                    minute: "numeric",
+                    timeZoneName: "short",
+                  };
+                  date_time = date.toLocaleDateString("en-US", options);
+                  date_year = date.getFullYear();
+
                   quantity = action["_quantity"];
                   // ** Convert from Wei to Ethers **
                   price = yobot.web3.utils.fromWei(
@@ -319,10 +251,10 @@ const ProjectBidTable = () => {
                 }
 
                 return (
-                  <tr accessKey={Object.entries(order).toString()}>
+                  <tr key={Object.entries(order).toString()}>
                     <td className="p-3">
-                      <p className="font-medium">{date}</p>
-                      <p className="text-gray-500">{date}</p>
+                      <p className="font-medium">{date_time}</p>
+                      <p className="text-gray-500">{date_year}</p>
                     </td>
                     <td className="p-3 text-center text-gray-500 sm:text-left md:table-cell">
                       {quantity}
@@ -356,9 +288,7 @@ const ProjectBidTable = () => {
                           <Spinner margin={"auto"} color={"red.400"} />
                         )
                       ) : (
-                        <td className=" p-3 text-center text-gray-500 md:table-cell">
-                          N/A
-                        </td>
+                        <p className="text-gray-500 md:table-cell">N/A</p>
                       )}
                     </td>
                   </tr>

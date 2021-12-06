@@ -243,7 +243,6 @@ const BidForm = () => {
             placeholder="# of NFTs"
             min="1"
             required
-            value={bidQty}
             onKeyDown={(e) => {
               if (!enterPressed) {
                 setEnterPressed(true);
