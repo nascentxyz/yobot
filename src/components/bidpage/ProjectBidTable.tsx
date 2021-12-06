@@ -30,14 +30,19 @@ const ProjectBidTable = () => {
   const { t } = useTranslation();
   const { yobot, isAuthed, actions, address, refreshEvents } = useYobot();
 
+  const [orders, setOrders] = useState([]);
+
   const [myOrders, setMyOrders] = useState([{}]);
   const [successfulOrders, setSuccessfulOrders] = useState([]);
   const [cancelledOrders, setCancelledOrders] = useState([]);
 
   const [cancellingOrder, setCancellingOrder] = useState(false);
 
-  const fetchNewOrders = async () => {
-    let new_actions = [];
+  const fetchOrders = async () => {
+    let new_orders = [];
+    let _successful_orders = [];
+    let _cancelled_orders = [];
+    let all_orders = [];
     for (const action of actions) {
       try {
         // ** Set the block timestamp **
@@ -64,7 +69,15 @@ const ProjectBidTable = () => {
           _token_address.toUpperCase() == TOKEN_ADDRESS.toUpperCase() &&
           values["4"] == "ORDER_PLACED"
         ) {
-          new_actions.push(action);
+          new_orders.push(action);
+        }
+
+        if (
+          _address.toUpperCase() == address.toUpperCase() &&
+          _token_address.toUpperCase() == TOKEN_ADDRESS.toUpperCase() &&
+          values["4"] == "ORDER_FILLED"
+        ) {
+          _successful_orders.push(action);
         }
 
         // ** Check if event Actions is ORDER_CANCELLED
@@ -73,22 +86,23 @@ const ProjectBidTable = () => {
           _token_address.toUpperCase() == TOKEN_ADDRESS.toUpperCase() &&
           values["4"] == "ORDER_CANCELLED"
         ) {
+          _cancelled_orders.push(action);
           // ** Iterate over new_actions and try to remove cancelled order **
-          for (let i = new_actions.length - 1; i >= 0; --i) {
+          for (let i = new_orders.length - 1; i >= 0; --i) {
             if (
-              new_actions[i]["returnValues"]["0"].toUpperCase() ==
+              new_orders[i]["returnValues"]["0"].toUpperCase() ==
                 address.toUpperCase() &&
-              new_actions[i]["returnValues"]["1"].toUpperCase() ==
+              new_orders[i]["returnValues"]["1"].toUpperCase() ==
                 TOKEN_ADDRESS.toUpperCase()
             ) {
-              new_actions.splice(i, 1); // Remove even numbers
+              new_orders.splice(i, 1); // Remove even numbers
             }
           }
         }
       }
     }
-
-    setMyOrders(new_actions);
+    all_orders = new_orders.concat(_successful_orders, _cancelled_orders);
+    setOrders(all_orders);
   };
 
   const fetchNewSuccessfulOrders = async () => {
@@ -183,9 +197,9 @@ const ProjectBidTable = () => {
 
   // ** On actions refresh, filter and set a user's actions **
   useEffect(() => {
-    fetchNewOrders();
-    fetchNewSuccessfulOrders();
-    fetchNewCancelledOrders();
+    fetchOrders();
+    // fetchNewSuccessfulOrders();
+    // fetchNewCancelledOrders();
   }, [actions]);
 
   const cancelOrder = async () => {
@@ -201,7 +215,6 @@ const ProjectBidTable = () => {
       address, // sender
       async () => {
         onTxSubmitted();
-        setCancellingOrder(false);
       }, // txSubmitCallback
       async () => {
         onTxFailed();
@@ -220,6 +233,46 @@ const ProjectBidTable = () => {
     );
     // console.log("Cancelled order tx:", cancelOrderTx);
   };
+
+  const getStatusCell = (status) => {
+    if (status == "ORDER_PLACED") {
+      if (cancellingOrder) {
+        return (<Spinner margin={"auto"} color={"red.400"} />);
+      } else {
+        return (
+          <>
+            <span className="inline-block w-4 h-4 bg-green-300 rounded-full md:hidden">
+              &nbsp;
+            </span>
+            <div className="hidden px-2 py-1 text-xs font-semibold leading-4 text-green-700 bg-green-200 rounded-full md:inline-block">
+              Live
+            </div>
+          </>
+        );
+      }
+    } else if (status == "ORDER_FILLED") {
+      return (
+        <>
+          <span className="inline-block w-4 h-4 bg-orange-300 rounded-full md:hidden">
+            &nbsp;
+          </span>
+          <div className=" px-2 py-1 text-xs font-semibold leading-4 text-orange-700 bg-orange-200 rounded-full md:inline-block">
+            Successful
+          </div>
+        </>
+      );
+    } else if (status == "ORDER_CANCELLED") {
+      return (<>
+        <span className="inline-block w-4 h-4 bg-orange-300 rounded-full md:hidden">
+          &nbsp;
+        </span>
+        <div className=" px-2 py-1 text-xs font-semibold leading-4 text-orange-700 bg-orange-200 rounded-full md:inline-block">
+          Cancelled
+        </div>
+      </>);
+      
+    }
+  }
 
   return (
     <div className="container mx-auto xl:max-w-7xl ">
@@ -246,46 +299,63 @@ const ProjectBidTable = () => {
           </thead>
 
           <tbody>
-            {myOrders.length > 0 ? (
-              myOrders.map((order) => {
+            {orders.length > 0 ? (
+              orders.map((order) => {
                 let action = order["returnValues"];
                 let date = "ORDER_DATE";
                 let quantity = "";
                 let price = "";
+                let status = "";
                 if (action) {
-                  date = order["date"];
+                  date = order["date"].toString();
                   quantity = action["_quantity"];
                   // ** Convert from Wei to Ethers **
                   price = yobot.web3.utils.fromWei(
                     action["_priceInWeiEach"],
                     "ether"
                   );
+                  status = action["4"];
                 }
 
                 return (
-                  <tr accesskey={Object.entries(order).toString()}>
-                    <td>{date.toString()}</td>
-                    <td>{quantity}</td>
-                    <td>{price}</td>
-                    <td>
-                      <CancelOrderButton
-                        disabled={cancellingOrder}
-                        colorScheme={"red"}
-                        background={"red.800"}
-                        _hover={{
-                          backgroundColor: "red.900",
-                        }}
-                        color={"red.100"}
-                        variant={"outline"}
-                        onClick={cancelOrder}
-                        display={"flex"}
-                      >
-                        {!cancellingOrder ? (
-                          <>{t("Cancel Order")}</>
-                        ) : (
-                          <Spinner margin={"auto"} color={"red.400"} />
-                        )}
-                      </CancelOrderButton>
+                  <tr accessKey={Object.entries(order).toString()}>
+                    <td className="p-3">
+                      <p className="font-medium">{date}</p>
+                      <p className="text-gray-500">{date}</p>
+                    </td>
+                    <td className="p-3 text-center text-gray-500 sm:text-left md:table-cell">
+                      {quantity}
+                    </td>
+                    <td className="hidden p-3 text-center text-gray-500 md:table-cell">
+                      {price}
+                    </td>
+                    <td className="p-3 text-center">
+                      {getStatusCell(status)}
+                    </td>
+                    <td className="p-3 text-center">
+                      {(status == "ORDER_PLACED") ? 
+                        ((!cancellingOrder) ?
+                          (<button
+                            type="button"
+                            onClick={cancelOrder}
+                            className="inline-flex items-center justify-center px-2 py-1 space-x-2 text-sm font-semibold leading-5 text-gray-800 bg-white border border-gray-300 rounded shadow-sm focus:outline-none hover:text-gray-800 hover:bg-gray-700 hover:border-gray-300 hover:shadow focus:ring focus:ring-gray-500 focus:ring-opacity-25 active:bg-white active:border-white active:shadow-none"
+                          >
+                            <svg
+                              className="inline-block w-5 h-5 hi-solid hi-x"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                          </button>)
+                        : (<Spinner margin={"auto"} color={"red.400"} />)
+                      ) : (<td className=" p-3 text-center text-gray-500 md:table-cell">N/A</td>)
+                      }
                     </td>
                   </tr>
                 );
@@ -298,88 +368,11 @@ const ProjectBidTable = () => {
               </tr>
             )}
           </tbody>
-
-          {/* <tbody>
-            <tr>
-              <td className="p-3">
-                <p className="font-medium">04/11</p>
-                <p className="text-gray-500">2021</p>
-              </td>
-              <td className="p-3 text-center text-gray-500 sm:text-left md:table-cell">
-                1
-              </td>
-              <td className="hidden p-3 text-center text-gray-500 md:table-cell">
-                0.4323452
-              </td>
-              <td className="p-3 text-center">
-                <span className="inline-block w-4 h-4 bg-green-300 rounded-full md:hidden">
-                  &nbsp;
-                </span>
-                <div className="hidden px-2 py-1 text-xs font-semibold leading-4 text-green-700 bg-green-200 rounded-full md:inline-block">
-                  Live
-                </div>
-              </td>
-              <td className="p-3 text-center">
-                <button
-                  type="button"
-                  className="inline-flex items-center justify-center px-2 py-1 space-x-2 text-sm font-semibold leading-5 text-gray-800 bg-white border border-gray-300 rounded shadow-sm focus:outline-none hover:text-gray-800 hover:bg-gray-700 hover:border-gray-300 hover:shadow focus:ring focus:ring-gray-500 focus:ring-opacity-25 active:bg-white active:border-white active:shadow-none"
-                >
-                  <svg
-                    className="inline-block w-5 h-5 hi-solid hi-x"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </button>
-              </td>
-            </tr>
-
-            <tr>
-              <td className="p-3">
-                <p className="font-medium">04/11</p>
-                <p className="text-gray-500">2021</p>
-              </td>
-              <td className="p-3 text-center text-gray-500 sm:text-left md:table-cell">
-                2
-              </td>
-              <td className="hidden p-3 text-center text-gray-500 md:table-cell">
-                0.4323452
-              </td>
-              <td className="p-3 text-center align-middle">
-                <span className="inline-block w-4 h-4 bg-orange-300 rounded-full md:hidden">
-                  &nbsp;
-                </span>
-                <div className=" px-2 py-1 text-xs font-semibold leading-4 text-orange-700 bg-orange-200 rounded-full md:inline-block">
-                  Cancelled
-                </div>
-              </td>
-              <td className=" p-3 text-center text-gray-500 md:table-cell">
-                N/A
-              </td>
-            </tr>
-          </tbody> */}
         </table>
       </div>
     </div>
   );
 };
 
-const CancelOrderButton = styled(Button)`
-  width: 100%;
-  max-width: 150px;
-  margin-left: auto;
-  margin-right: 0;
-
-  &:focus {
-    outline: 0 !important;
-    box-shadow: none !important;
-  }
-`;
 
 export default ProjectBidTable;

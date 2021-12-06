@@ -161,6 +161,7 @@ const BidForm = () => {
         address, // sender
         async (msg) => {
           onTxSubmitted(msg);
+          // resetFormInputs();
           setPlacingBid(false);
         },
         async (msg) => {
@@ -181,6 +182,13 @@ const BidForm = () => {
       console.error("Placing bid returned:", e);
     }
   };
+
+  // const resetFormInputs = () => {
+  //   setBidPrice(0.0);
+  //   setBidQty(0);
+  //   setBidPriceEmpty(true);
+  //   setBidQtyEmpty(true);
+  // }
 
   // ** Helper function to validate parameters
   const validateParams = (_bidPrice, _bidQty) => {
