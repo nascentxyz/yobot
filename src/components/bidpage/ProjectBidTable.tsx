@@ -208,7 +208,7 @@ const ProjectBidTable = () => {
                 Quantity
               </th>
               <th className="hidden p-3 text-sm font-semibold tracking-wider text-center text-gray-300 uppercase bg-gray-700 md:table-cell">
-                Total (ETH)
+                Price Per NFT (ETH)
               </th>
               <th className="p-3 text-sm font-semibold tracking-wider text-center text-gray-300 uppercase bg-gray-700">
                 Status
