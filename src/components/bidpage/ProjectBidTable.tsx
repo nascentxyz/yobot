@@ -237,7 +237,7 @@ const ProjectBidTable = () => {
   const getStatusCell = (status) => {
     if (status == "ORDER_PLACED") {
       if (cancellingOrder) {
-        return (<Spinner margin={"auto"} color={"red.400"} />);
+        return <Spinner margin={"auto"} color={"red.400"} />;
       } else {
         return (
           <>
@@ -262,17 +262,18 @@ const ProjectBidTable = () => {
         </>
       );
     } else if (status == "ORDER_CANCELLED") {
-      return (<>
-        <span className="inline-block w-4 h-4 bg-orange-300 rounded-full md:hidden">
-          &nbsp;
-        </span>
-        <div className=" px-2 py-1 text-xs font-semibold leading-4 text-orange-700 bg-orange-200 rounded-full md:inline-block">
-          Cancelled
-        </div>
-      </>);
-      
+      return (
+        <>
+          <span className="inline-block w-4 h-4 bg-orange-300 rounded-full md:hidden">
+            &nbsp;
+          </span>
+          <div className=" px-2 py-1 text-xs font-semibold leading-4 text-orange-700 bg-orange-200 rounded-full md:inline-block">
+            Cancelled
+          </div>
+        </>
+      );
     }
-  }
+  };
 
   return (
     <div className="container mx-auto xl:max-w-7xl ">
@@ -329,13 +330,11 @@ const ProjectBidTable = () => {
                     <td className="hidden p-3 text-center text-gray-500 md:table-cell">
                       {price}
                     </td>
+                    <td className="p-3 text-center">{getStatusCell(status)}</td>
                     <td className="p-3 text-center">
-                      {getStatusCell(status)}
-                    </td>
-                    <td className="p-3 text-center">
-                      {(status == "ORDER_PLACED") ? 
-                        ((!cancellingOrder) ?
-                          (<button
+                      {status == "ORDER_PLACED" ? (
+                        !cancellingOrder ? (
+                          <button
                             type="button"
                             onClick={cancelOrder}
                             className="inline-flex items-center justify-center px-2 py-1 space-x-2 text-sm font-semibold leading-5 text-gray-800 bg-white border border-gray-300 rounded shadow-sm focus:outline-none hover:text-gray-800 hover:bg-gray-700 hover:border-gray-300 hover:shadow focus:ring focus:ring-gray-500 focus:ring-opacity-25 active:bg-white active:border-white active:shadow-none"
@@ -352,10 +351,15 @@ const ProjectBidTable = () => {
                                 clipRule="evenodd"
                               />
                             </svg>
-                          </button>)
-                        : (<Spinner margin={"auto"} color={"red.400"} />)
-                      ) : (<td className=" p-3 text-center text-gray-500 md:table-cell">N/A</td>)
-                      }
+                          </button>
+                        ) : (
+                          <Spinner margin={"auto"} color={"red.400"} />
+                        )
+                      ) : (
+                        <td className=" p-3 text-center text-gray-500 md:table-cell">
+                          N/A
+                        </td>
+                      )}
                     </td>
                   </tr>
                 );
@@ -373,6 +377,5 @@ const ProjectBidTable = () => {
     </div>
   );
 };
-
 
 export default ProjectBidTable;
