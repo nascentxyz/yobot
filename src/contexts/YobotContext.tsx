@@ -140,6 +140,7 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
         yobot.web3,
         yobot.YobotERC721LimitOrder.YobotERC721LimitOrder
       ).then((events) => {
+        console.log(events);
         setActions(events);
       });
     }
@@ -147,6 +148,7 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
 
   // ** On auth login, try to fetch all events **
   useEffect(() => {
+    console.log("trying here");
     refreshEvents();
   }, [address]);
 

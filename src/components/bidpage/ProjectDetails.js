@@ -10,14 +10,15 @@ const ProjectDetails = ({
   previewImageSrc = "https://www.artblocks.io/_next/image?url=%2F_next%2Fstatic%2Fimage%2Fpublic%2Fsquig_0_transparent.11e0ba7d94e0dcfd0d0a9fcdbc26e7fe.png&w=640&q=75",
   projectTokenAddress = "0xd8bbf8ceb445de814fb47547436b3cfeecadd4ec",
 }) => {
-  const { yobot, actions, chainId } = useYobot();
+  const { yobot, actions, chainId, refreshEvents } = useYobot();
   const [highestBid, setHighestBid] = useState(0);
   const [totalQty, setTotalQty] = useState(0);
 
-  const getHighestBidAndTotalQty = async () => {
+  const setHighestBidAndTotalQty = async () => {
     let highestBidInWei = 0;
     let totalQty = 0;
     for (const action of actions) {
+      console.log("i am an aciton");
       // ** Extract object entries **
       let values = action["returnValues"];
       if (values !== undefined) {
@@ -41,13 +42,22 @@ const ProjectDetails = ({
       highestBidInWei.toString(),
       "ether"
     );
+    console.log(highestBid);
     setHighestBid(highestBid);
     setTotalQty(totalQty);
   };
 
+  useEffect(() => {
+    console.log("refresh events");
+
+    refreshEvents();
+    setHighestBidAndTotalQty();
+  }, []);
+
   // ** On actions refresh, re-fetch # of bids & qty **
   useEffect(() => {
-    getHighestBidAndTotalQty();
+    console.log("getting highest");
+    setHighestBidAndTotalQty();
   }, [actions, chainId]);
 
   const calculateTimeLeft = () => {
