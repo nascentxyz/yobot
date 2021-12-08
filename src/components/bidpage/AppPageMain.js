@@ -1,5 +1,5 @@
 import React from "react";
-import ProjectDetails from "../jamaal-components/ProjectDetails";
+import ProjectDetails from "./ProjectDetails";
 import ProjectBidTable from "./ProjectBidTable";
 import BidForm from "./BidForm";
 

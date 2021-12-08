@@ -28,8 +28,8 @@ const TOKEN_ADDRESS = "0xd8bbf8ceb445de814fb47547436b3cfeecadd4ec";
 
 const ProjectBidTable = () => {
   const { t } = useTranslation();
-  const { yobot, isAuthed, actions, address, refreshEvents } = useYobot();
-
+  const { yobot, isAuthed, chainId, actions, address, refreshEvents } =
+    useYobot();
   const [orders, setOrders] = useState([]);
 
   const [myOrders, setMyOrders] = useState([{}]);
@@ -120,7 +120,7 @@ const ProjectBidTable = () => {
   // ** On actions refresh, filter and set a user's actions **
   useEffect(() => {
     fetchOrders();
-  }, [actions]);
+  }, [actions, chainId]);
 
   const cancelOrder = async () => {
     setCancellingOrder(true);
