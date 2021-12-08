@@ -2,14 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useYobot } from "src/contexts/YobotContext";
 
-const ProjectDetails = ({
-  title = "ArtBlocks",
-  projectWebsite = "https://www.artblocks.io/",
-  description = "Art Blocks is a first of its kind platform focused on genuinely programmable on demand generative content that is stored immutably on the Ethereum Blockchain.",
-  launchTime = new Date("December 31, 2021 23:59:59 PST"),
-  previewImageSrc = "https://www.artblocks.io/_next/image?url=%2F_next%2Fstatic%2Fimage%2Fpublic%2Fsquig_0_transparent.11e0ba7d94e0dcfd0d0a9fcdbc26e7fe.png&w=640&q=75",
-  projectTokenAddress = "0xd8bbf8ceb445de814fb47547436b3cfeecadd4ec",
-}) => {
+const ProjectDetails = ({ props }) => {
   const { yobot, actions, chainId, refreshEvents } = useYobot();
   const [highestBid, setHighestBid] = useState(0);
   const [totalQty, setTotalQty] = useState(0);
@@ -48,20 +41,17 @@ const ProjectDetails = ({
   };
 
   useEffect(() => {
-    console.log("refresh events");
-
     refreshEvents();
     setHighestBidAndTotalQty();
   }, []);
 
   // ** On actions refresh, re-fetch # of bids & qty **
   useEffect(() => {
-    console.log("getting highest");
     setHighestBidAndTotalQty();
   }, [actions, chainId]);
 
   const calculateTimeLeft = () => {
-    let difference = launchTime - new Date();
+    let difference = props.launchTime - new Date();
 
     let timeLeft = {
       days: 0,
@@ -98,7 +88,7 @@ const ProjectDetails = ({
         {/* NFT image, title and description Start */}
         <div className="flex flex-col items-start">
           <img
-            src={previewImageSrc}
+            src={props.previewImageSrc}
             alt="NFT Project Image"
             className="flex-none inline-block w-full mb-3 sm:w-3/12"
           />
@@ -106,14 +96,14 @@ const ProjectDetails = ({
           <div className="flex-grow text-lg">
             <p className="mb-1">
               <a
-                href={projectWebsite}
+                href={props.projectWebsite}
                 className="font-semibold text-gray-200 hover:text-indigo-400"
               >
-                {title}
+                {props.title}
               </a>
               {/* <span className="text-gray-500 sm:hidden">· 03h:13m:34s</span> */}
             </p>
-            <p className="mb-2 text-sm">{description}</p>
+            <p className="mb-2 text-sm">{props.description}</p>
           </div>
         </div>
         {/* NFT image, title and description End */}

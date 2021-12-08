@@ -2,7 +2,8 @@ import {
   Navbar,
   Main,
   GradientContainer,
-  AppPageMain,
+  BidPageMain,
+  ProjectGrid,
   CTA,
   FAQModal,
 } from "src/components";
@@ -17,14 +18,14 @@ const App = () => {
     <GradientContainer>
       <ToastContainer />
       <Navbar onOpen={onOpen} accountButton={true} />
-      <AppPageMain />
+      <ProjectGrid />
     </GradientContainer>
 
     // <GradientContainer>
     //   <ToastContainer />
     //   <Main>
     //     <Navbar onOpen={onOpen} accountButton={true} />
-    //     <AppPageMain />
+    //     <BidPageMain />
     //     {/* <CTA onOpen={onOpen} /> */}
     //     <FAQModal isOpen={isOpen} onClose={onClose} />
     //   </Main>
