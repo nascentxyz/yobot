@@ -1,5 +1,5 @@
 import React from "react";
-import ProjectCardGrid from "../components/ProjectCardGrid";
+import ProjectCardGrid from "./ProjectCardGrid";
 
 function Main() {
   return (
