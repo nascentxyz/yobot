@@ -31,11 +31,7 @@ const ProjectBidTable = () => {
   const { yobot, isAuthed, chainId, actions, address, refreshEvents } =
     useYobot();
   const [orders, setOrders] = useState([]);
-
-  const [myOrders, setMyOrders] = useState([{}]);
-  const [successfulOrders, setSuccessfulOrders] = useState([]);
-  const [cancelledOrders, setCancelledOrders] = useState([]);
-
+  const [gettingActions, setGettingActions] = useState(false);
   const [cancellingOrder, setCancellingOrder] = useState(false);
 
   const fetchOrders = async () => {
@@ -115,10 +111,12 @@ const ProjectBidTable = () => {
       _cancelled_orders.reverse()
     );
     setOrders(all_orders);
+    setGettingActions(false);
   };
 
   // ** On actions refresh, filter and set a user's actions **
   useEffect(() => {
+    setGettingActions(true);
     fetchOrders();
   }, [actions, chainId]);
 
@@ -195,6 +193,8 @@ const ProjectBidTable = () => {
     }
   };
 
+  const getBidTableRows = () => {};
+
   return (
     <div className="container mx-auto xl:max-w-7xl ">
       <div className="rounded-xl min-w-full  overflow-x-auto bg-gray-800  ">
@@ -220,8 +220,20 @@ const ProjectBidTable = () => {
           </thead>
 
           <tbody>
-            {orders.length > 0 ? (
+            {gettingActions ? (
+              <tr className="p-4">
+                <Spinner
+                  padding="1em"
+                  ml="1em"
+                  mt="1em"
+                  mb="1em"
+                  align="center"
+                  color={"blue.400"}
+                />
+              </tr>
+            ) : orders.length > 0 ? (
               orders.map((order) => {
+                console.log("here");
                 let action = order["returnValues"];
                 let date = new Date();
                 let quantity = "";
@@ -298,7 +310,7 @@ const ProjectBidTable = () => {
             ) : (
               <tr className="p-4">
                 <Text padding="1em" marginLeft="1em" align="start">
-                  {t("No open bids")}
+                  {t("No bids placed")}
                 </Text>
               </tr>
             )}

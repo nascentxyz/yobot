@@ -11,7 +11,6 @@ const ProjectDetails = ({ props }) => {
     let highestBidInWei = 0;
     let totalQty = 0;
     for (const action of actions) {
-      console.log("i am an aciton");
       // ** Extract object entries **
       let values = action["returnValues"];
       if (values !== undefined) {
@@ -36,7 +35,6 @@ const ProjectDetails = ({ props }) => {
       highestBidInWei.toString(),
       "ether"
     );
-    console.log(highestBid);
     setHighestBid(highestBid);
     setTotalQty(totalQty);
   };
