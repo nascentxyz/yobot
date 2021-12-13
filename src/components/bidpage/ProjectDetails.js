@@ -21,7 +21,8 @@ const ProjectDetails = ({ props }) => {
 
         // ** Check if event Actions is for this NFT token & ORDER_PLACED
         if (
-          _token_address.toUpperCase() == projectTokenAddress.toUpperCase() &&
+          _token_address.toUpperCase() ==
+            props.projectTokenAddress.toUpperCase() &&
           values["4"] == "ORDER_PLACED" //FIXME: do we want order_placed or order_successful here?
         ) {
           const bidPrice = values["_priceInWeiEach"];
