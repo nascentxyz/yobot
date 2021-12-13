@@ -223,7 +223,7 @@ const ProjectBidTable = () => {
             {orders.length > 0 ? (
               orders.map((order) => {
                 let action = order["returnValues"];
-                let date = Date.now();
+                let date = new Date();
                 let quantity = "";
                 let price = "";
                 let status = "";
@@ -238,8 +238,9 @@ const ProjectBidTable = () => {
                     minute: "numeric",
                     timeZoneName: "short",
                   };
+                  //@ts-ignore
                   date_time = date.toLocaleDateString("en-US", options);
-                  date_year = date.getFullYear();
+                  date_year = date.getFullYear().toString();
 
                   quantity = action["_quantity"];
                   // ** Convert from Wei to Ethers **
