@@ -4,53 +4,59 @@ import { useYobot } from "src/contexts/YobotContext";
 
 const ProjectDetails = ({ props }) => {
   const { yobot, actions, chainId, refreshEvents } = useYobot();
-  const [highestBid, setHighestBid] = useState(0);
-  const [totalQty, setTotalQty] = useState(0);
 
-  const setHighestBidAndTotalQty = async () => {
-    let highestBidInWei = 0;
-    let totalQty = 0;
-    for (const action of actions) {
-      // ** Extract object entries **
-      let values = action["returnValues"];
-      if (values !== undefined) {
-        let _address = values["0"];
-        let _token_address = values["1"];
-        let _action = values["4"];
+  const highestBid = props.project.highestBidInWei == "-" ? "-" : yobot.web3.utils.fromWei(
+    props.project.highestBidInWei.toString(),
+    "ether"
+  );
 
-        // ** Check if event Actions is for this NFT token & ORDER_PLACED
-        if (
-          _token_address.toUpperCase() ==
-            props.projectTokenAddress.toUpperCase() &&
-          values["4"] == "ORDER_PLACED" //FIXME: do we want order_placed or order_successful here?
-        ) {
-          const bidPrice = values["_priceInWeiEach"];
-          const qty = values["_quantity"];
-          highestBidInWei = Math.max(highestBidInWei, bidPrice);
-          totalQty += parseInt(qty);
-        }
-      }
-    }
-    const highestBid = yobot.web3.utils.fromWei(
-      highestBidInWei.toString(),
-      "ether"
-    );
-    setHighestBid(highestBid);
-    setTotalQty(totalQty);
-  };
+  // const [highestBid, setHighestBid] = useState("-");
+  // const [totalQty, setTotalQty] = useState("-");
 
-  useEffect(() => {
-    refreshEvents();
-    setHighestBidAndTotalQty();
-  }, []);
+  // const setHighestBidAndTotalQty = async () => {
+  //   let highestBidInWei = 0;
+  //   let totalQty = 0;
+  //   for (const action of actions) {
+  //     // ** Extract object entries **
+  //     let values = action["returnValues"];
+  //     if (values !== undefined) {
+  //       let _address = values["0"];
+  //       let _token_address = values["1"];
+  //       let _action = values["4"];
 
-  // ** On actions refresh, re-fetch # of bids & qty **
-  useEffect(() => {
-    setHighestBidAndTotalQty();
-  }, [actions, chainId]);
+  //       // ** Check if event Actions is for this NFT token & ORDER_PLACED
+  //       if (
+  //         _token_address.toUpperCase() ==
+  //           props.projectTokenAddress.toUpperCase() &&
+  //         (values["4"] == "ORDER_PLACED" || values["4"] == "ORDER_FILLED") //FIXME: do we want order_placed or order_successful here?
+  //       ) {
+  //         const bidPrice = values["_priceInWeiEach"];
+  //         const qty = parseInt(values["_quantity"]);
+  //         highestBidInWei = Math.max(highestBidInWei, bidPrice);
+  //         totalQty += qty;
+  //       }
+  //     }
+  //   }
+  //   const highestBid = yobot.web3.utils.fromWei(
+  //     highestBidInWei.toString(),
+  //     "ether"
+  //   );
+  //   setHighestBid(highestBid);
+  //   setTotalQty(totalQty);
+  // };
+
+  // useEffect(() => {
+  //   refreshEvents();
+  //   setHighestBidAndTotalQty();
+  // }, []);
+
+  // // ** On actions refresh, re-fetch # of bids & qty **
+  // useEffect(() => {
+  //   setHighestBidAndTotalQty();
+  // }, [actions, chainId]);
 
   const calculateTimeLeft = () => {
-    let difference = props.launchTime - new Date();
+    let difference = props.project.launchTime - new Date();
 
     let timeLeft = {
       days: 0,
@@ -87,7 +93,7 @@ const ProjectDetails = ({ props }) => {
         {/* NFT image, title and description Start */}
         <div className="flex flex-col items-start">
           <img
-            src={props.previewImageSrc}
+            src={props.project.previewImageSrc}
             alt="NFT Project Image"
             className="flex-none inline-block w-full mb-3 sm:w-3/12"
           />
@@ -95,14 +101,14 @@ const ProjectDetails = ({ props }) => {
           <div className="flex-grow text-lg">
             <p className="mb-1">
               <a
-                href={props.projectWebsite}
+                href={props.project.projectWebsite}
                 className="font-semibold text-gray-200 hover:text-indigo-400"
               >
-                {props.title}
+                {props.project.title}
               </a>
               {/* <span className="text-gray-500 sm:hidden">· 03h:13m:34s</span> */}
             </p>
-            <p className="mb-2 text-sm">{props.description}</p>
+            <p className="mb-2 text-sm">{props.project.description}</p>
           </div>
         </div>
         {/* NFT image, title and description End */}
@@ -151,7 +157,7 @@ const ProjectDetails = ({ props }) => {
             <div className="flex flex-col overflow-hidden bg-gray-700 rounded shadow-sm">
               <div className="flex-grow w-full p-5">
                 <dl>
-                  <dt className="text-2xl font-semibold">{totalQty}</dt>
+                  <dt className="text-2xl font-semibold">{props.project.totalBids}</dt>
                   <dd className="text-sm font-medium tracking-wider text-gray-500 uppercase">
                     Total Bids
                   </dd>

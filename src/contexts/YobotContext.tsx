@@ -148,7 +148,6 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
 
   // ** On auth login, try to fetch all events **
   useEffect(() => {
-    console.log("trying here");
     refreshEvents();
   }, [address]);
 

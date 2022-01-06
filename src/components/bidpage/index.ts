@@ -2,8 +2,3 @@ export { default as BidPageMain } from "./BidPageMain";
 export { default as BidForm } from "./BidForm";
 export { default as ProjectDetails } from "./ProjectDetails";
 export { default as ProjectBidTable } from "./ProjectBidTable";
-export { default as CancelledBidsFrame } from "./CancelledBidsFrame";
-export { default as NFTFrame } from "./NFTFrame";
-export { default as OpenBidsFrame } from "./OpenBidsFrame";
-export { default as PlaceBidFrame } from "./PlaceBidFrame";
-export { default as SuccessfulBidsFrame } from "./SuccessfulBidsFrame";
