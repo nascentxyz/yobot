@@ -19,26 +19,11 @@
     "build": "next build",
     "start": "next start",
     "export": "next export",
-    "prepublishOnly": "copyfiles -u 1 \"./src/**/*.sol\" --exclude \"./src/test/**/*.sol\" ./",
-    "postpublish": "rimraf ./*.sol",
-    "prepack": "yarn prepublishOnly",
-    "postpack": "yarn postpublish",
-    "lint": "next lint && yarn prettier && yarn solhint",
-    "lint:check": "yarn prettier:check && yarn solhint:check",
-    "prettier": "yarn prettier:check --write",
-    "prettier:check": "prettier --check \"src/**/*.sol\" && prettier --check \"src/*.sol\"",
-    "prettier:write": "prettier -w .",
-    "solhint": "yarn solhint:check --fix",
-    "solhint:check": "solhint --config ./.solhint.json \"src/**/*.sol\"",
-    "visualize": "surya graph -s src/**/*.sol | dot -Tpng > assets/contracts.png",
-    "contracts-test": "dapp test",
-    "contracts-lint": "prettier --write src/**/*.sol",
-    "precommit-msg": "echo 'Running pre-commit checks...' && exit 0",
-    "fix-oz": "ln -s contracts lib/zeppelin-solidity/src"
+    "lint": "next lint",
+    "precommit-msg": "echo 'Running pre-commit checks...' && exit 0"
   },
   "pre-commit": [
     "precommit-msg",
-    "prettier:write",
     "lint"
   ],
   "dependencies": {
