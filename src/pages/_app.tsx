@@ -5,6 +5,7 @@ import { AppProps } from "next/app";
 import "material-react-toastify/dist/ReactToastify.css";
 import "react-toastify/dist/ReactToastify.css";
 import { YobotProvider } from "src/contexts/YobotContext";
+import "../styles/globals.css";
 
 import LogRocket from "logrocket";
 // @ts-ignore

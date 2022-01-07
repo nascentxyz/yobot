@@ -1,6 +1,7 @@
 // ** Wildcard Reexports **
 export * from "./account";
 export * from "./bidpage";
+export * from "./projectgrid";
 export * from "./landingpage";
 export * from "./about";
 
