@@ -112,6 +112,12 @@ const BidPageMain = ({ projectId }) => {
       Math.max(...Object.values(placedBidValuesForProject))
     );
 
+    setTotalBids(totalQty);
+    setHighestBidInWei(highestBidInWei);
+    setUserBids(user_orders);
+
+    setGettingActions(false);
+
     return {
       user_orders,
       totalQty,
@@ -122,10 +128,11 @@ const BidPageMain = ({ projectId }) => {
   // Memoize fetchOrders result; don't recalculate unless user changes wallet or chain
   useEffect(() => {
     let active = true;
+    setTotalBids("-");
+    setHighestBidInWei("-");
     setGettingActions(true);
     load();
     return () => {
-      // setGettingActions(false);
       active = false;
     };
 
@@ -136,18 +143,9 @@ const BidPageMain = ({ projectId }) => {
       if (!active) {
         return;
       }
-
-      if (address == EmptyAddress) {
-        setTotalBids("-");
-        setHighestBidInWei("-");
-      } else {
-        setTotalBids(totalQty);
-        setHighestBidInWei(highestBidInWei);
-      }
-      setUserBids(user_orders);
-      setGettingActions(false);
+ 
     }
-  }, [chainId, address]);
+  }, [actions, chainId, address]);
 
   // FIXME
   function getProjectDetailsFromId(pid) {

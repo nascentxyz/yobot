@@ -2,8 +2,10 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useYobot } from "src/contexts/YobotContext";
 
+const EmptyAddress = "0x0000000000000000000000000000000000000000";
+
 const ProjectDetails = ({ props }) => {
-  const { yobot, actions, chainId, refreshEvents } = useYobot();
+  const { yobot, address, actions, chainId, refreshEvents } = useYobot();
 
   const highestBid =
     props.project.highestBidInWei == "-"
@@ -100,7 +102,11 @@ const ProjectDetails = ({ props }) => {
             <div className="flex flex-col overflow-hidden bg-gray-700 rounded shadow-sm">
               <div className="flex-grow w-full p-5">
                 <dl>
-                  <dt className="text-2xl font-semibold">{highestBid}</dt>
+                  <dt className="text-2xl font-semibold">
+                    {props.gettingActions || address == EmptyAddress
+                      ? "-"
+                      : highestBid}
+                  </dt>
                   <dd className="text-sm font-medium tracking-wider text-gray-500 uppercase">
                     Highest Bid
                   </dd>
@@ -115,7 +121,9 @@ const ProjectDetails = ({ props }) => {
               <div className="flex-grow w-full p-5">
                 <dl>
                   <dt className="text-2xl font-semibold">
-                    {props.project.totalBids}
+                    {props.gettingActions || address == EmptyAddress
+                      ? "-"
+                      : props.project.totalBids}
                   </dt>
                   <dd className="text-sm font-medium tracking-wider text-gray-500 uppercase">
                     Total Bids
