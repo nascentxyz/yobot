@@ -143,7 +143,6 @@ const BidPageMain = ({ projectId }) => {
       if (!active) {
         return;
       }
- 
     }
   }, [actions, chainId, address]);
 

@@ -18,6 +18,7 @@ const App = () => {
     <GradientContainer>
       <ToastContainer />
       <Navbar onOpen={onOpen} accountButton={true} />
+      <FAQModal isOpen={isOpen} onClose={onClose} />
       <ProjectGrid />
     </GradientContainer>
 
