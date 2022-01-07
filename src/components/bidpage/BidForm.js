@@ -277,7 +277,7 @@ const BidForm = () => {
           />
         </div>
 
-        {insufficentFunds ? (
+        {isAuthed && insufficentFunds ? (
           <Text mb="0.5em" fontSize="14px" color="red.500">
             Insufficient Funds ~ {balance && balance.toFixed(3)}Ξ
           </Text>
