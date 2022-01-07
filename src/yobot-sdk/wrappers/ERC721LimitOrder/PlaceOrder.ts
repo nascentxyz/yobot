@@ -74,7 +74,7 @@ const placeOrder = async (
       }
     )
     .on("receipt", () => {
-      txConfirmedCallback("⚔️ Placed Order ⚔️");
+      txConfirmedCallback();
     });
 
   // ** Just return the txn object **
