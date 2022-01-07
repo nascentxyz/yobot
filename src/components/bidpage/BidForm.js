@@ -45,7 +45,7 @@ const PlaceBidButton = styled(Button)`
   }
 `;
 
-const BidForm = () => {
+const BidForm = ({ props }) => {
   const { t } = useTranslation();
   const { yobot, isAuthed, balance, address, refreshEvents } = useYobot();
   const [validParams, setValidParams] = useState(false);
@@ -284,11 +284,19 @@ const BidForm = () => {
         ) : (
           ""
         )}
+        {isAuthed && props.alreadyPlacedBid ? (
+          <Text mb="0.5em" fontSize="14px" color="red.500">
+            You&apos;ve already placed a bid on this project.
+          </Text>
+        ) : (
+          ""
+        )}
         {!isAuthed ? (
           <ConnectWallet fullWidth={true} darkerBackground={true} />
         ) : (
           <PlaceBidButton
             disabled={
+              props.alreadyPlacedBid ||
               !validParams ||
               insufficentFunds ||
               bidPriceEmpty ||

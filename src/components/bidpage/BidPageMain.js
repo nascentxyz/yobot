@@ -17,6 +17,7 @@ const BidPageMain = ({ projectId }) => {
   const [totalBids, setTotalBids] = useState("-");
   const [highestBidInWei, setHighestBidInWei] = useState("-");
   const [gettingActions, setGettingActions] = useState(true);
+  const [alreadyPlacedBid, setAlreadyPlacedBid] = useState(false);
 
   const fetchUserOrdersAndTotalStats = async () => {
     let _placed_orders = [];
@@ -47,9 +48,6 @@ const BidPageMain = ({ projectId }) => {
         let _address = values["0"];
         let _token_address = values["1"];
         let _action_taken = values["4"];
-
-        // orders[msg.sender][_tokenAddress];
-        // for all orders for this token address, add qty
 
         // TODO: implement orderID so easier to lookup orders to update order status & get stats... Otherwise need to loop thru all txs
 
@@ -106,6 +104,8 @@ const BidPageMain = ({ projectId }) => {
       _successful_orders,
       _cancelled_orders.reverse()
     );
+
+    setAlreadyPlacedBid(_placed_orders.length > 0);
 
     const highestBidInWei = Math.max(
       highestFilledBidInWei,
@@ -168,7 +168,7 @@ const BidPageMain = ({ projectId }) => {
     <div>
       <div className="max-w-screen-lg m-auto mt-2 mt-12 text-gray-300 bg-black xl:max-w-7xl App font-Roboto sm:">
         <div className="pb-6 mx-auto sm:pb-0 flex border border-gray-700 rounded-xl  flex-col-reverse max-w-screen-xl m-auto  bg-gray-800 sm:flex-row sm:mb-4">
-          <BidForm />
+          <BidForm props={{ alreadyPlacedBid }} />
           <ProjectDetails
             props={{
               project: getProjectDetailsFromId(projectId),
