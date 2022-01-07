@@ -163,15 +163,18 @@ const BidForm = ({ props }) => {
           onTxSubmitted(msg);
           // resetFormInputs();
           setPlacingBid(false);
+          props.onBidSubmitted(true);
         },
         async (msg) => {
           onTxFailed(msg);
+          props.onBidSubmitted(false);
         },
         async (msg) => {
           onTxConfirmed(msg);
 
           // FIXME: we want to repull ALL events across all of Yobot every time a tx is confirmed?
           refreshEvents();
+          props.onBidSubmitted(false);
         },
         async (msg) => {
           userRejectedCallback();
@@ -181,6 +184,7 @@ const BidForm = ({ props }) => {
     } catch (e) {
       onTxFailed();
       setPlacingBid(false);
+      props.onBidSubmitted(false);
       console.error("Placing bid returned:", e);
     }
   };

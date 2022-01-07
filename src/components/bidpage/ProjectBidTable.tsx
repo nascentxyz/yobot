@@ -61,7 +61,7 @@ const ProjectBidTable = ({ props }) => {
         setCancellingOrder(false);
       }, // txFailCallback
       async (msg) => {
-        // txFailCallback
+        // txConfirmedCallback
 
         // FIXME: we want to repull ALL events across all of Yobot every time a tx is confirmed?
         onTxConfirmed(msg);
@@ -142,7 +142,7 @@ const ProjectBidTable = ({ props }) => {
           </thead>
 
           <tbody>
-            {props.gettingActions ? (
+            {isAuthed && (props.gettingActions || props.submittingBid) ? (
               <tr className="p-4">
                 <Spinner
                   padding="1em"

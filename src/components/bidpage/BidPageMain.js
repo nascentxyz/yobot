@@ -17,6 +17,7 @@ const BidPageMain = ({ projectId }) => {
   const [totalBids, setTotalBids] = useState("-");
   const [highestBidInWei, setHighestBidInWei] = useState("-");
   const [gettingActions, setGettingActions] = useState(true);
+  const [submittingBid, setSubmittingBid] = useState(false);
   const [alreadyPlacedBid, setAlreadyPlacedBid] = useState(false);
 
   const fetchUserOrdersAndTotalStats = async () => {
@@ -164,11 +165,15 @@ const BidPageMain = ({ projectId }) => {
     return projectDetails;
   }
 
+  const onBidSubmitted = (submitting) => {
+    setSubmittingBid(submitting);
+  };
+
   return (
     <div>
       <div className="max-w-screen-lg m-auto mt-2 mt-12 text-gray-300 bg-black xl:max-w-7xl App font-Roboto sm:">
         <div className="pb-6 mx-auto sm:pb-0 flex border border-gray-700 rounded-xl  flex-col-reverse max-w-screen-xl m-auto  bg-gray-800 sm:flex-row sm:mb-4">
-          <BidForm props={{ alreadyPlacedBid }} />
+          <BidForm props={{ alreadyPlacedBid, onBidSubmitted }} />
           <ProjectDetails
             props={{
               project: getProjectDetailsFromId(projectId),
@@ -176,7 +181,7 @@ const BidPageMain = ({ projectId }) => {
             }}
           />
         </div>
-        <ProjectBidTable props={{ userBids, gettingActions }} />
+        <ProjectBidTable props={{ userBids, gettingActions, submittingBid }} />
       </div>
     </div>
   );
