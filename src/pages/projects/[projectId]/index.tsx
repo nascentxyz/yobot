@@ -1,5 +1,10 @@
 import { useRouter } from "next/router";
-import { Navbar, GradientContainer, BidPageMain, FAQModal } from "src/components";
+import {
+  Navbar,
+  GradientContainer,
+  BidPageMain,
+  FAQModal,
+} from "src/components";
 
 import { ToastContainer } from "react-toastify";
 import { useDisclosure } from "@chakra-ui/react";
