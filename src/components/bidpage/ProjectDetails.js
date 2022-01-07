@@ -5,55 +5,13 @@ import { useYobot } from "src/contexts/YobotContext";
 const ProjectDetails = ({ props }) => {
   const { yobot, actions, chainId, refreshEvents } = useYobot();
 
-  const highestBid = props.project.highestBidInWei == "-" ? "-" : yobot.web3.utils.fromWei(
-    props.project.highestBidInWei.toString(),
-    "ether"
-  );
-
-  // const [highestBid, setHighestBid] = useState("-");
-  // const [totalQty, setTotalQty] = useState("-");
-
-  // const setHighestBidAndTotalQty = async () => {
-  //   let highestBidInWei = 0;
-  //   let totalQty = 0;
-  //   for (const action of actions) {
-  //     // ** Extract object entries **
-  //     let values = action["returnValues"];
-  //     if (values !== undefined) {
-  //       let _address = values["0"];
-  //       let _token_address = values["1"];
-  //       let _action = values["4"];
-
-  //       // ** Check if event Actions is for this NFT token & ORDER_PLACED
-  //       if (
-  //         _token_address.toUpperCase() ==
-  //           props.projectTokenAddress.toUpperCase() &&
-  //         (values["4"] == "ORDER_PLACED" || values["4"] == "ORDER_FILLED") //FIXME: do we want order_placed or order_successful here?
-  //       ) {
-  //         const bidPrice = values["_priceInWeiEach"];
-  //         const qty = parseInt(values["_quantity"]);
-  //         highestBidInWei = Math.max(highestBidInWei, bidPrice);
-  //         totalQty += qty;
-  //       }
-  //     }
-  //   }
-  //   const highestBid = yobot.web3.utils.fromWei(
-  //     highestBidInWei.toString(),
-  //     "ether"
-  //   );
-  //   setHighestBid(highestBid);
-  //   setTotalQty(totalQty);
-  // };
-
-  // useEffect(() => {
-  //   refreshEvents();
-  //   setHighestBidAndTotalQty();
-  // }, []);
-
-  // // ** On actions refresh, re-fetch # of bids & qty **
-  // useEffect(() => {
-  //   setHighestBidAndTotalQty();
-  // }, [actions, chainId]);
+  const highestBid =
+    props.project.highestBidInWei == "-"
+      ? "-"
+      : yobot.web3.utils.fromWei(
+          props.project.highestBidInWei.toString(),
+          "ether"
+        );
 
   const calculateTimeLeft = () => {
     let difference = props.project.launchTime - new Date();
@@ -119,7 +77,6 @@ const ProjectDetails = ({ props }) => {
           <div className="flex flex-col overflow-hidden bg-gray-800 rounded shadow-sm">
             <div className="flex-grow w-full p-5">
               <dl>
-                {/* FIXME: implement countdown timer to time of launch */}
                 <dt className="text-2xl font-semibold">
                   <span>{timeLeft.days}d </span>
                   <span>{timeLeft.hours}h </span>
@@ -157,7 +114,9 @@ const ProjectDetails = ({ props }) => {
             <div className="flex flex-col overflow-hidden bg-gray-700 rounded shadow-sm">
               <div className="flex-grow w-full p-5">
                 <dl>
-                  <dt className="text-2xl font-semibold">{props.project.totalBids}</dt>
+                  <dt className="text-2xl font-semibold">
+                    {props.project.totalBids}
+                  </dt>
                   <dd className="text-sm font-medium tracking-wider text-gray-500 uppercase">
                     Total Bids
                   </dd>

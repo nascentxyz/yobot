@@ -39,7 +39,7 @@ const ConnectWallet = ({ fullWidth = false, darkerBackground = false }) => {
     // console.log("is authed:", isAuthed);
     if (isAuthed) {
       openModal();
-    } else login(false);
+    } else login();
   }, [isAuthed, login, openModal]);
 
   return (

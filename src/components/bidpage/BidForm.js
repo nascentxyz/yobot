@@ -169,6 +169,8 @@ const BidForm = () => {
         },
         async (msg) => {
           onTxConfirmed(msg);
+
+          // FIXME: we want to repull ALL events across all of Yobot every time a tx is confirmed?
           refreshEvents();
         },
         async (msg) => {

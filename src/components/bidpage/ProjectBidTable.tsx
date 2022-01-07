@@ -31,96 +31,7 @@ const ProjectBidTable = ({ props }) => {
   const { yobot, isAuthed, chainId, actions, address, refreshEvents } =
     useYobot();
   const [orders, setOrders] = useState([]);
-  
   const [cancellingOrder, setCancellingOrder] = useState(false);
-
-
-  // // TODO: memoize orders result; don't reload unless `actions`
-  // // FIXME: Need to display user error to show that u can't place duplicate bids
-  //   // TransactionRevertedWithoutReasonError
-  // const fetchOrders = async () => {
-  //   let _placed_orders = [];
-  //   let _successful_orders = [];
-  //   let _cancelled_orders = [];
-
-  //   let placedBidValuesForProject: { [userAddress: string]: number } = {};
-  //   let highestFilledBidInWei = 0;
-  //   let totalQty = 0;
-    
-  //   for (const action of actions) {
-  //     try {
-  //       // ** Set the block timestamp **
-  //       let blockNumber = action["blockNumber"];
-  //       // ** Convert block number to date **
-  //       let block = await yobot.web3.eth.getBlock(parseInt(blockNumber));
-  //       // @ts-ignore
-  //       let block_timestamp = parseInt(block.timestamp);
-  //       action["date"] = new Date(block_timestamp * 1000);
-  //     } catch (e) {
-  //       console.error(e);
-  //     }
-
-  //     // ** Extract object entries **
-  //     let values = action["returnValues"];
-  //     if (values !== undefined) {
-  //       let _address = values["0"];
-  //       let _token_address = values["1"];
-  //       let _action_taken = values["4"];
-
-  //       // For this NFT contract,
-  //       if (_token_address.toUpperCase() == TOKEN_ADDRESS.toUpperCase()) {
-
-  //         const isCurrUser = _address.toUpperCase() == address.toUpperCase();
-  //         const bidPrice = values["_priceInWeiEach"];
-  //         const qty = parseInt(values["_quantity"]);
-
-  //         if (_action_taken == "ORDER_PLACED") {
-  //           placedBidValuesForProject[_address] = bidPrice;
-  //           totalQty += qty;
-  //           if (isCurrUser) _placed_orders.push(action);
-  //         } else if (_action_taken == "ORDER_FILLED") {
-  //           highestFilledBidInWei = Math.max(highestFilledBidInWei, bidPrice);
-  //           totalQty += qty;
-  //           if (isCurrUser)  _successful_orders.push(action);
-  //         } else if (_action_taken == "ORDER_CANCELLED") {
-  //           delete placedBidValuesForProject[_address];
-  //           totalQty -= qty;
-
-  //           // ** Iterate over new_actions and try to remove cancelled order from current users' bid table **
-  //           if (isCurrUser)  {
-              
-  //             for (let i = _placed_orders.length - 1; i >= 0; --i) {
-  //               const potentiallyCancelledOrder = _placed_orders[i];
-  //               const orderValues = potentiallyCancelledOrder["returnValues"];
-  //               if (
-  //                 orderValues["0"].toUpperCase() == address.toUpperCase() &&
-  //                 orderValues["1"].toUpperCase() == TOKEN_ADDRESS.toUpperCase()
-  //               ) {
-  //                 // Set cancelled action date-placed, price, quantity for bid table display
-  //                 action["date"] = potentiallyCancelledOrder["date"];
-  //                 action["returnValues"]["_priceInWeiEach"] = orderValues["_priceInWeiEach"];
-  //                 action["returnValues"]["_quantity"] = orderValues["_quantity"];
-
-  //                 // Remove even numbers from _placed_orders array
-  //                 _placed_orders.splice(i, 1);
-  //               }
-  //             }
-  //             _cancelled_orders.push(action);
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  //   const all_orders = _placed_orders.concat(
-  //     _successful_orders,
-  //     _cancelled_orders.reverse()
-  //   );
-  //   setOrders(all_orders);
-
-  //   const highestBidInWei = Math.max(highestFilledBidInWei, Math.max(...Object.values(placedBidValuesForProject)));
-
-  //   setGettingActions(false);
-  // };
 
   // ** On actions refresh, filter and set a user's actions **
   useEffect(() => {
@@ -129,8 +40,6 @@ const ProjectBidTable = ({ props }) => {
     } else {
       setOrders(props.userBids);
     }
-    
-    
   }, [props.userBids, props.gettingActions, actions, address, chainId]);
 
   const cancelOrder = async () => {
@@ -153,6 +62,8 @@ const ProjectBidTable = ({ props }) => {
       }, // txFailCallback
       async (msg) => {
         // txFailCallback
+
+        // FIXME: we want to repull ALL events across all of Yobot every time a tx is confirmed?
         onTxConfirmed(msg);
         setCancellingOrder(false);
         refreshEvents();
@@ -244,7 +155,6 @@ const ProjectBidTable = ({ props }) => {
               </tr>
             ) : orders.length > 0 ? (
               orders.map((order) => {
-                console.log("here");
                 let action = order["returnValues"];
                 let date = new Date();
                 let quantity = "";

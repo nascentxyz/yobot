@@ -140,7 +140,6 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
         yobot.web3,
         yobot.YobotERC721LimitOrder.YobotERC721LimitOrder
       ).then((events) => {
-        console.log(events);
         setActions(events);
       });
     }
