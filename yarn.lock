@@ -3245,7 +3245,7 @@
     js-sha3 "0.8.0"
     query-string "6.13.5"
 
-"@walletconnect/web3-provider@^1.6.5":
+"@walletconnect/web3-provider@^1.6.6":
   version "1.6.6"
   resolved "https://registry.npmjs.org/@walletconnect/web3-provider/-/web3-provider-1.6.6.tgz"
   integrity sha512-8z4r9JCE0lKuZmVCPSdYnX114ckQ+oMfr9D8osRBtdyhvN9elwITMloUJfACDRelcuet94yEbXuDobQeBDDkkw==

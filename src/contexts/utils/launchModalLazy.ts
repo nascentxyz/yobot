@@ -1,12 +1,13 @@
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3Modal from "web3modal";
-import { alchemyURL } from "src/utils";
+import { alchemyMainnetURL, alchemyRinkebyURL } from "src/utils";
 
 // ** Launch a Lazy Modal **
-const launchModalLazy = (
+async function launchModalLazy(
   t: (text: string, extra?: any) => string,
   cacheProvider: boolean = true
-) => {
+) {
+  console.log(localStorage.getItem("walletconnect"));
   const providerOptions = {
     injected: {
       display: {
@@ -15,10 +16,11 @@ const launchModalLazy = (
       package: null,
     },
     walletconnect: {
-      package: WalletConnectProvider.default,
+      package: WalletConnectProvider,
       options: {
         rpc: {
-          1: alchemyURL,
+          1: alchemyMainnetURL,
+          4: alchemyRinkebyURL,
         },
       },
       display: {
@@ -31,7 +33,7 @@ const launchModalLazy = (
     localStorage.removeItem("WEB3_CONNECT_CACHED_PROVIDER");
     localStorage.removeItem("walletconnect");
   }
-
+  
   const web3Modal = new Web3Modal({
     cacheProvider,
     providerOptions,
@@ -43,8 +45,7 @@ const launchModalLazy = (
       hover: "#000000",
     },
   });
-
-  return web3Modal.connect();
+  return await web3Modal.connect();
 };
 
 export default launchModalLazy;
