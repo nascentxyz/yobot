@@ -3,8 +3,8 @@ import Head from "next/head";
 import theme from "../theme";
 import { AppProps } from "next/app";
 import "material-react-toastify/dist/ReactToastify.css";
+import "react-toastify/dist/ReactToastify.css";
 import { YobotProvider } from "src/contexts/YobotContext";
-// import { DAppProvider } from "@usedapp/core";
 
 import LogRocket from "logrocket";
 // @ts-ignore
@@ -12,7 +12,6 @@ import { version } from "../../package.json";
 export { version };
 
 if (process.env.NODE_ENV === "production") {
-  console.log("Connecting to LogRocket...");
   LogRocket.init("vulxom/yobot", {
     console: {
       shouldAggregateConsoleErrors: true,

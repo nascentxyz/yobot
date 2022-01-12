@@ -28,6 +28,9 @@ jobs:
       - name: Install dependencies
         run: nix-shell --run 'make'
 
+      - name: Update Openzeppelin contracts directory
+        run: yarn fix-oz
+
       - name: Check contracts are linted
         id: lint-check
         run: yarn lint:check

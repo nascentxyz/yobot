@@ -8,7 +8,7 @@ let
 in
   pkgs.mkShell {
     src = null;
-    name = "rari-capital-charity-vaults";
+    name = "yobot";
     buildInputs = with pkgs; [
       pkgs.dapp
     ];

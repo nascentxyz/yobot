@@ -32,7 +32,7 @@ const TrippyArt = () => {
     <Flex w="100%">
       <Flex m="auto" w="auto" d="grid">
         <MainShadowBackground />
-        <MainTrippyImage src="/logo.png" alt="Main Art Piece" />
+        <MainTrippyImage src="/trippy-art.png" alt="Main Art Piece" />
       </Flex>
     </Flex>
   );

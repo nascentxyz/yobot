@@ -9,6 +9,7 @@ const PageGroup = styled.div`
   flex-direction: column;
   align-items: center;
   padding-top: 2em;
+  padding-bottom: 2em;
   max-width: 800px;
 
   @media (max-width: 900px) {

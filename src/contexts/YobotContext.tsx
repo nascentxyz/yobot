@@ -1,8 +1,7 @@
-import {
+import React, {
   createContext,
   useContext,
   useState,
-  useCallback,
   useEffect,
   useMemo,
   ReactNode,
@@ -11,54 +10,16 @@ import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import LogRocket from "logrocket";
 import { useToast } from "@chakra-ui/react";
-import { Yobot } from "../yobot-sdk/index";
 import { formatEther } from "@ethersproject/units";
-
-import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3Modal from "web3modal";
 
-import { chooseBestWeb3Provider, alchemyURL } from "../utils";
+import { launchModalLazy /* ViewOrdersProps */ } from "./utils";
+import { Yobot } from "src/yobot-sdk/index";
+import { chooseBestWeb3Provider } from "src/utils";
 
-async function launchModalLazy(
-  t: (text: string, extra?: any) => string,
-  cacheProvider: boolean = true
-) {
-  const providerOptions = {
-    injected: {
-      display: {
-        description: t("Connect with a browser extension"),
-      },
-      package: null,
-    },
-    walletconnect: {
-      package: WalletConnectProvider.default,
-      options: {
-        rpc: {
-          1: alchemyURL,
-        },
-      },
-      display: {
-        description: t("Scan with a wallet to connect"),
-      },
-    },
-  };
-  if (!cacheProvider) {
-    localStorage.removeItem("WEB3_CONNECT_CACHED_PROVIDER");
-    localStorage.removeItem("walletconnect");
-  }
-  const web3Modal = new Web3Modal({
-    cacheProvider,
-    providerOptions,
-    theme: {
-      background: "#121212",
-      main: "#FFFFFF",
-      secondary: "#858585",
-      border: "#272727",
-      hover: "#000000",
-    },
-  });
-
-  return web3Modal.connect();
+export interface Order {
+  priceInWeiEach: number;
+  quantity: number;
 }
 
 export interface YobotContextData {
@@ -72,14 +33,18 @@ export interface YobotContextData {
   balance: number;
   chainId: number;
   isAttemptingLogin: boolean;
+  // ** YobotERC721LimitOrder Specific Contract Data **
+  actions: any[];
+  // openOrders: Order[];
+  // fetchOpenOrders: React.SFC<ViewOrdersProps>;
+  setSelectedChainId: any; //React.SFC<[]>;
+  refreshEvents: any;
 }
 
-export const EmptyAddress = "0x0000000000000000000000000000000000000000";
-export const YobotContext = createContext<YobotContextData | undefined>(
-  undefined
-);
+const EmptyAddress = "0x0000000000000000000000000000000000000000";
+const YobotContext = createContext<YobotContextData | undefined>(undefined);
 
-export const YobotProvider = ({ children }: { children: ReactNode }) => {
+const YobotProvider = ({ children }: { children: ReactNode }) => {
   const { t } = useTranslation();
 
   const { query } = useRouter();
@@ -92,32 +57,43 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
   const toast = useToast();
 
   // ** Save chainId for context switches **
-  const [chainId, setChainId] = useState<number>(-1);
+  const [chainId, setChainId] = useState<number>(1);
 
   // ** Only allow one network toast notification at a time **
   const [toastingNetwork, setToastingNetwork] = useState(false);
 
+  // ** Lock setting yobot and address
+  const [updatingLock, setUpdatingLock] = useState(false);
+
+  // ** Action store for all events **
+  const [actions, setActions] = useState<any[]>([]);
+
+  // ** Selected Chain ID **
+  const [selectedChainId, setSelectedChainId] = useState<number>(1);
+
   // ** Refresh chain id **
   const refreshChainId = ({ yobotInstance = yobot }) => {
     if (!toastingNetwork) {
+      setToastingNetwork(true);
       Promise.all([
         yobotInstance.web3.eth.net.getId(),
         yobotInstance.web3.eth.getChainId(),
       ]).then(([netId, currChainId]) => {
         setChainId(currChainId);
-        // ** Don't show "wrong network" toasts if dev
-        // if (process.env.NODE_ENV === "development") {
-        //   console.log("[NODE_ENV] Development")
-        //   return;
-        // }
 
-        if (netId !== 1 || currChainId !== 1) {
-          setToastingNetwork(true);
+        // ** We also want to automatically change selected chain id if the user manually changes their wallet network **
+        // ** Check if supported chain **
+        if (Yobot.isSupportedChain(currChainId)) {
+          // this will set the `selectedChainId`
+          // which sets the network shown in the sushi button
+          setSelectedChainId(currChainId);
+        } else {
+          // ** Prevent Fast Reentrancy
           setTimeout(() => {
             toast({
               title: "Wrong network!",
               description:
-                "You are on the wrong network! Switch to the mainnet and reload this page!",
+                "You are on the wrong network! Switch to a supported chain and reload this page!",
               status: "warning",
               position: "bottom",
               duration: 3000,
@@ -146,41 +122,86 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
   const [balance, setBalance] = useState<number>(0);
   const [web3ModalProvider, setWeb3ModalProvider] = useState<any | null>(null);
 
-  const setYobotAndAddressFromModal = (modalProvider) => {
-    const yobotInstance = new Yobot(modalProvider);
-    setYobot(yobotInstance);
+  const [chainChange, setChainChange] = useState<boolean>(false);
 
-    yobotInstance.web3.eth.getAccounts().then((addresses) => {
-      console.log("got accounts:", addresses);
-      if (addresses.length === 0) {
-        if (typeof window !== "undefined") {
-          console.log("reloading window");
-          setIsAttemptingLogin(true);
-          logout();
-          setAddress(EmptyAddress);
-          return;
-        }
+  // ** For successfuly chain change toast
+  useEffect(() => {
+    if (chainChange) {
+      setChainChange(false);
+      if (address !== EmptyAddress && chainId === 4) {
+        // ** Prevent Fast Reentrancy
+        setTimeout(() => {
+          toast({
+            title: "Connected!",
+            description: "Connected to the correct network!",
+            status: "success",
+            position: "bottom",
+            duration: 3000,
+            isClosable: true,
+          });
+        }, 1500);
       }
+    }
+  }, [chainId]);
 
-      // ** We only want to refresh the chain id and do the rest if we have addresses **
-      refreshChainId({ yobotInstance });
+  // ** Refactored helper function to refresh events **
+  const refreshEvents = () => {
+    if (yobot) {
+      yobot.YobotERC721LimitOrder.fetchActions(
+        yobot.web3,
+        yobot.YobotERC721LimitOrder.YobotERC721LimitOrder
+      ).then((events) => {
+        setActions(events);
+      });
+    }
+  };
 
-      // ** Set the new address **
-      const address = addresses[0] as string;
-      const requestedAddress = query.address as string;
-      LogRocket.identify(address);
-      setAddress(requestedAddress ?? address);
+  // ** On auth login, try to fetch all events **
+  useEffect(() => {
+    refreshEvents();
+  }, [address]);
 
-      // ** Get the selected address balance
-      yobotInstance.web3.eth
-        .getBalance(requestedAddress ?? address)
-        .then((bal) => {
-          setBalance(parseFloat(formatEther(bal)));
-        })
-        .catch((balance_err) =>
-          console.error("Failed to get account ethers with error:", balance_err)
-        );
-    });
+  const setYobotAndAddressFromModal = (modalProvider) => {
+    if (!updatingLock) {
+      setUpdatingLock(true);
+      const yobotInstance = new Yobot(modalProvider);
+      setYobot(yobotInstance);
+
+      yobotInstance.web3.eth.getAccounts().then((addresses) => {
+        if (addresses.length === 0) {
+          if (typeof window !== "undefined") {
+            setIsAttemptingLogin(true);
+            logout();
+            setAddress(EmptyAddress);
+            return;
+          }
+        }
+
+        // ** We only want to refresh the chain id and do the rest if we have addresses **
+        refreshChainId({ yobotInstance });
+
+        // ** Set the new address **
+        const address = addresses[0] as string;
+        const requestedAddress = query.address as string;
+        LogRocket.identify(address);
+        setAddress(requestedAddress ?? address);
+
+        // ** Get the selected address balance
+        yobotInstance.web3.eth
+          .getBalance(requestedAddress ?? address)
+          .then((bal) => {
+            setBalance(parseFloat(formatEther(bal)));
+
+            // TODO: show connected balance here ??
+          })
+          .catch((balance_err) =>
+            console.error(
+              "Failed to get account ethers with error:",
+              balance_err
+            )
+          );
+      });
+    }
   };
 
   const login = async (cacheProvider: boolean = true) => {
@@ -198,16 +219,12 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
 
   const refetchAccountData = () => {
     setYobotAndAddressFromModal(web3ModalProvider);
-  }; // }, [setYobotAndAddressFromModal, web3ModalProvider]);
+  };
 
   const logout = () => {
     setWeb3ModalProvider((past: any) => {
       try {
-        past.clearCachedProvider().then((res) => {
-          console.log("Cleared past cached provider!", res);
-        });
-        console.log(past);
-        console.log(web3ModalProvider);
+        past.clearCachedProvider().then((_res) => {});
         past.request({
           method: "wallet_requestPermissions",
           params: [
@@ -255,6 +272,9 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
       balance,
       chainId,
       isAttemptingLogin,
+      actions,
+      setSelectedChainId,
+      refreshEvents,
     }),
     [
       yobot,
@@ -265,6 +285,9 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
       balance,
       chainId,
       isAttemptingLogin,
+      actions,
+      setSelectedChainId,
+      refreshEvents,
     ]
   );
 
@@ -273,7 +296,7 @@ export const YobotProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export function useYobot() {
+const useYobot = () => {
   const context = useContext(YobotContext);
 
   if (context === undefined) {
@@ -281,4 +304,13 @@ export function useYobot() {
   }
 
   return context;
-}
+};
+
+// ** Exports
+export {
+  useYobot,
+  YobotProvider,
+  EmptyAddress,
+  // InternalWeb3Context,
+  launchModalLazy,
+};

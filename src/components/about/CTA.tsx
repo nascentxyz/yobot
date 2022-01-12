@@ -22,7 +22,8 @@ const CTA = ({ onOpen }) => {
           margin="auto"
           width="100%"
           maxWidth="48rem"
-          py={3}
+          // pt={2}
+          pb={4}
         >
           <Flex flexGrow={0} mx={2} minWidth="100px">
             <GrayButton width="100%" onClick={onOpen}>
