@@ -1,13 +1,6 @@
 name: Tests
 
-on:
-  push:
-    branches:
-      - main
-      - develop
-  pull_request:
-    branches:
-      - main
+on: [push, pull_request]
 
 defaults:
   run:
@@ -26,22 +19,12 @@ jobs:
         with:
           submodules: recursive
       - uses: actions/setup-node@v2
-      - uses: cachix/install-nix-action@v13
-      - uses: cachix/cachix-action@v10
-        with:
-          name: dapp
 
       - name: Install dependencies
-        id: make-dependencies
-        run: nix-shell --run 'make'
+        run: yarn
 
-      - name: Update Openzeppelin contracts directory
-        run: yarn fix-oz
+      - name: Builds
+        run: yarn build
 
-      - name: Build the contracts
-        id: make-build
-        run: nix-shell --run 'make build'
-
-      - name: Deploy and run checks
-        id: test-deploy
-        run: nix-shell --run './scripts/test-deploy.sh'
+      # - name: Tests
+      #   run: yarn test
