@@ -20,24 +20,10 @@ jobs:
           submodules: recursive
 
       - uses: actions/setup-node@v2
-      - uses: cachix/install-nix-action@v13
-      - uses: cachix/cachix-action@v10
-        with:
-          name: dapp
 
       - name: Install dependencies
-        run: nix-shell --run 'make'
+        run: yarn
 
-      - name: Update Openzeppelin contracts directory
-        run: yarn fix-oz
-
-      - name: Check contracts are linted
-        id: lint-check
+      - name: Check Lints
+        run: yarn lint
         run: yarn lint:check
-
-      - name: Run tests
-        id: tests-run
-        run: nix-shell --run 'make test'
-        # Enable this if using forking tests
-        # env:
-        #  ETH_RPC_URL: https://eth-mainnet.alchemyapi.io/v2/${{ secrets.ALCHEMY_API_KEY }}

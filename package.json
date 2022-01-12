@@ -20,7 +20,8 @@
     "start": "next start",
     "export": "next export",
     "lint": "next lint",
-    "lint:check": "yarn prettier:check",
+    "lint:check": "prettier --check '**/*.{tsx,ts,js,json,md,yml}'",
+    "lint:fix": "prettier -w .",
     "precommit-msg": "echo 'Running pre-commit checks...' && exit 0"
   },
   "pre-commit": [
