@@ -14,7 +14,7 @@ const Yobot = () => (
 );
 
 const YobotWrapper = styled.div`
-  margin: auto auto auto 0;
+    margin: auto auto auto 0;
 `;
 
 const YobotSVG = () => (

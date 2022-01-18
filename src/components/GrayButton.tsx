@@ -6,10 +6,12 @@ const GrayButton = styled(Button)`
   border-color: var(--chakra-colors-gray-600);
   background: var(--chakra-colors-gray-700);
   border-style: solid;
+
   &:hover {
     border-color: var(--chakra-colors-blue-800);
     background-color: var(--chakra-colors-gray-600);
   }
+
   &:focus {
     outline: 0 !important;
     box-shadow: none !important;

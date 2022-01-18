@@ -38,7 +38,13 @@ const Headline = () => (
 );
 
 const HeadlineWrapper = styled.div`
-  // margin: auto;
+    // margin: auto;
+    // width: 766px;
+    // height: 254px;
+    // flex-grow: 0;
+    // margin: 86px 193px 22px;
+    // background-image: linear-gradient(70deg, #ff02cc 2%, #8444df 32%, #63cea6 66%, #d67336 115%);
+    // fill: linear-gradient(70deg, #ff02cc 2%, #8444df 32%, #63cea6 66%, #d67336 115%);
 `;
 
 const HeadlineSVG = () => (

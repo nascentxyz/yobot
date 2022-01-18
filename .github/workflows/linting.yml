@@ -1,0 +1,28 @@
+name: Linting
+
+on: [push, pull_request]
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  CI: true
+  FORCE_COLOR: 2
+
+jobs:
+  linting:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - uses: actions/setup-node@v2
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Check Lints
+        run: yarn lint && yarn lint:check
