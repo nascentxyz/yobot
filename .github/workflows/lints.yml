@@ -1,4 +1,4 @@
-name: Linting
+name: Lints
 
 on: [push, pull_request]
 
@@ -11,7 +11,7 @@ env:
   FORCE_COLOR: 2
 
 jobs:
-  linting:
+  lints:
     runs-on: ubuntu-latest
 
     steps:

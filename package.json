@@ -1,8 +1,8 @@
 {
   "name": "yobot",
   "description": "A trustless marketplace for minting nfts using flashbots.",
-  "version": "0.0.3",
-  "private": true,
+  "version": "0.1.0",
+  "private": false,
   "license": "AGPL-3.0-only",
   "authors": [
     "Andreas Bigger <andreas@nascent.xyz>",
