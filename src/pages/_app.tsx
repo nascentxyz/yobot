@@ -21,7 +21,6 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider resetCSS theme={theme}>

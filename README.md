@@ -22,15 +22,11 @@ You can start editing the page by modifying src/pages/index.js. The page auto-up
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/nascentxyz/yobot&project-name=yobot&repository-name=yobot)
 
-
-
 ### Mainnet
 
 Original [ArtBlocksBroker](https://etherscan.io/address/0xE52A2A7B8dACe2ff8cdC64EabB605821A393474D#code): `0xE52A2A7B8dACe2ff8cdC64EabB605821A393474D`
 
 Original [ERC721LimitOrder](https://etherscan.io/address/0x56E6FA0e461f92644c6aB8446EA1613F4D72a756#code): `0x56E6FA0e461f92644c6aB8446EA1613F4D72a756`
-
-
 
 ## License
 
