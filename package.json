@@ -1,11 +1,12 @@
 {
   "name": "yobot",
-  "description": "A trustless broker to match off-chain bots with user contract call requests.",
+  "description": "A trustless marketplace for minting nfts using flashbots.",
   "version": "0.0.3",
   "private": true,
   "license": "AGPL-3.0-only",
   "authors": [
-    "Andreas Bigger <andreas@nascent.xyz>"
+    "Andreas Bigger <andreas@nascent.xyz>",
+    "Kristie Huang <kristie@nascent.xyz>"
   ],
   "repository": {
     "type": "git",
