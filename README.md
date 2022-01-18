@@ -4,25 +4,21 @@ A **trustless** marketplace for minting nfts using flashbots.
 
 ## Development
 
-Install dependencies with `yarn`
+Install dependencies:
+```sh
+yarn
+```
 
-To run the development server:
-
+Run locally:
 ```
 yarn dev
-# or
-npm run dev
 ```
 
-Open http://localhost:3000 with your browser to see the result.
+View hosted site at http://localhost:3000.
 
-You can start editing the page by modifying src/pages/index.js. The page auto-updates as you edit the file.
+## Contracts
 
-## Deploying
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/nascentxyz/yobot&project-name=yobot&repository-name=yobot)
-
-### Mainnet
+Goerli Yobot ERC721 Limit Order: [0x20340e29ba445553f6a5c1b8d30f405b3447664d](https://goerli.etherscan.io/address/0x20340e29ba445553f6a5c1b8d30f405b3447664d).
 
 Original [ArtBlocksBroker](https://etherscan.io/address/0xE52A2A7B8dACe2ff8cdC64EabB605821A393474D#code): `0xE52A2A7B8dACe2ff8cdC64EabB605821A393474D`
 
