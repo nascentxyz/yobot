@@ -37,7 +37,7 @@ const userRejectedCallback = async (msg = "❌ Transaction Rejected ❌") => {
 };
 
 // ** Callback for Transaction Confirmation **
-const onTxConfirmed = async (msg = `💰 Minting Successfull💰`) => {
+const onTxConfirmed = async (msg = "⚔️ Placed Order ⚔️") => {
   // ** Then, let's toast **
   toast.success(msg, {
     position: "bottom-center",

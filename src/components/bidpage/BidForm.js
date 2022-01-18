@@ -45,7 +45,7 @@ const PlaceBidButton = styled(Button)`
   }
 `;
 
-const BidForm = () => {
+const BidForm = ({ props }) => {
   const { t } = useTranslation();
   const { yobot, isAuthed, balance, address, refreshEvents } = useYobot();
   const [validParams, setValidParams] = useState(false);
@@ -163,15 +163,18 @@ const BidForm = () => {
           onTxSubmitted(msg);
           // resetFormInputs();
           setPlacingBid(false);
+          props.onBidSubmitted(true);
         },
         async (msg) => {
           onTxFailed(msg);
+          props.onBidSubmitted(false);
         },
         async (msg) => {
           onTxConfirmed(msg);
 
           // FIXME: we want to repull ALL events across all of Yobot every time a tx is confirmed?
           refreshEvents();
+          props.onBidSubmitted(false);
         },
         async (msg) => {
           userRejectedCallback();
@@ -181,6 +184,7 @@ const BidForm = () => {
     } catch (e) {
       onTxFailed();
       setPlacingBid(false);
+      props.onBidSubmitted(false);
       console.error("Placing bid returned:", e);
     }
   };
@@ -277,9 +281,16 @@ const BidForm = () => {
           />
         </div>
 
-        {insufficentFunds ? (
+        {isAuthed && insufficentFunds ? (
           <Text mb="0.5em" fontSize="14px" color="red.500">
             Insufficient Funds ~ {balance && balance.toFixed(3)}Ξ
+          </Text>
+        ) : (
+          ""
+        )}
+        {isAuthed && props.alreadyPlacedBid ? (
+          <Text mb="0.5em" fontSize="14px" color="red.500">
+            You&apos;ve already placed a bid on this project.
           </Text>
         ) : (
           ""
@@ -289,6 +300,7 @@ const BidForm = () => {
         ) : (
           <PlaceBidButton
             disabled={
+              props.alreadyPlacedBid ||
               !validParams ||
               insufficentFunds ||
               bidPriceEmpty ||
