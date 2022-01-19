@@ -1,0 +1,17 @@
+{
+  "plugins": [
+    {
+      "name": "@zeplin/cli-connect-react-plugin"
+    }
+  ],
+  "projects": ["6158e57da4f9e247cda68932"],
+  "components": [
+    {
+      "path": "src/components/landingpage/TrippyArt.tsx",
+      "zeplinIds": ["6159e9b106a4b938e94cf53c"]
+    }
+  ],
+  "github": {
+    "repository": "nascentxyz/yobot"
+  }
+}
