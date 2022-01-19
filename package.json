@@ -1,40 +1,23 @@
 {
   "name": "yobot",
-  "description": "A trustless broker to match off-chain bots with user contract call requests.",
-  "version": "0.0.3",
-  "private": true,
+  "description": "A trustless marketplace for minting nfts using flashbots.",
+  "version": "0.1.0",
+  "private": false,
   "license": "AGPL-3.0-only",
   "authors": [
-    "Andreas Bigger <andreas@nascent.xyz>"
+    "Andreas Bigger <andreas@nascent.xyz>",
+    "Kristie Huang <kristie@nascent.xyz>"
   ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nascentxyz/yobot.git"
   },
-  "files": [
-    "*.sol"
-  ],
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "export": "next export",
-    "prepublishOnly": "copyfiles -u 1 \"./src/**/*.sol\" --exclude \"./src/test/**/*.sol\" ./",
-    "postpublish": "rimraf ./*.sol",
-    "prepack": "yarn prepublishOnly",
-    "postpack": "yarn postpublish",
-    "lint": "next lint && yarn prettier && yarn solhint",
-    "lint:check": "yarn prettier:check && yarn solhint:check",
-    "prettier": "yarn prettier:check --write",
-    "prettier:check": "prettier --check \"src/**/*.sol\" && prettier --check \"src/*.sol\"",
-    "prettier:write": "prettier -w .",
-    "solhint": "yarn solhint:check --fix",
-    "solhint:check": "solhint --config ./.solhint.json \"src/**/*.sol\"",
-    "visualize": "surya graph -s src/**/*.sol | dot -Tpng > assets/contracts.png",
-    "contracts-test": "dapp test",
-    "contracts-lint": "prettier --write src/**/*.sol",
-    "precommit-msg": "echo 'Running pre-commit checks...' && exit 0",
-    "fix-oz": "ln -s contracts lib/zeppelin-solidity/src"
+    "lint": "next lint",
+    "lint:check": "prettier --check '**/*.{tsx,ts,js,json,md,yml}'",
+    "lint:fix": "prettier -w .",
+    "precommit-msg": "echo 'Running pre-commit checks...' && exit 0"
   },
   "pre-commit": [
     "precommit-msg",
@@ -70,7 +53,7 @@
     "react-i18next": "^11.12.0",
     "react-toastify": "^8.0.3",
     "styled-components": "^5.3.1",
-    "tailwindcss": "^2.2.19",
+    "tailwindcss": "^3.0.13",
     "web3": "^1.5.3",
     "web3modal": "^1.9.4"
   },
@@ -84,8 +67,6 @@
     "@types/node": "^14.6.0",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
-    "@zeplin/cli": "1.1.12",
-    "@zeplin/cli-connect-react-plugin": "1.1.1",
     "chai": "^4.3.4",
     "copyfiles": "^2.4.1",
     "eslint": "7.32.0",
@@ -94,12 +75,8 @@
     "hardhat": "^2.6.4",
     "pre-commit": "^1.2.2",
     "prettier": "^2.4.1",
-    "prettier-plugin-solidity": "^1.0.0-beta.18",
     "rimraf": "^3.0.2",
-    "solhint": "^3.3.6",
-    "solhint-plugin-prettier": "^0.0.5",
     "standardx": "^7.0.0",
-    "surya": "^0.4.3",
     "typescript": "4.3.2"
   },
   "prettier": {
