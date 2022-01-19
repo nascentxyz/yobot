@@ -1,13 +1,6 @@
-name: Tests
+name: Lints
 
-on:
-  push:
-    branches:
-      - main
-      - develop
-  pull_request:
-    branches:
-      - main
+on: [push, pull_request]
 
 defaults:
   run:
@@ -18,17 +11,18 @@ env:
   FORCE_COLOR: 2
 
 jobs:
-  tests:
+  lints:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
+
       - uses: actions/setup-node@v2
 
       - name: Install dependencies
         run: yarn
 
-      - name: Builds
-        run: yarn build
+      - name: Check Lints
+        run: yarn lint && yarn lint:check
