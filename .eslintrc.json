@@ -1,3 +1,4 @@
 {
-  "extends": "next/core-web-vitals"
+"extends": "next/core-web-vitals",
+"ignorePatterns": ["lib/*"] // <<< ignore all files in test folder
 }
