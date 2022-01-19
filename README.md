@@ -5,16 +5,19 @@ A **trustless** marketplace for minting nfts using flashbots.
 ## Development
 
 Install dependencies:
+
 ```sh
 yarn
 ```
 
 Run locally:
+
 ```sh
 yarn dev
 ```
 
 Open http://localhost:3000 with your browser.
+
 ## Contracts
 
 ### Getting Started
@@ -24,7 +27,6 @@ Goerli Yobot ERC721 Limit Order: [0x20340e29ba445553f6a5c1b8d30f405b3447664d](ht
 Original [ArtBlocksBroker](https://etherscan.io/address/0xE52A2A7B8dACe2ff8cdC64EabB605821A393474D#code): `0xE52A2A7B8dACe2ff8cdC64EabB605821A393474D`
 
 Original [ERC721LimitOrder](https://etherscan.io/address/0x56E6FA0e461f92644c6aB8446EA1613F4D72a756#code): `0x56E6FA0e461f92644c6aB8446EA1613F4D72a756`
-
 
 ## License
 
