@@ -35,7 +35,7 @@ function ProjectCardGrid() {
           })
         ) : (
           // TODO: display tbaProjects as well
-          <p padding="1em" marginLeft="1em" align="start">
+          <p>
             No projects available
           </p>
         )}
