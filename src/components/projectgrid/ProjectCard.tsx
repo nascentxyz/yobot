@@ -1,7 +1,8 @@
 import React from "react";
+import Image from 'next/image';
 
 const ProjectCard = ({ project }) => {
-  const projectIdLink = "/projects/" + project.projectId;
+  const projectIdLink = "/projects/" + project.id;
 
   const options = {
     month: "short",
@@ -11,7 +12,7 @@ const ProjectCard = ({ project }) => {
     minute: "numeric",
     timeZoneName: "short",
   };
-  const dateStr = project.launchTime.toLocaleDateString("en-US", options);
+  const dateStr = new Date(project.launch_time).toLocaleDateString("en-US", options);
 
   return (
     <a href={projectIdLink}>
@@ -21,10 +22,12 @@ const ProjectCard = ({ project }) => {
             href={projectIdLink}
             className="block mb-5 -mx-2 -mt-2 transition duration-200 ease-out origin-bottom transform hover:scale-105 hover:shadow-xl active:shadow active:opacity-50"
           >
-            <img
-              src={project.previewImageSrc}
+            <Image
+              src={project.image_src}
               alt="Photo"
               className="inline-block rounded"
+              width={100}
+              height={100}
             />
           </a>
           <h3 className="text-lg font-semibold text-gray-200">
