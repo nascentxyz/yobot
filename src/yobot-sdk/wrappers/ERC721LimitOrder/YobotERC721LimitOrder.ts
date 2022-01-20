@@ -54,6 +54,7 @@ class YobotERC721LimitOrder {
 
     // ** Initiate Contracts **
     this.web3.eth.getChainId().then((chain_id) => {
+      console.log("chain id: ", chain_id);
       this.YobotERC721LimitOrder = new this.web3.eth.Contract(
         YobotERC721LimitOrderAbi,
         DeployedContracts[chain_id]

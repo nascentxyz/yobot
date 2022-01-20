@@ -12,12 +12,16 @@ const ProjectDetails = ({ props }) => {
     props.project.highestBidInWei == "-"
       ? "-"
       : yobot.web3.utils.fromWei(
-          props.project.highestBidInWei ? props.project.highestBidInWei.toString() : '0',
+          props.project.highestBidInWei
+            ? props.project.highestBidInWei.toString()
+            : "0",
           "ether"
         );
 
   const calculateTimeLeft = () => {
-    let difference = props.project.launch_time ? (new Date(props.project.launch_time) - new Date()) : 0;
+    let difference = props.project.launch_time
+      ? new Date(props.project.launch_time) - new Date()
+      : 0;
 
     let timeLeft = {
       days: 0,
@@ -54,7 +58,11 @@ const ProjectDetails = ({ props }) => {
         {/* NFT image, title and description Start */}
         <div className="flex flex-col items-start">
           <Image
-            src={props.project.image_src ? props.project.image_src : "/etherscan.png"}
+            src={
+              props.project.image_src
+                ? props.project.image_src
+                : "/etherscan.png"
+            }
             alt="NFT Project Image"
             className="flex-none inline-block w-full mb-3 sm:w-3/12"
             width={100}

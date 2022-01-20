@@ -150,14 +150,12 @@ const BidForm = ({ props }) => {
     // TODO: depending on the erc721 - art blocks or general - this should change
     try {
       setPlacingBid(true);
+      console.log("Placing a bid on token address:", props.tokenAddress);
       let placeBidTx = await yobot.YobotERC721LimitOrder.placeOrder(
         yobot.web3, // web3
         yobot.YobotERC721LimitOrder.YobotERC721LimitOrder, // yobotERC721LimitOrder
         _frozenBidPrice, // price
         _frozenBidQty, // quantity
-        // TODO: dynamically pull token address from query string parameters
-        // tokenAddress, // tokenAddress
-        // "0xd8bbf8ceb445de814fb47547436b3cfeecadd4ec",
         props.tokenAddress,
         address, // sender
         async (msg) => {
@@ -289,19 +287,11 @@ const BidForm = ({ props }) => {
         ) : (
           ""
         )}
-        {isAuthed && props.alreadyPlacedBid ? (
-          <Text mb="0.5em" fontSize="14px" color="red.500">
-            You&apos;ve already placed a bid on this project.
-          </Text>
-        ) : (
-          ""
-        )}
         {!isAuthed ? (
           <ConnectWallet fullWidth={true} darkerBackground={true} />
         ) : (
           <PlaceBidButton
             disabled={
-              props.alreadyPlacedBid ||
               !validParams ||
               insufficentFunds ||
               bidPriceEmpty ||
