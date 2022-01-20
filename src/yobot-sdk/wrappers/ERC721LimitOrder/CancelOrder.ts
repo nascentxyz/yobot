@@ -15,8 +15,7 @@ const cancelOrder = async (
   // NOTE: Order Number can be 0 //
 
   // ** Extract cancelOrder method from the YobotERC721LimitOrder Contract **
-  let cancelOrderMethod =
-    yobotERC721LimitOrder.methods.cancelOrder(orderNum);
+  let cancelOrderMethod = yobotERC721LimitOrder.methods.cancelOrder(orderNum);
 
   // ** Send Transaction **
   let txn = await cancelOrderMethod

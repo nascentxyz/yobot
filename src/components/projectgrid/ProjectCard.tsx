@@ -1,5 +1,5 @@
 import React from "react";
-import Image from 'next/image';
+import Image from "next/image";
 
 const ProjectCard = ({ project }) => {
   const projectIdLink = "/projects/" + project.id;
@@ -12,7 +12,10 @@ const ProjectCard = ({ project }) => {
     minute: "numeric",
     timeZoneName: "short",
   };
-  const dateStr = new Date(project.launch_time).toLocaleDateString("en-US", options);
+  const dateStr = new Date(project.launch_time).toLocaleDateString(
+    "en-US",
+    options
+  );
 
   return (
     <a href={projectIdLink}>

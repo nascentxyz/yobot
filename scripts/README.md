@@ -1,2 +1,1 @@
-
 ### Supabase SQL Scripts

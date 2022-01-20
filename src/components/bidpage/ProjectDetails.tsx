@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 import { useEffect, useState } from "react";
 import { useYobot } from "src/contexts/YobotContext";
@@ -11,12 +12,12 @@ const ProjectDetails = ({ props }) => {
     props.project.highestBidInWei == "-"
       ? "-"
       : yobot.web3.utils.fromWei(
-          props.project.highestBidInWei.toString(),
+          props.project.highestBidInWei ? props.project.highestBidInWei.toString() : '0',
           "ether"
         );
 
   const calculateTimeLeft = () => {
-    let difference = props.project.launchTime - new Date();
+    let difference = props.project.launch_time ? (new Date(props.project.launch_time) - new Date()) : 0;
 
     let timeLeft = {
       days: 0,
@@ -52,16 +53,20 @@ const ProjectDetails = ({ props }) => {
       <div className="flex-grow w-full p-5 space-y-4 ">
         {/* NFT image, title and description Start */}
         <div className="flex flex-col items-start">
-          <img
-            src={props.project.previewImageSrc}
+          <Image
+            src={props.project.image_src ? props.project.image_src : "/etherscan.png"}
             alt="NFT Project Image"
             className="flex-none inline-block w-full mb-3 sm:w-3/12"
+            width={100}
+            height={100}
           />
 
           <div className="flex-grow text-lg">
             <p className="mb-1">
               <a
-                href={props.project.projectWebsite}
+                target="_blank"
+                rel="noreferrer"
+                href={props.project.website}
                 className="font-semibold text-gray-200 hover:text-indigo-400"
               >
                 {props.project.title}

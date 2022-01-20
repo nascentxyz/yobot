@@ -157,7 +157,8 @@ const BidForm = ({ props }) => {
         _frozenBidQty, // quantity
         // TODO: dynamically pull token address from query string parameters
         // tokenAddress, // tokenAddress
-        "0xd8bbf8ceb445de814fb47547436b3cfeecadd4ec",
+        // "0xd8bbf8ceb445de814fb47547436b3cfeecadd4ec",
+        props.tokenAddress,
         address, // sender
         async (msg) => {
           onTxSubmitted(msg);
