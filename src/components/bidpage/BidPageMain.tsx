@@ -1,17 +1,23 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { useYobot } from "src/contexts/YobotContext";
+import useSWR from 'swr'
 
 import ProjectDetails from "./ProjectDetails";
 import ProjectBidTable from "./ProjectBidTable";
 import BidForm from "./BidForm";
 
-// TODO: change this - temporary erc721 token address for testing on rinkeby
-const TOKEN_ADDRESS = "0xd8bbf8ceb445de814fb47547436b3cfeecadd4ec";
+// TODO: change this - temporary erc721 token address for testing on goerli
+const TOKEN_ADDRESS = "0xed198777a685a7152ecf165b4a4dee010fe6f933";
 const EmptyAddress = "0x0000000000000000000000000000000000000000";
 
 const BidPageMain = ({ projectId }) => {
   const { yobot, address, chainId, actions } = useYobot();
+
+  // ** Use SWR to load project ** //
+  const fetcher = (url) => fetch(url, { headers: { 'Content-Type': 'application/json' }}).then(res => res.json());
+  const { data: projectDetails, error } = useSWR(`/api/project/${projectId}`, fetcher);
+  console.log("Got projectDetails: ", projectDetails);
 
   const [userBids, setUserBids] = useState(null);
   const [totalBids, setTotalBids] = useState("-");
@@ -147,24 +153,6 @@ const BidPageMain = ({ projectId }) => {
     }
   }, [actions, chainId, address]);
 
-  // FIXME
-  function getProjectDetailsFromId(pid) {
-    const projectDetails = {
-      projectId: "0",
-      title: "Art Blocks",
-      projectWebsite: "https://www.artblocks.io/",
-      description:
-        "Art Blocks is a first of its kind platform focused on genuinely programmable on demand generative content that is stored immutably on the Ethereum Blockchain.",
-      launchTime: new Date("December 31, 2021 23:59:59 PST"),
-      previewImageSrc:
-        "https://www.artblocks.io/_next/image?url=%2F_next%2Fstatic%2Fimage%2Fpublic%2Fsquig_0_transparent.11e0ba7d94e0dcfd0d0a9fcdbc26e7fe.png&w=640&q=75",
-      projectTokenAddress: "0xd8bbf8ceb445de814fb47547436b3cfeecadd4ec",
-      totalBids: totalBids,
-      highestBidInWei: highestBidInWei,
-    };
-    return projectDetails;
-  }
-
   const onBidSubmitted = (submitting) => {
     setSubmittingBid(submitting);
   };
@@ -173,10 +161,18 @@ const BidPageMain = ({ projectId }) => {
     <div>
       <div className="max-w-screen-lg m-auto mt-2 mt-12 text-gray-300 bg-black xl:max-w-7xl App font-Roboto sm:">
         <div className="pb-6 mx-auto sm:pb-0 flex border border-gray-700 rounded-xl  flex-col-reverse max-w-screen-xl m-auto  bg-gray-800 sm:flex-row sm:mb-4">
-          <BidForm props={{ alreadyPlacedBid, onBidSubmitted }} />
+          <BidForm props={{
+            alreadyPlacedBid,
+            onBidSubmitted,
+            tokenAddress: projectDetails.token_address ? projectDetails.token_address : TOKEN_ADDRESS,
+          }} />
           <ProjectDetails
             props={{
-              project: getProjectDetailsFromId(projectId),
+              project: projectDetails ? {
+                ...projectDetails.project[0],
+                totalBids: totalBids,
+                highestBidInWei: highestBidInWei,
+              } : {},
               gettingActions: gettingActions,
             }}
           />
