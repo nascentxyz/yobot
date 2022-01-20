@@ -7,23 +7,49 @@ function ProjectCardGrid() {
   const [liveProjects, setLiveProjects] = useState([]);
   const [tbaProjects, setTbaProjects] = useState([]); // for ProjectCardDisabled
 
-  function getLiveProjects() {
-    const p1 = {
-      projectId: "0",
-      title: "Art Blocks",
-      projectWebsite: "https://www.artblocks.io/",
-      description:
-        "Art Blocks is a first of its kind platform focused on genuinely programmable on demand generative content that is stored immutably on the Ethereum Blockchain.",
-      launchTime: new Date("December 31, 2021 23:59:59 PST"),
-      previewImageSrc:
-        "https://www.artblocks.io/_next/image?url=%2F_next%2Fstatic%2Fimage%2Fpublic%2Fsquig_0_transparent.11e0ba7d94e0dcfd0d0a9fcdbc26e7fe.png&w=640&q=75",
-      projectTokenAddress: "0xd8bbf8ceb445de814fb47547436b3cfeecadd4ec",
-    };
-    return [p1];
-  }
+  // function getLiveProjects() {
+  //   const p1 = {
+  //     projectId: "0",
+  //     title: "Art Blocks",
+  //     projectWebsite: "https://www.artblocks.io/",
+  //     description:
+  //       "Art Blocks is a first of its kind platform focused on genuinely programmable on demand generative content that is stored immutably on the Ethereum Blockchain.",
+  //     launchTime: new Date("December 31, 2021 23:59:59 PST"),
+  //     previewImageSrc:
+  //       "/artblocks.png",
+  //     projectTokenAddress: "0xd8bbf8ceb445de814fb47547436b3cfeecadd4ec",
+  //   };
+  //   const p2 = {
+  //     projectId: "1",
+  //     title: "StrictMint",
+  //     projectWebsite: "https://goerli.etherscan.io/address/0xed198777a685a7152ecf165b4a4dee010fe6f933",
+  //     description:
+  //       "ERC721 with strict minting requirements",
+  //     launchTime: new Date("February 1, 2022 23:59:59 PST"),
+  //     previewImageSrc:
+  //       "/etherscan.png",
+  //     projectTokenAddress: "0xed198777a685a7152ecf165b4a4dee010fe6f933",
+  //   };
+  //   return [
+  //     p1,
+  //     p2
+  //   ];
+  // }
+
+  const fetchProjects = async () => {
+    const response = await fetch("/api/projects");
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status}`);
+    }
+
+    // ** Set the projects ** //
+    const { projects } = await response.json();
+    setLiveProjects(projects);
+  };
 
   useEffect(() => {
-    setLiveProjects(getLiveProjects());
+    fetchProjects();
   }, []);
 
   return (
@@ -35,9 +61,7 @@ function ProjectCardGrid() {
           })
         ) : (
           // TODO: display tbaProjects as well
-          <p>
-            No projects available
-          </p>
+          <p>No projects available</p>
         )}
       </div>
     </div>

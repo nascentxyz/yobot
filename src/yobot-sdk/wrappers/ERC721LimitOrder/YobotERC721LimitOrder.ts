@@ -33,7 +33,7 @@ class YobotERC721LimitOrder {
   cancelOrder: (
     web3: Web3,
     yobotERC721LimitOrder: any,
-    tokenAddress: string,
+    orderNum: number,
     sender: string,
     txSubmitCallback: any,
     txFailCallback: any,
