@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { useYobot } from "src/contexts/YobotContext";
-import useSWR from 'swr'
+import useSWR from "swr";
 
 import ProjectDetails from "./ProjectDetails";
 import ProjectBidTable from "./ProjectBidTable";
@@ -15,8 +15,14 @@ const BidPageMain = ({ projectId }) => {
   const { yobot, address, chainId, actions } = useYobot();
 
   // ** Use SWR to load project ** //
-  const fetcher = (url) => fetch(url, { headers: { 'Content-Type': 'application/json' }}).then(res => res.json());
-  const { data: projectDetails, error } = useSWR(`/api/project/${projectId}`, fetcher);
+  const fetcher = (url) =>
+    fetch(url, { headers: { "Content-Type": "application/json" } }).then(
+      (res) => res.json()
+    );
+  const { data: projectDetails, error } = useSWR(
+    `/api/project/${projectId}`,
+    fetcher
+  );
   console.log("Got projectDetails: ", projectDetails);
 
   const [userBids, setUserBids] = useState(null);
@@ -161,23 +167,36 @@ const BidPageMain = ({ projectId }) => {
     <div>
       <div className="max-w-screen-lg m-auto mt-2 mt-12 text-gray-300 bg-black xl:max-w-7xl App font-Roboto sm:">
         <div className="pb-6 mx-auto sm:pb-0 flex border border-gray-700 rounded-xl  flex-col-reverse max-w-screen-xl m-auto  bg-gray-800 sm:flex-row sm:mb-4">
-          <BidForm props={{
-            alreadyPlacedBid,
-            onBidSubmitted,
-            tokenAddress: projectDetails.token_address ? projectDetails.token_address : TOKEN_ADDRESS,
-          }} />
+          <BidForm
+            props={{
+              alreadyPlacedBid,
+              onBidSubmitted,
+              tokenAddress: projectDetails && projectDetails.token_address
+                ? projectDetails.token_address
+                : TOKEN_ADDRESS,
+            }}
+          />
           <ProjectDetails
             props={{
-              project: projectDetails ? {
-                ...projectDetails.project[0],
-                totalBids: totalBids,
-                highestBidInWei: highestBidInWei,
-              } : {},
+              project: projectDetails
+                ? {
+                    ...projectDetails.project[0],
+                    totalBids: totalBids,
+                    highestBidInWei: highestBidInWei,
+                  }
+                : {},
               gettingActions: gettingActions,
             }}
           />
         </div>
-        <ProjectBidTable props={{ userBids, gettingActions, submittingBid }} />
+        <ProjectBidTable props={{
+          userBids,
+          gettingActions,
+          submittingBid,
+          tokenAddress: projectDetails && projectDetails.token_address
+                ? projectDetails.token_address
+                : TOKEN_ADDRESS,
+        }} />
       </div>
     </div>
   );

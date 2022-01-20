@@ -23,9 +23,6 @@ import {
   onTxConfirmed,
 } from "src/utils";
 
-// TODO: change this - temporary erc721 token address for testing on rinkeby
-const TOKEN_ADDRESS = "0xd8bbf8ceb445de814fb47547436b3cfeecadd4ec";
-
 const ProjectBidTable = ({ props }) => {
   const { t } = useTranslation();
   const { yobot, isAuthed, chainId, actions, address, refreshEvents } =
@@ -39,19 +36,18 @@ const ProjectBidTable = ({ props }) => {
       setOrders([]);
     } else {
       setOrders(props.userBids);
+      console.log("bids:", props.userBids);
     }
   }, [props.userBids, props.gettingActions, actions, address, chainId]);
 
-  const cancelOrder = async () => {
+  const cancelOrder = async (orderNum) => {
     setCancellingOrder(true);
 
     // TODO: depending on the erc721 - art blocks or general - this should change
     let cancelOrderTx = await yobot.YobotERC721LimitOrder.cancelOrder(
       yobot.web3, // web3
       yobot.YobotERC721LimitOrder.YobotERC721LimitOrder, // yobotERC721LimitOrder
-      // TODO: dynamically pull token address from query string parameters
-      // tokenAddress, // tokenAddress
-      TOKEN_ADDRESS,
+      orderNum, // props.tokenAddress,
       address, // sender
       async () => {
         onTxSubmitted();
@@ -73,7 +69,6 @@ const ProjectBidTable = ({ props }) => {
         setCancellingOrder(false);
       } // userRejectedCallback
     );
-    // console.log("Cancelled order tx:", cancelOrderTx);
   };
 
   const getStatusCell = (status) => {
@@ -202,7 +197,7 @@ const ProjectBidTable = ({ props }) => {
                         !cancellingOrder ? (
                           <button
                             type="button"
-                            onClick={cancelOrder}
+                            onClick={() => cancelOrder(action["6"])}
                             className="inline-flex items-center justify-center px-2 py-1 space-x-2 text-sm font-semibold leading-5 text-gray-800 bg-white border border-gray-300 rounded shadow-sm focus:outline-none hover:text-gray-800 hover:bg-gray-700 hover:border-gray-300 hover:shadow focus:ring focus:ring-gray-500 focus:ring-opacity-25 active:bg-white active:border-white active:shadow-none"
                           >
                             <svg

@@ -1,7 +1,7 @@
 import { getProject } from "src/lib";
 
 const handler = async (req, res) => {
-  const { id } = req.query
+  const { id } = req.query;
 
   if (req.method === "POST") {
     // TODO: authenticate our post requests
@@ -14,6 +14,6 @@ const handler = async (req, res) => {
     console.log("Returning json: ", project);
     res.json({ project: project });
   }
-}
+};
 
 export default handler;
