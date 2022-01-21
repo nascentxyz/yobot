@@ -150,7 +150,6 @@ const BidForm = ({ props }) => {
     // TODO: depending on the erc721 - art blocks or general - this should change
     try {
       setPlacingBid(true);
-      console.log("Placing a bid on token address:", props.tokenAddress);
       let placeBidTx = await yobot.YobotERC721LimitOrder.placeOrder(
         yobot.web3, // web3
         yobot.YobotERC721LimitOrder.YobotERC721LimitOrder, // yobotERC721LimitOrder

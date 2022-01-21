@@ -26,7 +26,7 @@ import { parseAction } from "src/contexts/utils";
 
 const ProjectBidTable = ({ props }) => {
   const { t } = useTranslation();
-  const { yobot, isAuthed, chainId, actions, address, refreshEvents } =
+  const { yobot, isAuthed, chainId, actions, address, refreshEvents, openOrders } =
     useYobot();
   const [orders, setOrders] = useState([]);
   const [cancellingOrder, setCancellingOrder] = useState(false);
@@ -37,9 +37,8 @@ const ProjectBidTable = ({ props }) => {
       setOrders([]);
     } else {
       setOrders(props.userBids);
-      console.log("bids:", props.userBids);
     }
-  }, [props.userBids, props.gettingActions, actions, address, chainId]);
+  }, [props.userBids, props.gettingActions, actions, address, chainId, openOrders]);
 
   const cancelOrder = async (orderNum) => {
     setCancellingOrder(true);
@@ -94,9 +93,9 @@ const ProjectBidTable = ({ props }) => {
         </>
       );
     } else {
-      if (cancellingOrder) {
-        return <Spinner margin={"auto"} color={"red.400"} />;
-      } else {
+      // if (cancellingOrder) {
+      //   return <Spinner margin={"auto"} color={"red.400"} />;
+      // } else {
         return (
           <>
             <span className="inline-block w-4 h-4 bg-green-300 rounded-full md:hidden">
@@ -108,7 +107,7 @@ const ProjectBidTable = ({ props }) => {
           </>
         );
       }
-    }
+    // }
   };
 
   return (
