@@ -31,8 +31,6 @@ const ProjectBidTable = ({ props }) => {
   const [orders, setOrders] = useState([]);
   const [cancellingOrder, setCancellingOrder] = useState(false);
 
-  console.log("user bids:", props.userBids);
-
   // ** On actions refresh, filter and set a user's actions **
   useEffect(() => {
     if (props.gettingActions) {
@@ -157,7 +155,7 @@ const ProjectBidTable = ({ props }) => {
                   quantity,
                   price,
                   status,
-                  order_num
+                  order_num,
                 } = order;
 
                 return (

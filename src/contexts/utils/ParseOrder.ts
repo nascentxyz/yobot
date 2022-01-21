@@ -1,4 +1,3 @@
-
 const parseOrders = (orders) => orders.map((o) => parseOrder(o));
 
 const parseOrder = (order) => {
@@ -8,10 +7,7 @@ const parseOrder = (order) => {
     priceInWeiEach: order["2"],
     quantity: order["3"],
     num: order["4"],
-  }
-}
-
-export {
-  parseOrder,
-  parseOrders
+  };
 };
+
+export { parseOrder, parseOrders };

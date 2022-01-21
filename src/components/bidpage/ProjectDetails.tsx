@@ -11,12 +11,9 @@ const ProjectDetails = ({ props }) => {
   const highestBid =
     props.project.highestBidInWei == "-"
       ? "-"
-      : yobot.web3.utils.fromWei(
-          props.project.highestBidInWei
+      : (props.project.highestBidInWei
             ? props.project.highestBidInWei.toString()
-            : "0",
-          "ether"
-        );
+            : "0");
 
   const calculateTimeLeft = () => {
     let difference = props.project.launch_time
