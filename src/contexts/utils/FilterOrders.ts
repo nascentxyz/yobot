@@ -1,8 +1,7 @@
-
 // ** Filters user's open orders for valid orders ** //
 const filterOrders = (orders: any[]) => {
-  console.log("Filtering orders: ", orders);
-  return orders.filter(order => order.quantity !== 0);
+  const order_res = orders.filter((order) => order.quantity !== 0 && order.quantity !== "0");
+  return order_res;
 };
 
 export default filterOrders;

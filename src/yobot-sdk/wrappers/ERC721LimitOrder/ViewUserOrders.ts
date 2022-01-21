@@ -10,7 +10,8 @@ const viewUserOrders = async (
   // console.log("yobotERC721LimitOrder: ", yobotERC721LimitOrder);
   // console.log("yobotERC721LimitOrder address: ", yobotERC721LimitOrder.options.address);
   if (yobotERC721LimitOrder && yobotERC721LimitOrder.options.address) {
-    let viewUserOrdersMethod = await yobotERC721LimitOrder.methods.viewUserOrders(user);
+    let viewUserOrdersMethod =
+      await yobotERC721LimitOrder.methods.viewUserOrders(user);
     // console.log("viewUserOrdersMethod", viewUserOrdersMethod);
     let openOrders = await viewUserOrdersMethod.call();
     // console.log("openOrders", openOrders);
