@@ -11,9 +11,9 @@ const ProjectDetails = ({ props }) => {
   const highestBid =
     props.project.highestBidInWei == "-"
       ? "-"
-      : (props.project.highestBidInWei
-            ? props.project.highestBidInWei.toString()
-            : "0");
+      : props.project.highestBidInWei
+      ? props.project.highestBidInWei.toString()
+      : "0";
 
   const calculateTimeLeft = () => {
     let difference = props.project.launch_time
