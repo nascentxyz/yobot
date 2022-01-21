@@ -32,7 +32,6 @@ const BidPageMain = ({ projectId }) => {
   const parsedOrders = parseOrders(openOrders);
   const validOrders = filterOrders(parsedOrders);
 
-
   // ** Use SWR to load project ** //
   const fetcher = (url) =>
     fetch(url, { headers: { "Content-Type": "application/json" } }).then(
@@ -47,22 +46,22 @@ const BidPageMain = ({ projectId }) => {
       ? projectDetails.project[0].token_address
       : "0x0000000000000000000000000000000000000000";
 
-
   // ** Refresh the variables on load ** //
   useEffect(() => {
+    setGettingPlaced(true);
+    setGettingFilled(true);
+    setGettingCancelled(true);
     getPlacedOrders();
     getFilledOrders();
     getCancelledOrders();
-  })
+  }, [projectDetails, openOrders]);
 
   // ** Set Getting Actions ** //
   useEffect(() => {
-    if(!gettingPlaced && !gettingFilled && !gettingCancelled) {
+    if (!gettingPlaced && !gettingFilled && !gettingCancelled) {
       setGettingActions(false);
     }
-  }, [gettingPlaced, gettingFilled, gettingCancelled])
-
-
+  }, [gettingPlaced, gettingFilled, gettingCancelled]);
 
   // ** Helper function to get the open orders ** //
   const getPlacedOrders = async () => {
@@ -89,14 +88,19 @@ const BidPageMain = ({ projectId }) => {
       // ** Extract object entries **
       if (parsedAction && parsedAction.order_num !== "0") {
         // ** For this NFT ** //
-        if (parsedAction.token_address.toUpperCase() == thisTokenAddress.toUpperCase()) {
-          const isCurrUser = parsedAction.user.toUpperCase() == address.toUpperCase();
+        if (
+          parsedAction.token_address.toUpperCase() ==
+          thisTokenAddress.toUpperCase()
+        ) {
+          const isCurrUser =
+            parsedAction.user.toUpperCase() == address.toUpperCase();
           // @ts-ignore
           const bidPrice = parseFloat(parsedAction.price);
           const qty = parseInt(parsedAction.quantity);
 
           if (parsedAction.status == "ORDER_PLACED") {
-            placedBidValuesForProject[parsedAction.user.toUpperCase()] = bidPrice;
+            placedBidValuesForProject[parsedAction.user.toUpperCase()] =
+              bidPrice;
             totalQty += qty;
             if (isCurrUser) _placed_orders.push(parsedAction);
           }
@@ -107,7 +111,8 @@ const BidPageMain = ({ projectId }) => {
     const verifiedOpenOrders = _placed_orders.filter((po) => {
       for (const order of validOrders) {
         if (
-          order && po &&
+          order &&
+          po &&
           order.num == po.order_num &&
           order.owner.toUpperCase() === po.user.toUpperCase() &&
           order.tokenAddress.toUpperCase() === po.token_address.toUpperCase()
@@ -152,8 +157,12 @@ const BidPageMain = ({ projectId }) => {
       // ** Extract object entries **
       if (parsedAction && parsedAction.order_num !== "0") {
         // ** For this NFT ** //
-        if (parsedAction.token_address.toUpperCase() == thisTokenAddress.toUpperCase()) {
-          const isCurrUser = parsedAction.user.toUpperCase() == address.toUpperCase();
+        if (
+          parsedAction.token_address.toUpperCase() ==
+          thisTokenAddress.toUpperCase()
+        ) {
+          const isCurrUser =
+            parsedAction.user.toUpperCase() == address.toUpperCase();
           // @ts-ignore
           const bidPrice = parseFloat(parsedAction.price);
           const qty = parseInt(parsedAction.quantity);
@@ -194,8 +203,12 @@ const BidPageMain = ({ projectId }) => {
       // ** Extract object entries **
       if (parsedAction && parsedAction.order_num !== "0") {
         // ** For this NFT ** //
-        if (parsedAction.token_address.toUpperCase() == thisTokenAddress.toUpperCase()) {
-          const isCurrUser = parsedAction.user.toUpperCase() == address.toUpperCase();
+        if (
+          parsedAction.token_address.toUpperCase() ==
+          thisTokenAddress.toUpperCase()
+        ) {
+          const isCurrUser =
+            parsedAction.user.toUpperCase() == address.toUpperCase();
           if (parsedAction.status == "ORDER_CANCELLED") {
             if (isCurrUser) _cancelled_orders.push(parsedAction);
           }
@@ -240,11 +253,7 @@ const BidPageMain = ({ projectId }) => {
         </div>
         <ProjectBidTable
           props={{
-            userBids: [
-              ...placedOrders,
-              ...filledOrders,
-              ...cancelledOrders,
-            ],
+            userBids: [...placedOrders, ...filledOrders, ...cancelledOrders],
             gettingActions,
             submittingBid,
             tokenAddress:
