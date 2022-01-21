@@ -22,6 +22,7 @@ import {
   userRejectedCallback,
   onTxConfirmed,
 } from "src/utils";
+import { parseAction } from "src/contexts/utils";
 
 const ProjectBidTable = ({ props }) => {
   const { t } = useTranslation();
@@ -29,6 +30,8 @@ const ProjectBidTable = ({ props }) => {
     useYobot();
   const [orders, setOrders] = useState([]);
   const [cancellingOrder, setCancellingOrder] = useState(false);
+
+  console.log("user bids:", props.userBids);
 
   // ** On actions refresh, filter and set a user's actions **
   useEffect(() => {
@@ -42,9 +45,7 @@ const ProjectBidTable = ({ props }) => {
 
   const cancelOrder = async (orderNum) => {
     setCancellingOrder(true);
-
-    // TODO: depending on the erc721 - art blocks or general - this should change
-    let cancelOrderTx = await yobot.YobotERC721LimitOrder.cancelOrder(
+    let _cancelOrderTx = await yobot.YobotERC721LimitOrder.cancelOrder(
       yobot.web3, // web3
       yobot.YobotERC721LimitOrder.YobotERC721LimitOrder, // yobotERC721LimitOrder
       orderNum, // props.tokenAddress,
@@ -72,22 +73,7 @@ const ProjectBidTable = ({ props }) => {
   };
 
   const getStatusCell = (status) => {
-    if (status == "ORDER_PLACED") {
-      if (cancellingOrder) {
-        return <Spinner margin={"auto"} color={"red.400"} />;
-      } else {
-        return (
-          <>
-            <span className="inline-block w-4 h-4 bg-green-300 rounded-full md:hidden">
-              &nbsp;
-            </span>
-            <div className="hidden px-2 py-1 text-xs font-semibold leading-4 text-green-700 bg-green-200 rounded-full md:inline-block">
-              Live
-            </div>
-          </>
-        );
-      }
-    } else if (status == "ORDER_FILLED") {
+    if (status == "ORDER_FILLED") {
       return (
         <>
           <span className="inline-block w-4 h-4 bg-orange-300 rounded-full md:hidden">
@@ -109,6 +95,21 @@ const ProjectBidTable = ({ props }) => {
           </div>
         </>
       );
+    } else {
+      if (cancellingOrder) {
+        return <Spinner margin={"auto"} color={"red.400"} />;
+      } else {
+        return (
+          <>
+            <span className="inline-block w-4 h-4 bg-green-300 rounded-full md:hidden">
+              &nbsp;
+            </span>
+            <div className="hidden px-2 py-1 text-xs font-semibold leading-4 text-green-700 bg-green-200 rounded-full md:inline-block">
+              Live
+            </div>
+          </>
+        );
+      }
     }
   };
 
@@ -150,34 +151,14 @@ const ProjectBidTable = ({ props }) => {
               </tr>
             ) : orders.length > 0 ? (
               orders.map((order) => {
-                let action = order["returnValues"];
-                let date = new Date();
-                let quantity = "";
-                let price = "";
-                let status = "";
-                let date_year = "";
-                let date_time = "";
-                if (action) {
-                  date = order["date"];
-                  const options = {
-                    month: "short",
-                    day: "numeric",
-                    hour: "numeric",
-                    minute: "numeric",
-                    timeZoneName: "short",
-                  };
-                  //@ts-ignore
-                  date_time = date.toLocaleDateString("en-US", options);
-                  date_year = date.getFullYear().toString();
-
-                  quantity = action["_quantity"];
-                  // ** Convert from Wei to Ethers **
-                  price = yobot.web3.utils.fromWei(
-                    action["_priceInWeiEach"],
-                    "ether"
-                  );
-                  status = action["4"];
-                }
+                const {
+                  date_time,
+                  date_year,
+                  quantity,
+                  price,
+                  status,
+                  order_num
+                } = order;
 
                 return (
                   <tr key={Object.entries(order).toString()}>
@@ -197,7 +178,7 @@ const ProjectBidTable = ({ props }) => {
                         !cancellingOrder ? (
                           <button
                             type="button"
-                            onClick={() => cancelOrder(action["6"])}
+                            onClick={() => cancelOrder(order_num)}
                             className="inline-flex items-center justify-center px-2 py-1 space-x-2 text-sm font-semibold leading-5 text-gray-800 bg-white border border-gray-300 rounded shadow-sm focus:outline-none hover:text-gray-800 hover:bg-gray-700 hover:border-gray-300 hover:shadow focus:ring focus:ring-gray-500 focus:ring-opacity-25 active:bg-white active:border-white active:shadow-none"
                           >
                             <svg

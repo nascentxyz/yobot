@@ -40,6 +40,7 @@ export interface YobotContextData {
   // fetchOpenOrders: React.SFC<ViewOrdersProps>;
   setSelectedChainId: any; //React.SFC<[]>;
   refreshEvents: any;
+  openOrders: any[];
 }
 
 const EmptyAddress = "0x0000000000000000000000000000000000000000";
@@ -68,6 +69,9 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
 
   // ** Action store for all events **
   const [actions, setActions] = useState<any[]>([]);
+
+  // ** A user's open orders ** //
+  const [openOrders, setOpenOrders] = useState<any[]>([]);
 
   // ** Selected Chain ID **
   const [selectedChainId, setSelectedChainId] = useState<number>(1);
@@ -134,6 +138,7 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
   }, [chainId]);
 
   // ** Refactored helper function to refresh events **
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const refreshEvents = () => {
     if (yobot) {
       yobot.YobotERC721LimitOrder.fetchActions(
@@ -141,6 +146,15 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
         yobot.YobotERC721LimitOrder.YobotERC721LimitOrder
       ).then((events) => {
         setActions(events);
+      });
+      console.log("querying orders for ", address);
+      yobot.YobotERC721LimitOrder.viewUserOrders(
+        yobot.web3,
+        yobot.YobotERC721LimitOrder.YobotERC721LimitOrder,
+        address
+      ).then((orders) => {
+        console.log("Inside yobot context, open orders: ", orders);
+        setOpenOrders(orders);
       });
     }
   };
@@ -265,6 +279,7 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
       actions,
       setSelectedChainId,
       refreshEvents,
+      openOrders,
     }),
     [
       yobot,
@@ -278,6 +293,7 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
       actions,
       setSelectedChainId,
       refreshEvents,
+      openOrders,
     ]
   );
 

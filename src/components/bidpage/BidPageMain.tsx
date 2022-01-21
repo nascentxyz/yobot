@@ -6,13 +6,17 @@ import useSWR from "swr";
 import ProjectDetails from "./ProjectDetails";
 import ProjectBidTable from "./ProjectBidTable";
 import BidForm from "./BidForm";
-
-// TODO: change this - temporary erc721 token address for testing on goerli
-const TOKEN_ADDRESS = "0xed198777a685a7152ecf165b4a4dee010fe6f933";
-const EmptyAddress = "0x0000000000000000000000000000000000000000";
+import { filterOrders, parseAction, parseOrders } from "src/contexts/utils";
 
 const BidPageMain = ({ projectId }) => {
-  const { yobot, address, chainId, actions } = useYobot();
+  const { yobot, address, chainId, actions, openOrders } = useYobot();
+
+  // ** Filter for valid open orders ** //
+  console.log("open orders:", openOrders);
+  const parsedOrders = parseOrders(openOrders);
+  console.log("parsed orders:", parsedOrders);
+  const validOrders = filterOrders(parsedOrders);
+  // const filteredOrderNums = validOrders.map(order => order.orderNum);
 
   // ** Use SWR to load project ** //
   const fetcher = (url) =>
@@ -23,7 +27,7 @@ const BidPageMain = ({ projectId }) => {
     `/api/project/${projectId}`,
     fetcher
   );
-  console.log("Got projectDetails: ", projectDetails);
+  let thisTokenAddress = projectDetails && projectDetails.project ? projectDetails.project[0].token_address : null;
 
   const [userBids, setUserBids] = useState(null);
   const [totalBids, setTotalBids] = useState("-");
@@ -55,6 +59,9 @@ const BidPageMain = ({ projectId }) => {
         console.error(e);
       }
 
+      // ** Parse the action ** //
+      const parsedAction = parseAction(action);
+
       // ** Extract object entries **
       let values = action["returnValues"];
       if (values !== undefined) {
@@ -62,58 +69,49 @@ const BidPageMain = ({ projectId }) => {
         let _token_address = values["1"];
         let _action_taken = values["4"];
 
-        // TODO: implement orderID so easier to lookup orders to update order status & get stats... Otherwise need to loop thru all txs
-
-        // For this NFT contract,
-        if (_token_address.toUpperCase() == TOKEN_ADDRESS.toUpperCase()) {
+        // ** For this NFT ** //
+        if (_token_address.toUpperCase() == thisTokenAddress.toUpperCase()) {
           const isCurrUser = _address.toUpperCase() == address.toUpperCase();
           const bidPrice = values["_priceInWeiEach"];
           const qty = parseInt(values["_quantity"]);
 
           if (_action_taken == "ORDER_PLACED") {
             placedBidValuesForProject[_address] = bidPrice;
-            placedBidQtyForProject[_address] = qty;
+            placedBidQtyForProject[_address] += qty;
             totalQty += qty;
-
-            if (isCurrUser) _placed_orders.push(action);
+            if (isCurrUser) _placed_orders.push(parsedAction);
           } else if (_action_taken == "ORDER_FILLED") {
-            // TODO: should highestBid & totalQty stats include FILLED orders? Yes; but stats calc already done when order placed
-
-            // If filled, remove from PLACED orders array
-            delete placedBidValuesForProject[_address];
-            delete placedBidQtyForProject[_address];
-
-            if (isCurrUser) _successful_orders.push(action);
+            placedBidValuesForProject[_address] -= bidPrice;
+            placedBidQtyForProject[_address] -= qty;
+            if (isCurrUser) _successful_orders.push(parsedAction);
           } else if (_action_taken == "ORDER_CANCELLED") {
-            totalQty -= placedBidQtyForProject[_address];
-            delete placedBidValuesForProject[_address];
-            delete placedBidQtyForProject[_address];
-
-            // ** Iterate over new_actions and try to remove cancelled order from current users' bid table **
-            if (isCurrUser) {
-              for (let i = _placed_orders.length - 1; i >= 0; --i) {
-                const potentiallyCancelledOrder = _placed_orders[i];
-                const orderValues = potentiallyCancelledOrder["returnValues"];
-                if (
-                  orderValues["0"].toUpperCase() == address.toUpperCase() &&
-                  orderValues["1"].toUpperCase() == TOKEN_ADDRESS.toUpperCase()
-                ) {
-                  // Set cancelled action date-placed, price, quantity for bid table display
-                  action["date"] = potentiallyCancelledOrder["date"];
-                  values["_priceInWeiEach"] = orderValues["_priceInWeiEach"];
-                  values["_quantity"] = orderValues["_quantity"];
-
-                  // Remove even numbers from _placed_orders array
-                  _placed_orders.splice(i, 1);
-                }
-              }
-              _cancelled_orders.push(action);
-            }
+            totalQty -= qty;
+            placedBidValuesForProject[_address] -= bidPrice;
+            placedBidQtyForProject[_address] -= qty;
+            if (isCurrUser) _cancelled_orders.push(parsedAction);
           }
         }
       }
     }
-    const user_orders = _placed_orders.concat(
+
+    console.log("Placed orders: ", _placed_orders);
+    console.log("valid orders: ", validOrders);
+
+    // ** Verify that the placed orders from the action are actually open orders ** //
+    const verifiedOpenOrders = _placed_orders.filter((po) => {
+      for (const order of validOrders) {
+        if (
+          order.orderNum == po.orderNum
+          && order.owner.toUpperCase() === po.user.toUpperCase()
+          && order.tokenAddress.toUpperCase() === po.tokenAddress.toUpperCase()
+        ) {
+          return true;
+        };
+      }
+    });
+
+    // ** Create a full list of orders ** //
+    const user_orders = verifiedOpenOrders.concat(
       _successful_orders,
       _cancelled_orders.reverse()
     );
@@ -125,8 +123,8 @@ const BidPageMain = ({ projectId }) => {
       Math.max(...Object.values(placedBidValuesForProject))
     );
 
-    setTotalBids(totalQty);
-    setHighestBidInWei(highestBidInWei);
+    setTotalBids(totalQty.toString());
+    setHighestBidInWei(highestBidInWei.toString());
     setUserBids(user_orders);
 
     setGettingActions(false);
@@ -171,9 +169,10 @@ const BidPageMain = ({ projectId }) => {
             props={{
               alreadyPlacedBid,
               onBidSubmitted,
-              tokenAddress: projectDetails && projectDetails.token_address
-                ? projectDetails.token_address
-                : TOKEN_ADDRESS,
+              tokenAddress:
+                projectDetails && projectDetails.token_address
+                  ? projectDetails.project[0].token_address
+                  : "0x0000000000000000000000000000000000000000",
             }}
           />
           <ProjectDetails
@@ -189,14 +188,17 @@ const BidPageMain = ({ projectId }) => {
             }}
           />
         </div>
-        <ProjectBidTable props={{
-          userBids,
-          gettingActions,
-          submittingBid,
-          tokenAddress: projectDetails && projectDetails.token_address
+        <ProjectBidTable
+          props={{
+            userBids,
+            gettingActions,
+            submittingBid,
+            tokenAddress:
+              projectDetails && projectDetails.token_address
                 ? projectDetails.token_address
-                : TOKEN_ADDRESS,
-        }} />
+                : "0x0000000000000000000000000000000000000000",
+          }}
+        />
       </div>
     </div>
   );
