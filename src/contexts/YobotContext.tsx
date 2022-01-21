@@ -147,13 +147,11 @@ const YobotProvider = ({ children }: { children: ReactNode }) => {
       ).then((events) => {
         setActions(events);
       });
-      console.log("querying orders for ", address);
       yobot.YobotERC721LimitOrder.viewUserOrders(
         yobot.web3,
         yobot.YobotERC721LimitOrder.YobotERC721LimitOrder,
         address
       ).then((orders) => {
-        console.log("Inside yobot context, open orders: ", orders);
         setOpenOrders(orders);
       });
     }
