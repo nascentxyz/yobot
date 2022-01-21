@@ -2,7 +2,7 @@
 import Web3 from "web3";
 
 import { DeployedContracts } from "../../";
-import { placeOrder, cancelOrder, fetchAction } from ".";
+import { placeOrder, cancelOrder, fetchAction, viewUserOrders } from ".";
 
 // ** Import the Contract Abis **
 var YobotERC721LimitOrderAbi = require(".." +
@@ -41,6 +41,7 @@ class YobotERC721LimitOrder {
     userRejectedCallback: any
   ) => Promise<any>;
 
+  viewUserOrders: (web3: Web3, yobotERC721LimitOrder: any, user: string) => Promise<any>;
   fetchActions: (web3: Web3, yobotERC721LimitOrder: any) => Promise<any>;
 
   // ** Class Statics **
@@ -54,7 +55,6 @@ class YobotERC721LimitOrder {
 
     // ** Initiate Contracts **
     this.web3.eth.getChainId().then((chain_id) => {
-      console.log("chain id: ", chain_id);
       this.YobotERC721LimitOrder = new this.web3.eth.Contract(
         YobotERC721LimitOrderAbi,
         DeployedContracts[chain_id]
@@ -66,6 +66,9 @@ class YobotERC721LimitOrder {
     // ** Functions **
     this.placeOrder = placeOrder;
     this.cancelOrder = cancelOrder;
+
+    // ** View ** //
+    this.viewUserOrders = viewUserOrders;
 
     // ** Events **
     this.fetchActions = fetchAction;
