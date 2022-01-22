@@ -1,4 +1,4 @@
 export * from "./Yobot";
 
-// ** Also export the wrappers
+// ** Export the wrappers ** //
 export * from "./wrappers";
