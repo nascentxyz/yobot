@@ -17,8 +17,8 @@ const ProjectDetails = ({ props }) => {
 
   const calculateTimeLeft = () => {
     let difference = props.project.launch_time
-    // @ts-ignore
-      ? new Date(props.project.launch_time) - new Date()
+      ? // @ts-ignore
+        new Date(props.project.launch_time) - new Date()
       : 0;
 
     let timeLeft = {
