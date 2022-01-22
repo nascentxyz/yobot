@@ -14,6 +14,7 @@ const ProjectCard = ({ project }) => {
   };
   const dateStr = new Date(project.launch_time).toLocaleDateString(
     "en-US",
+    // @ts-ignore
     options
   );
 

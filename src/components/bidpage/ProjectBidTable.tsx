@@ -26,8 +26,15 @@ import { parseAction } from "src/contexts/utils";
 
 const ProjectBidTable = ({ props }) => {
   const { t } = useTranslation();
-  const { yobot, isAuthed, chainId, actions, address, refreshEvents, openOrders } =
-    useYobot();
+  const {
+    yobot,
+    isAuthed,
+    chainId,
+    actions,
+    address,
+    refreshEvents,
+    openOrders,
+  } = useYobot();
   const [orders, setOrders] = useState([]);
   const [cancellingOrder, setCancellingOrder] = useState(false);
 
@@ -38,7 +45,14 @@ const ProjectBidTable = ({ props }) => {
     } else {
       setOrders(props.userBids);
     }
-  }, [props.userBids, props.gettingActions, actions, address, chainId, openOrders]);
+  }, [
+    props.userBids,
+    props.gettingActions,
+    actions,
+    address,
+    chainId,
+    openOrders,
+  ]);
 
   const cancelOrder = async (orderNum) => {
     setCancellingOrder(true);
@@ -96,17 +110,17 @@ const ProjectBidTable = ({ props }) => {
       // if (cancellingOrder) {
       //   return <Spinner margin={"auto"} color={"red.400"} />;
       // } else {
-        return (
-          <>
-            <span className="inline-block w-4 h-4 bg-green-300 rounded-full md:hidden">
-              &nbsp;
-            </span>
-            <div className="hidden px-2 py-1 text-xs font-semibold leading-4 text-green-700 bg-green-200 rounded-full md:inline-block">
-              Live
-            </div>
-          </>
-        );
-      }
+      return (
+        <>
+          <span className="inline-block w-4 h-4 bg-green-300 rounded-full md:hidden">
+            &nbsp;
+          </span>
+          <div className="hidden px-2 py-1 text-xs font-semibold leading-4 text-green-700 bg-green-200 rounded-full md:inline-block">
+            Live
+          </div>
+        </>
+      );
+    }
     // }
   };
 
