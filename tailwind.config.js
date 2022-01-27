@@ -4,13 +4,16 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Rubik'],
+        sans: ["Rubik"],
         Rubik: ["Rubik", "sans-serif"],
         Roboto: ["Roboto Mono", "monospace"],
       },
       height: {
-        '80': '80px',
-      }
+        80: "80px",
+      },
+      width: {
+        530: "530px",
+      },
     },
   },
   variants: {

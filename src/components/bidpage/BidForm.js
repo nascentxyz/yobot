@@ -29,12 +29,25 @@ import {
   onTxConfirmed,
 } from "src/utils";
 
+function PlaceBidButtonTW() {
+  return (
+    <>
+      <button
+        type="button"
+        className="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+      >
+        Button text
+      </button>
+    </>
+  );
+}
+
 const PlaceBidButton = styled(Button)`
   width: 100%;
   height: 48px;
-  margin: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  /* margin: auto; */
+  /* padding-left: 1rem; */
+  /* padding-right: 1rem; */
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
   line-height: 1.5rem;
@@ -199,11 +212,14 @@ const BidForm = () => {
   }, [bidPrice, bidQty]);
 
   return (
-    <div className="px-5 text-left sm:w-1/2 rounded-xl ">
-      <p className="py-5 text-xl font-medium">Place Bids</p>
+    <div className="px-5 text-left sm:w-530 rounded-xl ">
+      <p className="py-5 text-3xl font-medium">Place Bids</p>
       <form className="space-y-6">
         <div className="space-y-1">
-          <label className="font-medium" htmlFor="tk-form-elements-lg-name">
+          <label
+            className="mb-2 font-medium"
+            htmlFor="tk-form-elements-lg-name"
+          >
             Price per NFT (ETH)
           </label>
           <input
