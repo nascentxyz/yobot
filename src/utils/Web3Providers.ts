@@ -1,5 +1,7 @@
 export const alchemyURL = `https://eth-mainnet.alchemyapi.io/v2/${
-  process.env.ALCHEMY_PROD_API_KEY ? process.env.ALCHEMY_PROD_API_KEY : ""
+  process.env.NEXT_PUBLIC_ALCHEMY_PROD_API_KEY
+    ? process.env.NEXT_PUBLIC_ALCHEMY_PROD_API_KEY
+    : ""
 }`;
 export const testnetURL = `http://localhost:8545`;
 
