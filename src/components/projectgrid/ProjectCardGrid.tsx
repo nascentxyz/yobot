@@ -35,9 +35,7 @@ function ProjectCardGrid() {
           })
         ) : (
           // TODO: display tbaProjects as well
-          <p>
-            No projects available
-          </p>
+          <p>No projects available</p>
         )}
       </div>
     </div>
