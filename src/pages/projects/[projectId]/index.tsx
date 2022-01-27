@@ -16,12 +16,12 @@ const ProjectBidPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <GradientContainer>
+    <div>
       <ToastContainer />
       <Navbar onOpen={onOpen} accountButton={true} />
       <FAQModal isOpen={isOpen} onClose={onClose} />
       <BidPageMain projectId={projectId} />
-    </GradientContainer>
+    </div>
   );
 };
 

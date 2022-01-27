@@ -45,7 +45,7 @@ const PlaceBidButton = styled(Button)`
   }
 `;
 
-const BidForm = ({ props }) => {
+const BidForm = () => {
   const { t } = useTranslation();
   const { yobot, isAuthed, balance, address, refreshEvents } = useYobot();
   const [validParams, setValidParams] = useState(false);
@@ -161,20 +161,14 @@ const BidForm = ({ props }) => {
         address, // sender
         async (msg) => {
           onTxSubmitted(msg);
-          // resetFormInputs();
           setPlacingBid(false);
-          props.onBidSubmitted(true);
         },
         async (msg) => {
           onTxFailed(msg);
-          props.onBidSubmitted(false);
         },
         async (msg) => {
           onTxConfirmed(msg);
-
-          // FIXME: we want to repull ALL events across all of Yobot every time a tx is confirmed?
           refreshEvents();
-          props.onBidSubmitted(false);
         },
         async (msg) => {
           userRejectedCallback();
@@ -184,17 +178,9 @@ const BidForm = ({ props }) => {
     } catch (e) {
       onTxFailed();
       setPlacingBid(false);
-      props.onBidSubmitted(false);
       console.error("Placing bid returned:", e);
     }
   };
-
-  // const resetFormInputs = () => {
-  //   setBidPrice(0.0);
-  //   setBidQty(0);
-  //   setBidPriceEmpty(true);
-  //   setBidQtyEmpty(true);
-  // }
 
   // ** Helper function to validate parameters
   const validateParams = (_bidPrice, _bidQty) => {
@@ -213,8 +199,8 @@ const BidForm = ({ props }) => {
   }, [bidPrice, bidQty]);
 
   return (
-    <div className="px-5  sm:w-3/4 text-left rounded-xl">
-      <p className="py-5  text-xl font-medium">Place Bids</p>
+    <div className="px-5 text-left sm:w-3/4 rounded-xl">
+      <p className="py-5 text-xl font-medium">Place Bids</p>
       <form className="space-y-6">
         <div className="space-y-1">
           <label className="font-medium" htmlFor="tk-form-elements-lg-name">
@@ -243,12 +229,13 @@ const BidForm = ({ props }) => {
             Quantity
           </label>
           <input
-            className="block w-full px-5 py-3 leading-6 text-gray-800 border border-gray-200 rounded focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+            className="block w-full px-5 py-3 leading-6 text-gray-800 border rounded border-grey-200 focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
             type="number"
             id="place-bid-quantity"
             placeholder="# of NFTs"
             min="1"
             required
+            value={bidQty}
             onKeyDown={(e) => {
               if (!enterPressed) {
                 setEnterPressed(true);
@@ -281,16 +268,9 @@ const BidForm = ({ props }) => {
           />
         </div>
 
-        {isAuthed && insufficentFunds ? (
+        {insufficentFunds ? (
           <Text mb="0.5em" fontSize="14px" color="red.500">
             Insufficient Funds ~ {balance && balance.toFixed(3)}Ξ
-          </Text>
-        ) : (
-          ""
-        )}
-        {isAuthed && props.alreadyPlacedBid ? (
-          <Text mb="0.5em" fontSize="14px" color="red.500">
-            You&apos;ve already placed a bid on this project.
           </Text>
         ) : (
           ""
@@ -300,7 +280,6 @@ const BidForm = ({ props }) => {
         ) : (
           <PlaceBidButton
             disabled={
-              props.alreadyPlacedBid ||
               !validParams ||
               insufficentFunds ||
               bidPriceEmpty ||

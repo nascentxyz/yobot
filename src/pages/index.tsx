@@ -1,7 +1,7 @@
 import {
   Navbar,
   Main,
-  GradientContainer,
+
   LandingPageMain,
   FAQModal,
 } from "src/components";
@@ -12,13 +12,13 @@ const Index = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <GradientContainer>
+
       <Main>
         <Navbar onOpen={onOpen} launchApp={false} />
         <LandingPageMain />
         <FAQModal isOpen={isOpen} onClose={onClose} />
       </Main>
-    </GradientContainer>
+
   );
 };
 
