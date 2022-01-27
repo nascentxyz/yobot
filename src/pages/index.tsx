@@ -1,11 +1,10 @@
 import {
   Navbar,
-  Main,
   GradientContainer,
-  LandingPageMain,
+  ProjectGrid,
   FAQModal,
 } from "src/components";
-
+import { ToastContainer } from "react-toastify";
 import { useDisclosure } from "@chakra-ui/react";
 
 const Index = () => {
@@ -13,12 +12,20 @@ const Index = () => {
 
   return (
     <GradientContainer>
-      <Main>
-        <Navbar onOpen={onOpen} launchApp={false} />
-        <LandingPageMain />
-        <FAQModal isOpen={isOpen} onClose={onClose} />
-      </Main>
+      <ToastContainer />
+      <Navbar onOpen={onOpen} accountButton={true} />
+      <FAQModal isOpen={isOpen} onClose={onClose} />
+      <ProjectGrid />
     </GradientContainer>
+
+    /** Old landing page */
+    // <GradientContainer>
+    //   <Main>
+    //     <Navbar onOpen={onOpen} launchApp={false} />
+    //     <LandingPageMain />
+    //     <FAQModal isOpen={isOpen} onClose={onClose} />
+    //   </Main>
+    // </GradientContainer>
   );
 };
 
