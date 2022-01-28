@@ -216,7 +216,7 @@ const BidForm = ({ props }) => {
       <form className="space-y-6">
         <div className="space-y-1">
           <label className="font-medium" htmlFor="tk-form-elements-lg-name">
-            Price per NFT (ETH)
+            Price per NFT (Ξ)
           </label>
           <input
             className="block w-full px-5 py-3 leading-6 text-gray-800 border border-gray-200 rounded focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
