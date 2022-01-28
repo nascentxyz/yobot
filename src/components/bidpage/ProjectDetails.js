@@ -51,7 +51,7 @@ const ProjectDetails = ({ props }) => {
     <div className="flex flex-col overflow-hidden text-left rounded-lg shadow-sm min-w-437 bg-zinc sm:mx-0 sm:w-437">
       <div className="flex-grow w-full p-5 space-y-4 ">
         {/* NFT image, title and description Start */}
-        <div className="flex flex-col items-start mb-6">
+        <div className="flex flex-col items-start">
           <img
             src={props.project.previewImageSrc}
             alt="NFT Project Image"
@@ -69,7 +69,7 @@ const ProjectDetails = ({ props }) => {
               {/* <span className="text-gray-500 sm:hidden">· 03h:13m:34s</span> */}
             </p>
 
-            <p className="mb-2 text-base leading-loose">
+            <p className="mb-0 text-base leading-relaxed">
               {props.project.description}
             </p>
           </div>
@@ -107,7 +107,7 @@ const ProjectDetails = ({ props }) => {
                 <dd className="text-lg font-semibold tracking-wider text-textgray">
                   Minting in
                 </dd>
-                <dt className="text-2xl font-semibold">
+                <dt className="text-lg font-semibold text-white">
                   {props.gettingActions || address == EmptyAddress
                     ? "-"
                     : highestBid}
@@ -122,7 +122,7 @@ const ProjectDetails = ({ props }) => {
                 <dd className="text-lg font-semibold tracking-wider text-textgray">
                   Highest Bid
                 </dd>
-                <dt className="text-2xl font-semibold">
+                <dt className="text-lg font-semibold text-white">
                   {props.gettingActions || address == EmptyAddress
                     ? "-"
                     : highestBid}
@@ -140,7 +140,7 @@ const ProjectDetails = ({ props }) => {
                 <dd className="text-lg font-semibold tracking-wider text-textgray ">
                   Bid Count
                 </dd>
-                <dt className="text-2xl font-semibold">
+                <dt className="text-lg font-semibold text-white">
                   {props.gettingActions || address == EmptyAddress
                     ? "-"
                     : props.project.totalBids}

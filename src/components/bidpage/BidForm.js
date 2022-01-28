@@ -213,14 +213,17 @@ const BidForm = () => {
 
   return (
     <div className="px-5 text-left sm:w-530 rounded-xl ">
-      <p className="py-5 font-medium text-xxxl">Place Bids</p>
+      <p className="py-5 font-medium text-xxl">Place Bids</p>
       <form className="space-y-6">
         <div className="space-y-1">
-          <label className="text-lg font-medium" htmlFor="tk-form-elements-lg-name">
+          <label
+            className="text-lg font-medium"
+            htmlFor="tk-form-elements-lg-name"
+          >
             Price per NFT (ETH)
           </label>
           <input
-            className="block w-full px-5 py-3 text-4xl leading-6 text-gray-800 border border-gray-200 rounded bg-slate-200 h-80 font-Rubik focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+            className="block w-full px-5 py-3 leading-6 text-gray-800 border border-gray-200 rounded text-xxl bg-slate-200 h-80 font-Roboto focus:border-red-800 focus:ring focus:ring-red-300 focus:ring-opacity-50"
             type="number"
             id="tk-form-elements-lg-name"
             placeholder="0.0"
@@ -242,7 +245,7 @@ const BidForm = () => {
             Quantity
           </label>
           <input
-            className="w-full px-5 py-3 text-4xl leading-6 text-gray-800 border rounded bg-slate-200 h-80 zblock font-Roboto border-grey-200 focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+            className="w-full px-5 py-3 leading-6 text-gray-800 border rounded text-xxl bg-slate-200 h-80 zblock font-Roboto border-grey-200 focus:border-yobotgreen focus:ring focus:ring-yobotgreen focus:ring-opacity-50"
             type="number"
             id="place-bid-quantity"
             placeholder="# of NFTs"
@@ -288,6 +291,14 @@ const BidForm = () => {
         ) : (
           ""
         )}
+        
+        <button
+        type="button"
+        className="items-center h-56 w-full px-6 py-3 text-lg font-medium text-center text-white border border-transparent rounded-md shadow-sm bg-yobotblue hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+      >
+        Example Button
+      </button>
+        
         {!isAuthed ? (
           <ConnectWallet fullWidth={true} darkerBackground={true} />
         ) : (
