@@ -2,18 +2,24 @@ import Image from "next/image";
 import React from "react";
 import { useEffect, useState } from "react";
 import { useYobot } from "src/contexts/YobotContext";
+import web3 from "web3";
 
 const EmptyAddress = "0x0000000000000000000000000000000000000000";
 
 const ProjectDetails = ({ props }) => {
   const { yobot, address, actions, chainId, refreshEvents } = useYobot();
 
+  // Highest bid in ether
   const highestBid =
-    props.project.highestBidInWei == "-"
-      ? "-"
-      : props.project.highestBidInWei
-      ? props.project.highestBidInWei.toString()
-      : "0";
+    props.project.highestBidInWei && props.project.highestBidInWei >= 0
+      ? props.project.highestBidInWei //FIXME: this number isn't actually in wei?
+      : "-";
+
+  // Mint price in ether
+  const mintPrice =
+    props.project.mint_price && props.project.mint_price >= 0
+      ? web3.utils.fromWei(props.project.mint_price.toString(), "ether")
+      : "-";
 
   const calculateTimeLeft = () => {
     let difference = props.project.launch_time
@@ -107,9 +113,26 @@ const ProjectDetails = ({ props }) => {
 
           {/* Countdown End */}
 
-          {/* Highest Bid Card Start */}
-
           <div className="grid grid-cols-2 ">
+            {/* Mint Price Card Start */}
+            <div className="flex flex-col overflow-hidden bg-gray-700 rounded shadow-sm">
+              <div className="flex-grow w-full p-5">
+                <dl>
+                  <dt className="text-2xl font-semibold">
+                    {props.gettingActions || address == EmptyAddress
+                      ? "-"
+                      : mintPrice}
+                  </dt>
+                  <dd className="text-sm font-medium tracking-wider text-gray-500 uppercase">
+                    Mint Price (Ξ)
+                  </dd>
+                </dl>
+              </div>
+            </div>
+
+            {/* Mint Price Card End */}
+
+            {/* Highest Bid Card Start */}
             <div className="flex flex-col overflow-hidden bg-gray-700 rounded shadow-sm">
               <div className="flex-grow w-full p-5">
                 <dl>

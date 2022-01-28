@@ -86,7 +86,7 @@ const BidPageMain = ({ projectId }) => {
       const parsedAction = parseAction(action);
 
       // ** Extract object entries **
-      if (parsedAction && parsedAction.order_num !== "0") {
+      if (parsedAction && parsedAction.order_id !== "0") {
         // ** For this NFT ** //
         if (
           parsedAction.token_address.toUpperCase() ==
@@ -122,9 +122,10 @@ const BidPageMain = ({ projectId }) => {
       }
     });
 
+    // @ts-ignore
     const highestBidInWei = Math.max(
-      // @ts-ignore
-      Math.max(...Object.values(placedBidValuesForProject))
+      ...Object.values(placedBidValuesForProject),
+      -1
     );
 
     // ** Update State ** //
@@ -156,7 +157,7 @@ const BidPageMain = ({ projectId }) => {
       const parsedAction = parseAction(action);
 
       // ** Extract object entries **
-      if (parsedAction && parsedAction.order_num !== "0") {
+      if (parsedAction && parsedAction.order_id !== "0") {
         // ** For this NFT ** //
         if (
           parsedAction.token_address.toUpperCase() ==
@@ -202,7 +203,7 @@ const BidPageMain = ({ projectId }) => {
       const parsedAction = parseAction(action);
 
       // ** Extract object entries **
-      if (parsedAction && parsedAction.order_num !== "0") {
+      if (parsedAction && parsedAction.order_id !== "0") {
         // ** For this NFT ** //
         if (
           parsedAction.token_address.toUpperCase() ==
@@ -237,6 +238,10 @@ const BidPageMain = ({ projectId }) => {
                 projectDetails && projectDetails.project[0].token_address
                   ? projectDetails.project[0].token_address
                   : "0x0000000000000000000000000000000000000000",
+              mintPrice:
+                projectDetails && projectDetails.project[0].mint_price
+                  ? projectDetails.project[0].mint_price
+                  : "-",
             }}
           />
           <ProjectDetails
