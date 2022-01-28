@@ -213,7 +213,7 @@ const BidForm = () => {
 
   return (
     <div className="px-5 text-left sm:w-530 rounded-xl ">
-      <p className="py-5 font-medium text-xxl">Place Bids</p>
+      <p className=" font-medium text-xxl">Place Bids</p>
       <form className="space-y-6">
         <div className="space-y-1">
           <label
@@ -292,9 +292,7 @@ const BidForm = () => {
           ""
         )}
 
-
-{/* EXAMPLE BUTTON */}
-
+        {/* EXAMPLE BUTTON */}
 
         <button
           type="button"

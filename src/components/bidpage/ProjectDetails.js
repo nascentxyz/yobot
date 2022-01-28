@@ -75,12 +75,8 @@ const ProjectDetails = ({ props }) => {
           </div>
         </div>
         {/* NFT image, title and description End */}
-
-
       </div>
       <div className="grid visible hidden grid-cols-1 gap-4 sm:inline-block">
-
-
         <div className="grid grid-cols-3 p-4 bg-black">
           {/* Highest Bid Card Start */}
           <div className="flex flex-col overflow-hidden rounded shadow-sm">
