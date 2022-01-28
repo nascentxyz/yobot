@@ -29,17 +29,17 @@ import {
   onTxConfirmed,
 } from "src/utils";
 
-
-function PlaceBidButtonTW (){
+function PlaceBidButtonTW() {
   return (
     <>
-          <button
+      <button
         type="button"
-        className="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        className="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+      >
         Button text
       </button>
     </>
-  )
+  );
 }
 
 const PlaceBidButton = styled(Button)`
@@ -216,14 +216,17 @@ const BidForm = () => {
       <p className="py-5 text-3xl font-medium">Place Bids</p>
       <form className="space-y-6">
         <div className="space-y-1">
-          <label className="mb-2 font-medium" htmlFor="tk-form-elements-lg-name">
+          <label
+            className="font-medium"
+            htmlFor="tk-form-elements-lg-name"
+          >
             Price per NFT (ETH)
           </label>
           <input
             className="block w-full px-5 py-3 text-4xl leading-6 text-gray-800 border border-gray-200 rounded bg-slate-200 h-80 font-Roboto focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
             type="number"
             id="tk-form-elements-lg-name"
-            placeholder="0.00"
+            placeholder="0.0"
             min="0.000"
             step="0.0001"
             required
@@ -280,6 +283,7 @@ const BidForm = () => {
             }}
           />
         </div>
+
 
         {insufficentFunds ? (
           <Text mb="0.5em" fontSize="14px" color="red.500">

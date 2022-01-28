@@ -3,7 +3,7 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     colors: {
-      'zinc': '#27272a'
+      zinc: "#27272a",
     },
     extend: {
       fontFamily: {
@@ -16,7 +16,7 @@ module.exports = {
       },
       width: {
         530: "530px",
-        437:"437px",
+        437: "437px",
       },
     },
   },

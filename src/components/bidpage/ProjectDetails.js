@@ -48,7 +48,7 @@ const ProjectDetails = ({ props }) => {
   });
 
   return (
-    <div className="flex flex-col overflow-hidden text-left shadow-sm bg-zinc rounded-xl sm:mx-0 sm:max-w-sm ">
+    <div className="flex flex-col overflow-hidden text-left rounded-lg shadow-sm bg-zinc sm:mx-0 sm:w-437">
       <div className="flex-grow w-full p-5 space-y-4 ">
         {/* NFT image, title and description Start */}
         <div className="flex flex-col items-start">
@@ -58,17 +58,18 @@ const ProjectDetails = ({ props }) => {
             className="flex-none inline-block w-full mb-3 sm:w-3/12"
           />
 
-          <div className="flex-grow text-lg">
+          <div className="flex-grow">
             <p className="mb-1">
               <a
                 href={props.project.projectWebsite}
-                className="font-semibold text-gray-200 hover:text-indigo-400"
+                className="font-medium hover:text-indigo-400"
               >
                 {props.project.title}
               </a>
               {/* <span className="text-gray-500 sm:hidden">· 03h:13m:34s</span> */}
             </p>
-            <p className="mb-2 text-sm">{props.project.description}</p>
+
+            <p className="mb-2 text-sm leading-relaxed">{props.project.description}</p>
           </div>
         </div>
         {/* NFT image, title and description End */}
