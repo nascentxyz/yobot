@@ -2,6 +2,9 @@ module.exports = {
   purge: [],
   darkMode: false, // or 'media' or 'class'
   theme: {
+    colors: {
+      'zinc': '#27272a'
+    },
     extend: {
       fontFamily: {
         sans: ["Rubik"],
@@ -13,6 +16,7 @@ module.exports = {
       },
       width: {
         530: "530px",
+        437:"437px",
       },
     },
   },

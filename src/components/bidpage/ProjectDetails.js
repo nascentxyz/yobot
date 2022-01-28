@@ -48,7 +48,7 @@ const ProjectDetails = ({ props }) => {
   });
 
   return (
-    <div className="flex flex-col overflow-hidden bg-gray-700 rounded-xl shadow-sm sm:mx-0 sm:max-w-sm text-left ">
+    <div className="flex flex-col overflow-hidden text-left shadow-sm bg-zinc rounded-xl sm:mx-0 sm:max-w-sm ">
       <div className="flex-grow w-full p-5 space-y-4 ">
         {/* NFT image, title and description Start */}
         <div className="flex flex-col items-start">
