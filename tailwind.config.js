@@ -18,6 +18,10 @@ module.exports = {
         530: "530px",
         437: "437px",
       },
+      minWidth: {
+        530: "530px",
+        437: "437px",
+      },
     },
   },
   variants: {
