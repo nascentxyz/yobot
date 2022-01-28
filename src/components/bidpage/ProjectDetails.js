@@ -99,13 +99,13 @@ const ProjectDetails = ({ props }) => {
 
         {/* Countdown End */}
 
-        <div className="grid grid-cols-3 py-4 bg-black">
+        <div className="grid grid-cols-3 p-4 bg-black">
           {/* Highest Bid Card Start */}
-          <div className="flex flex-col overflow-hidden bg-black rounded shadow-sm">
-            <div className="flex-grow w-full p-5">
+          <div className="flex flex-col overflow-hidden rounded shadow-sm">
+            <div className="flex-grow w-full p-2">
               <dl>
-                <dd className="text-sm font-medium tracking-wider text-gray-500">
-                  Highest Bid
+                <dd className="text-lg font-semibold tracking-wider text-textgray">
+                  Minting in
                 </dd>
                 <dt className="text-2xl font-semibold">
                   {props.gettingActions || address == EmptyAddress
@@ -116,10 +116,10 @@ const ProjectDetails = ({ props }) => {
             </div>
           </div>
           {/* DOUBLE */}
-          <div className="flex flex-col overflow-hidden bg-black rounded shadow-sm">
-            <div className="flex-grow w-full p-5">
+          <div className="flex flex-col overflow-hidden rounded shadow-sm">
+            <div className="flex-grow w-full p-2">
               <dl>
-                <dd className="text-sm font-medium tracking-wider text-gray-500">
+                <dd className="text-lg font-semibold tracking-wider text-textgray">
                   Highest Bid
                 </dd>
                 <dt className="text-2xl font-semibold">
@@ -134,11 +134,11 @@ const ProjectDetails = ({ props }) => {
           {/* Highest Bid Card End */}
 
           {/* Total Bids Card Start */}
-          <div className="flex flex-col overflow-hidden bg-black rounded shadow-sm">
-            <div className="flex-grow w-full p-5">
+          <div className="flex flex-col overflow-hidden rounded shadow-sm">
+            <div className="flex-grow w-full p-2">
               <dl>
-                <dd className="text-sm font-medium tracking-wider text-gray-500 ">
-                  Total Bids
+                <dd className="text-lg font-semibold tracking-wider text-textgray ">
+                  Bid Count
                 </dd>
                 <dt className="text-2xl font-semibold">
                   {props.gettingActions || address == EmptyAddress

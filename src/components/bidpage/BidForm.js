@@ -213,14 +213,14 @@ const BidForm = () => {
 
   return (
     <div className="px-5 text-left sm:w-530 rounded-xl ">
-      <p className="py-5 text-3xl font-medium">Place Bids</p>
+      <p className="py-5 font-medium text-xxxl">Place Bids</p>
       <form className="space-y-6">
         <div className="space-y-1">
-          <label className="font-medium" htmlFor="tk-form-elements-lg-name">
+          <label className="text-lg font-medium" htmlFor="tk-form-elements-lg-name">
             Price per NFT (ETH)
           </label>
           <input
-            className="block w-full px-5 py-3 text-4xl leading-6 text-gray-800 border border-gray-200 rounded bg-slate-200 h-80 font-Roboto focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+            className="block w-full px-5 py-3 text-4xl leading-6 text-gray-800 border border-gray-200 rounded bg-slate-200 h-80 font-Rubik focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
             type="number"
             id="tk-form-elements-lg-name"
             placeholder="0.0"
@@ -238,7 +238,7 @@ const BidForm = () => {
         </div>
 
         <div className="space-y-1">
-          <label className="font-medium" htmlFor="place-bid-quantity">
+          <label className="text-lg font-medium" htmlFor="place-bid-quantity">
             Quantity
           </label>
           <input
