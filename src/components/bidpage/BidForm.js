@@ -212,7 +212,7 @@ const BidForm = () => {
   }, [bidPrice, bidQty]);
 
   return (
-    <div className="px-5  text-left sm:w-530 rounded-xl ">
+    <div className="px-5  text-left  rounded-xl sm:min-w-530">
       <p className=" font-medium text-xxl mb-6">Place Bids</p>
       <form className="space-y-6">
         <div className="space-y-1">
@@ -297,9 +297,12 @@ const BidForm = () => {
         <button
           type="button"
           className="items-center h-56 w-full px-6 py-3 text-lg font-medium text-center text-white border border-transparent rounded-md shadow-sm bg-yobotblue hover:bg-yobotbluehover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yobotblue"
-        >
+          >
           Example Button
         </button>
+          
+        {/* END EXAMPLE BUTTON */}
+
 
         {!isAuthed ? (
           <ConnectWallet fullWidth={true} darkerBackground={true} />

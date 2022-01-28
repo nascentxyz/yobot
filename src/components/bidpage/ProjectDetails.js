@@ -69,33 +69,29 @@ const ProjectDetails = ({ props }) => {
               {/* <span className="text-gray-500 sm:hidden">· 03h:13m:34s</span> */}
             </p>
 
-
-
-
             <p className="mb-4 text-base leading-relaxed">
               {props.project.description}
             </p>
           </div>
 
-        {/* BADGES */}
-<div className = "flex justify-start mb-4">
-<span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800 mr-2">
-        Generative
-      </span>
-      <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800 mr-2">
-        Placeholder
-      </span>
-      <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800 mr-2">
-        Placeholder
-      </span>
-</div>
-{/* END BADGES */}
-
+          {/* BADGES */}
+          <div className="flex justify-start mb-4">
+            <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800 mr-2">
+              Generative
+            </span>
+            <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800 mr-2">
+              Placeholder
+            </span>
+            <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800 mr-2">
+              Placeholder
+            </span>
+          </div>
+          {/* END BADGES */}
         </div>
         {/* NFT image, title and description End */}
       </div>
       <div className="grid visible hidden grid-cols-1 gap-4 sm:inline-block">
-        <div className="grid grid-cols-3 p-4 bg-black">
+        <div className="grid grid-cols-3 p-4 bg-yobotblack">
           {/* Highest Bid Card Start */}
           <div className="flex flex-col overflow-hidden rounded shadow-sm">
             <div className="flex-grow w-full p-2">

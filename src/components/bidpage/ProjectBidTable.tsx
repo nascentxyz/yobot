@@ -122,28 +122,28 @@ const ProjectBidTable = ({ props }) => {
       <div className="rounded-xl min-w-full  overflow-x-auto bg-gray-800  ">
         <table className="min-w-full text-sm align-middle text-center">
           <thead>
-            <tr className="bg-gray-700">
-              <th className="p-3 text-sm font-semibold tracking-wider  text-gray-300 uppercase bg-gray-700">
+            <tr className=" bg-yobotblack text-lg text-textgraylight">
+              <th className="p-3 font-semibold tracking-wider ">
                 Date Placed
               </th>
-              <th className="p-3 text-sm text-center font-semibold tracking-wider sm:text-left text-gray-300 uppercase bg-gray-700">
+              <th className="p-3 text-center font-semibold tracking-wider sm:text-left">
                 Quantity
               </th>
-              <th className="hidden p-3 text-sm font-semibold tracking-wider text-center text-gray-300 uppercase bg-gray-700 md:table-cell">
+              <th className="hidden p-3 font-semibold tracking-wider text-center md:table-cell">
                 Price Per NFT (ETH)
               </th>
-              <th className="p-3 text-sm font-semibold tracking-wider text-center text-gray-300 uppercase bg-gray-700">
+              <th className="p-3 font-semibold tracking-wider text-center">
                 Status
               </th>
-              <th className="p-3 text-sm font-semibold tracking-wider text-center text-gray-300 uppercase bg-gray-700">
+              <th className="p-3 font-semibold tracking-wider text-center ">
                 Cancel
               </th>
             </tr>
           </thead>
 
-          <tbody>
+          <tbody className="">
             {isAuthed && (props.gettingActions || props.submittingBid) ? (
-              <tr className="p-4">
+              <tr className="p-4 ">
                 <Spinner
                   padding="1em"
                   ml="1em"
@@ -185,9 +185,9 @@ const ProjectBidTable = ({ props }) => {
                 }
 
                 return (
-                  <tr key={Object.entries(order).toString()}>
+                  <tr className="" key={Object.entries(order).toString()}>
                     <td className="p-3">
-                      <p className="font-medium">{date_time}</p>
+                      <p className="font-medium ">{date_time}</p>
                       <p className="text-gray-500">{date_year}</p>
                     </td>
                     <td className="p-3 text-center text-gray-500 sm:text-left md:table-cell">
