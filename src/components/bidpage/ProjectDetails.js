@@ -62,14 +62,14 @@ const ProjectDetails = ({ props }) => {
             <p className="mb-6">
               <a
                 href={props.project.projectWebsite}
-                className="font-semibold hover:text-indigo-400"
+                className="text-lg font-semibold hover:text-yobotgreen"
               >
                 {props.project.title}
               </a>
               {/* <span className="text-gray-500 sm:hidden">· 03h:13m:34s</span> */}
             </p>
 
-            <p className="mb-2 text-sm leading-loose">
+            <p className="mb-2 text-base leading-loose">
               {props.project.description}
             </p>
           </div>
