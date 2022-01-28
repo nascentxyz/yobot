@@ -216,10 +216,7 @@ const BidForm = () => {
       <p className="py-5 text-3xl font-medium">Place Bids</p>
       <form className="space-y-6">
         <div className="space-y-1">
-          <label
-            className="font-medium"
-            htmlFor="tk-form-elements-lg-name"
-          >
+          <label className="font-medium" htmlFor="tk-form-elements-lg-name">
             Price per NFT (ETH)
           </label>
           <input
@@ -283,7 +280,6 @@ const BidForm = () => {
             }}
           />
         </div>
-
 
         {insufficentFunds ? (
           <Text mb="0.5em" fontSize="14px" color="red.500">

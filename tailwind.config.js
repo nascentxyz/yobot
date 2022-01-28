@@ -2,10 +2,10 @@ module.exports = {
   purge: [],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    colors: {
-      zinc: "#27272a",
-    },
     extend: {
+      colors: {
+        zinc: "#27272a",
+      },
       fontFamily: {
         sans: ["Rubik"],
         Rubik: ["Rubik", "sans-serif"],

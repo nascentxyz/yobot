@@ -51,15 +51,15 @@ const ProjectDetails = ({ props }) => {
     <div className="flex flex-col overflow-hidden text-left rounded-lg shadow-sm bg-zinc sm:mx-0 sm:w-437">
       <div className="flex-grow w-full p-5 space-y-4 ">
         {/* NFT image, title and description Start */}
-        <div className="flex flex-col items-start">
+        <div className="flex flex-col items-start mb-6">
           <img
             src={props.project.previewImageSrc}
             alt="NFT Project Image"
-            className="flex-none inline-block w-full mb-3 sm:w-3/12"
+            className="flex-none inline-block w-full mb-6 sm:w-3/12"
           />
 
           <div className="flex-grow">
-            <p className="mb-1">
+            <p className="mb-6">
               <a
                 href={props.project.projectWebsite}
                 className="font-medium hover:text-indigo-400"
@@ -69,15 +69,17 @@ const ProjectDetails = ({ props }) => {
               {/* <span className="text-gray-500 sm:hidden">· 03h:13m:34s</span> */}
             </p>
 
-            <p className="mb-2 text-sm leading-relaxed">{props.project.description}</p>
+            <p className="mb-2 text-sm leading-relaxed">
+              {props.project.description}
+            </p>
           </div>
         </div>
         {/* NFT image, title and description End */}
 
         {/* Countdown Start */}
-
+        </div>
         <div className="grid visible hidden grid-cols-1 gap-4 sm:inline-block">
-          <div className="flex flex-col overflow-hidden bg-gray-800 rounded shadow-sm">
+          {/* <div className="flex flex-col overflow-hidden bg-gray-800 rounded shadow-sm">
             <div className="flex-grow w-full p-5">
               <dl>
                 <dt className="text-2xl font-semibold">
@@ -93,14 +95,29 @@ const ProjectDetails = ({ props }) => {
                 </dd>
               </dl>
             </div>
-          </div>
+          </div> */}
 
           {/* Countdown End */}
 
-          {/* Highest Bid Card Start */}
 
-          <div className="grid grid-cols-2 ">
-            <div className="flex flex-col overflow-hidden bg-gray-700 rounded shadow-sm">
+          <div className="grid grid-cols-3 bg-black">
+          {/* Highest Bid Card Start */}
+            <div className="flex flex-col overflow-hidden bg-black rounded shadow-sm">
+              <div className="flex-grow w-full p-5">
+                <dl>
+                  <dt className="text-2xl font-semibold">
+                    {props.gettingActions || address == EmptyAddress
+                      ? "-"
+                      : highestBid}
+                  </dt>
+                  <dd className="text-sm font-medium tracking-wider text-gray-500 uppercase">
+                    Highest Bid
+                  </dd>
+                </dl>
+              </div>
+            </div>
+            {/* DOUBLE */}
+            <div className="flex flex-col overflow-hidden bg-black rounded shadow-sm">
               <div className="flex-grow w-full p-5">
                 <dl>
                   <dt className="text-2xl font-semibold">
@@ -118,7 +135,7 @@ const ProjectDetails = ({ props }) => {
             {/* Highest Bid Card End */}
 
             {/* Total Bids Card Start */}
-            <div className="flex flex-col overflow-hidden bg-gray-700 rounded shadow-sm">
+            <div className="flex flex-col overflow-hidden bg-black rounded shadow-sm">
               <div className="flex-grow w-full p-5">
                 <dl>
                   <dt className="text-2xl font-semibold">
@@ -135,7 +152,7 @@ const ProjectDetails = ({ props }) => {
             {/* Total Bids Card End */}
           </div>
         </div>
-      </div>
+
     </div>
   );
 };
