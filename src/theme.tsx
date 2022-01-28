@@ -20,12 +20,12 @@ const theme = extendTheme({
     initialColorMode: "dark",
     useSystemColorMode: false,
   },
-  styles:{
+  styles: {
     global: (props) => ({
       body: {
-        bg: '#18181b',
-      }
-    })
+        bg: "#18181b",
+      },
+    }),
   },
   colors: {
     black: "#16161D",
