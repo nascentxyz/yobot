@@ -14,6 +14,11 @@ const ButtonWrapper = styled.div`
 `;
 
 const NoShadowButton = styled(Button)`
+  height: 56px;
+  font-weight: 500;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+
   &:focus {
     outline: 0 !important;
     box-shadow: none !important;

@@ -44,7 +44,11 @@ function PlaceBidButtonTW() {
 
 const PlaceBidButton = styled(Button)`
   width: 100%;
-  height: 48px;
+  height: 56px;
+  font-weight: 500;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+
   /* margin: auto; */
   /* padding-left: 1rem; */
   /* padding-right: 1rem; */
@@ -294,19 +298,21 @@ const BidForm = () => {
 
         {/* EXAMPLE BUTTON */}
 
-        <button
+        {/* <button
           type="button"
           className="items-center h-56 w-full px-6 py-3 text-lg font-medium text-center text-white border border-transparent rounded-md shadow-sm bg-yobotblue hover:bg-yobotbluehover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yobotblue"
         >
           Example Button
-        </button>
+        </button> */}
 
         {/* END EXAMPLE BUTTON */}
 
         {!isAuthed ? (
           <ConnectWallet fullWidth={true} darkerBackground={true} />
         ) : (
-          <PlaceBidButton
+          <button
+            type="button"
+            className="items-center h-56 w-full px-6 py-3 text-lg font-medium text-center text-white border border-transparent rounded-md shadow-sm bg-yobotblue hover:bg-yobotbluehover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yobotblue disabled:opacity-50 disabled:bg-zinc disabled:text-white/75"
             disabled={
               !validParams ||
               insufficentFunds ||
@@ -314,8 +320,8 @@ const BidForm = () => {
               bidQtyEmpty ||
               placingBid
             }
-            colorScheme={validParams ? "green" : "red"}
-            backgroundColor={validParams ? "green.600" : "red.800"}
+            colorScheme={validParams ? "004CFF" : "grey"}
+            backgroundColor={validParams ? "#004CFF" : "grey"}
             _hover={
               validParams
                 ? {
@@ -323,11 +329,11 @@ const BidForm = () => {
                     border: "0.4px",
                     borderStyle: "solid",
                     borderColor: "white.900",
-                    backgroundColor: "green.500",
+                    backgroundColor: "#285EDC",
                   }
                 : {}
             }
-            color={validParams ? "white.800" : "red.100"}
+            color={validParams ? "white.800" : "grey.100"}
             variant={validParams ? "solid" : "outline"}
             onClick={placeBid}
             display={"flex"}
@@ -342,7 +348,7 @@ const BidForm = () => {
             ) : (
               <Spinner margin={"auto"} color={"green.400"} />
             )}
-          </PlaceBidButton>
+          </button>
         )}
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
