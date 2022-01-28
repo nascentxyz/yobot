@@ -123,9 +123,7 @@ const ProjectBidTable = ({ props }) => {
         <table className="min-w-full text-sm align-middle text-center">
           <thead>
             <tr className=" bg-yobotblack text-lg text-textgraylight">
-              <th className="p-3 font-semibold tracking-wider ">
-                Date Placed
-              </th>
+              <th className="p-3 font-semibold tracking-wider ">Date Placed</th>
               <th className="p-3 text-center font-semibold tracking-wider sm:text-left">
                 Quantity
               </th>
