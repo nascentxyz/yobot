@@ -15,6 +15,7 @@ module.exports = {
         zinc: "#27272a",
         yobotgreen: "#B7FF1D",
         yobotblue: "#004CFF",
+        yobotbluehover: "#285EDC",
         textgray: "#929292",
       },
       fontFamily: {

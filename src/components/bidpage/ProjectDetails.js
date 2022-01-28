@@ -76,28 +76,10 @@ const ProjectDetails = ({ props }) => {
         </div>
         {/* NFT image, title and description End */}
 
-        {/* Countdown Start */}
+
       </div>
       <div className="grid visible hidden grid-cols-1 gap-4 sm:inline-block">
-        {/* <div className="flex flex-col overflow-hidden bg-gray-800 rounded shadow-sm">
-            <div className="flex-grow w-full p-5">
-              <dl>
-                <dt className="text-2xl font-semibold">
-                  <span>{timeLeft.days}d </span>
-                  <span>{timeLeft.hours}h </span>
 
-                  <span>{timeLeft.minutes}m </span>
-
-                  <span>{timeLeft.seconds}s</span>
-                </dt>
-                <dd className="text-sm font-medium tracking-wider text-gray-500 uppercase">
-                  Countdown to Mint
-                </dd>
-              </dl>
-            </div>
-          </div> */}
-
-        {/* Countdown End */}
 
         <div className="grid grid-cols-3 p-4 bg-black">
           {/* Highest Bid Card Start */}
@@ -108,9 +90,12 @@ const ProjectDetails = ({ props }) => {
                   Minting in
                 </dd>
                 <dt className="text-lg font-semibold text-white">
-                  {props.gettingActions || address == EmptyAddress
-                    ? "-"
-                    : highestBid}
+                  <span>{timeLeft.days}d </span>
+                  <span>{timeLeft.hours}h </span>
+
+                  <span>{timeLeft.minutes}m </span>
+
+                  <span>{timeLeft.seconds}s</span>
                 </dt>
               </dl>
             </div>
