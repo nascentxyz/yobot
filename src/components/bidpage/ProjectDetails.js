@@ -104,7 +104,7 @@ const ProjectDetails = ({ props }) => {
           <div className="flex flex-col overflow-hidden bg-black rounded shadow-sm">
             <div className="flex-grow w-full p-5">
               <dl>
-                <dd className="text-sm font-medium tracking-wider text-gray-500 uppercase">
+                <dd className="text-sm font-medium tracking-wider text-gray-500">
                   Highest Bid
                 </dd>
                 <dt className="text-2xl font-semibold">
@@ -119,7 +119,7 @@ const ProjectDetails = ({ props }) => {
           <div className="flex flex-col overflow-hidden bg-black rounded shadow-sm">
             <div className="flex-grow w-full p-5">
               <dl>
-                <dd className="text-sm font-medium tracking-wider text-gray-500 uppercase">
+                <dd className="text-sm font-medium tracking-wider text-gray-500">
                   Highest Bid
                 </dd>
                 <dt className="text-2xl font-semibold">
@@ -137,7 +137,7 @@ const ProjectDetails = ({ props }) => {
           <div className="flex flex-col overflow-hidden bg-black rounded shadow-sm">
             <div className="flex-grow w-full p-5">
               <dl>
-                <dd className="text-sm font-medium tracking-wider text-gray-500 uppercase">
+                <dd className="text-sm font-medium tracking-wider text-gray-500 ">
                   Total Bids
                 </dd>
                 <dt className="text-2xl font-semibold">
