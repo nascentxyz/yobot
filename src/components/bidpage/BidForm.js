@@ -212,8 +212,8 @@ const BidForm = () => {
   }, [bidPrice, bidQty]);
 
   return (
-    <div className="px-5 text-left sm:w-530 rounded-xl ">
-      <p className=" font-medium text-xxl">Place Bids</p>
+    <div className="px-5  text-left sm:w-530 rounded-xl ">
+      <p className=" font-medium text-xxl mb-6">Place Bids</p>
       <form className="space-y-6">
         <div className="space-y-1">
           <label
