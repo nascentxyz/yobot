@@ -216,8 +216,8 @@ const BidForm = () => {
   }, [bidPrice, bidQty]);
 
   return (
-    <div className="px-5  text-left  rounded-xl sm:min-w-530">
-      <p className=" font-medium text-xxl mb-6">Place Bids</p>
+    <div className="text-left sm:mr-16 rounded-xl sm:min-w-460">
+      <p className="mb-6 font-medium text-xxl">Place Bids</p>
       <form className="space-y-6">
         <div className="space-y-1">
           <label
@@ -300,7 +300,7 @@ const BidForm = () => {
 
         {/* <button
           type="button"
-          className="items-center h-56 w-full px-6 py-3 text-lg font-medium text-center text-white border border-transparent rounded-md shadow-sm bg-yobotblue hover:bg-yobotbluehover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yobotblue"
+          className="items-center w-full h-56 px-6 py-3 text-lg font-medium text-center text-white border border-transparent rounded-md shadow-sm bg-yobotblue hover:bg-yobotbluehover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yobotblue"
         >
           Example Button
         </button> */}
@@ -312,7 +312,7 @@ const BidForm = () => {
         ) : (
           <button
             type="button"
-            className="items-center h-56 w-full px-6 py-3 text-lg font-medium text-center text-white border border-transparent rounded-md shadow-sm bg-yobotblue hover:bg-yobotbluehover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yobotblue disabled:opacity-50 disabled:bg-zinc disabled:text-white/75"
+            className="items-center w-full h-56 px-6 py-3 text-lg font-medium text-center text-white border border-transparent rounded-md shadow-sm bg-yobotblue hover:bg-yobotbluehover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yobotblue disabled:opacity-50 disabled:bg-zinc disabled:text-white/75"
             disabled={
               !validParams ||
               insufficentFunds ||

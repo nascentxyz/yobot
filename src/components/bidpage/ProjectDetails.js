@@ -64,7 +64,7 @@ const ProjectDetails = ({ props }) => {
                 href={props.project.projectWebsite}
                 className="text-lg font-semibold hover:text-yobotgreen"
               >
-                {props.project.title}
+                {props.project.title} <span className="font-normal"> | Base Mint Price: 0.1 ETH </span>
               </a>
               {/* <span className="text-gray-500 sm:hidden">· 03h:13m:34s</span> */}
             </p>

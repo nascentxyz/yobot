@@ -171,8 +171,8 @@ const BidPageMain = ({ projectId }) => {
 
   return (
     <div>
-      <div className=" font-Rubik max-w-screen-lg m-auto mt-12">
-        <div className=" flex justify-between flex-col-reverse max-w-screen-xl pb-6 mx-auto border-0 sm:pb-0 rounded-xl sm:flex-row sm:mb-6">
+      <div className="max-w-screen-lg p-2 m-auto mt-12 font-Rubik">
+        <div className="flex flex-col-reverse justify-between max-w-screen-xl mx-auto mb-6 border-0 sm:pb-0 rounded-xl sm:flex-row sm:mb-20">
           <BidForm props={{ alreadyPlacedBid, onBidSubmitted }} />
           <ProjectDetails
             props={{

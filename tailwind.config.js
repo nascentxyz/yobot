@@ -19,7 +19,7 @@ module.exports = {
         yobotblack: "#121212",
         textgray: "#929292",
         textgraylight: "#d4d4d8",
-        background: "#18181b"
+        background: "#18181b",
       },
       fontFamily: {
         sans: ["Rubik"],
@@ -31,7 +31,7 @@ module.exports = {
         56: "56px",
       },
       width: {
-        530: "530px",
+        460: "460px",
         437: "437px",
       },
       minWidth: {
