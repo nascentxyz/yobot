@@ -19,6 +19,7 @@ module.exports = {
         yobotblack: "#121212",
         textgray: "#929292",
         textgraylight: "#d4d4d8",
+        background: "#18181b"
       },
       fontFamily: {
         sans: ["Rubik"],
