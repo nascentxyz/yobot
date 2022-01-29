@@ -54,7 +54,6 @@ const Navbar = ({ accountButton = false, launchApp = false, onOpen }) => {
               className="inline-flex items-center space-x-2 text-lg font-bold tracking-wide text-gray-700 group hover:text-indigo-600 active:text-gray-700"
             >
               <img className="" src="../assets/YOBOTSVG.svg" />
-              
             </a>
           </div>
 
@@ -64,12 +63,8 @@ const Navbar = ({ accountButton = false, launchApp = false, onOpen }) => {
                 href="javascript:void(0)"
                 className="flex items-center h-12 px-6 py-2 space-x-2 text-base font-medium text-white rounded-full bg-yobotblue"
               >
-               
                 <span>Connect Wallet</span>
               </a>
-              
-            
-              
             </nav>
 
             <div className="lg:hidden">
@@ -97,8 +92,6 @@ const Navbar = ({ accountButton = false, launchApp = false, onOpen }) => {
         {/* Visibility
             Closed        'hidden'
             Opened        '' (no class) */}
-
-
       </div>
     </header>
     // <NavbarFlex>
