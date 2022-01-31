@@ -111,7 +111,6 @@ const BidForm = ({ props }) => {
   // ** Bid placed helper function **
   const placeBid = async () => {
     setPlacingBid(true);
-    console.log("project token add", props.tokenAddress);
     // ** Freeze Inputs **
     const _frozenBidPrice = bidPrice;
     setFrozenBidPrice(_frozenBidPrice);
