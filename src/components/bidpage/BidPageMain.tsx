@@ -123,9 +123,9 @@ const BidPageMain = ({ projectId }) => {
         }
       }
     });
-
-    // @ts-ignore
+    
     const highestBidInWei = Math.max(
+      // @ts-ignore
       ...Object.values(placedBidValuesForProject),
       -1
     );
