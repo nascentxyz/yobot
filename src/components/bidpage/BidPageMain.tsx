@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useYobot } from "src/contexts/YobotContext";
 import useSWR from "swr";
 
@@ -42,14 +42,26 @@ const BidPageMain = ({ projectId }) => {
     fetcher
   );
 
-  let thisTokenAddress = "0x0000000000000000000000000000000000000000";
+  const thisTokenAddress = useRef("0x0000000000000000000000000000000000000000");
+  const mintPrice = useRef("-");
 
   // ** Refresh the variables on load ** //
   useEffect(() => {
-    thisTokenAddress =
+    console.log("oPEN ORDERS", openOrders);
+    console.log("tis token address", thisTokenAddress.current);
+
+    if (projectDetails && projectDetails.project && projectDetails.project[0]) {
+      thisTokenAddress.current =
       projectDetails && projectDetails.project
         ? projectDetails.project[0].token_address
         : "0x0000000000000000000000000000000000000000";
+      mintPrice.current =
+          projectDetails && projectDetails.project
+          ? projectDetails.project[0].mint_price
+          : "-";
+    }
+    console.log("this token addres", thisTokenAddress.current);
+    console.log('mint price', mintPrice.current);
     setGettingPlaced(true);
     setGettingFilled(true);
     setGettingCancelled(true);
@@ -65,10 +77,11 @@ const BidPageMain = ({ projectId }) => {
     }
   }, [gettingPlaced, gettingFilled, gettingCancelled]);
 
+  let placedBidValuesForProject = {};
+
   // ** Helper function to get the open orders ** //
   const getPlacedOrders = async () => {
     let _placed_orders = [];
-    let placedBidValuesForProject = {};
     let totalQty = 0;
 
     for (const action of actions) {
@@ -92,7 +105,7 @@ const BidPageMain = ({ projectId }) => {
         // ** For this NFT ** //
         if (
           parsedAction.token_address.toUpperCase() ==
-          thisTokenAddress.toUpperCase()
+          thisTokenAddress.current.toUpperCase()
         ) {
           const isCurrUser =
             parsedAction.user.toUpperCase() == address.toUpperCase();
@@ -101,7 +114,7 @@ const BidPageMain = ({ projectId }) => {
           const qty = parseInt(parsedAction.quantity);
 
           if (parsedAction.status == "ORDER_PLACED") {
-            placedBidValuesForProject[parsedAction.user.toUpperCase()] =
+            placedBidValuesForProject[parsedAction.order_id] =
               bidPrice;
             totalQty += qty;
             if (isCurrUser) _placed_orders.push(parsedAction);
@@ -123,7 +136,7 @@ const BidPageMain = ({ projectId }) => {
         }
       }
     });
-    
+
     const highestBidInWei = Math.max(
       // @ts-ignore
       ...Object.values(placedBidValuesForProject),
@@ -133,7 +146,7 @@ const BidPageMain = ({ projectId }) => {
     // ** Update State ** //
     setPlacedOrders(verifiedOpenOrders);
     setTotalBids((parseInt(totalBids) + totalQty).toString());
-    setHighestBidInWei(highestBidInWei.toString());
+    setHighestBidInWei(highestBidInWei > 0 ? highestBidInWei.toString() : "-");
     setGettingPlaced(false);
   };
 
@@ -163,7 +176,7 @@ const BidPageMain = ({ projectId }) => {
         // ** For this NFT ** //
         if (
           parsedAction.token_address.toUpperCase() ==
-          thisTokenAddress.toUpperCase()
+          thisTokenAddress.current.toUpperCase()
         ) {
           const isCurrUser =
             parsedAction.user.toUpperCase() == address.toUpperCase();
@@ -209,7 +222,7 @@ const BidPageMain = ({ projectId }) => {
         // ** For this NFT ** //
         if (
           parsedAction.token_address.toUpperCase() ==
-          thisTokenAddress.toUpperCase()
+          thisTokenAddress.current.toUpperCase()
         ) {
           const isCurrUser =
             parsedAction.user.toUpperCase() == address.toUpperCase();
@@ -236,11 +249,8 @@ const BidPageMain = ({ projectId }) => {
           <BidForm
             props={{
               onBidSubmitted,
-              tokenAddress: thisTokenAddress,
-              mintPrice:
-                projectDetails && projectDetails.project[0].mint_price
-                  ? projectDetails.project[0].mint_price
-                  : "-",
+              tokenAddress: thisTokenAddress.current,
+              mintPrice: mintPrice.current,
             }}
           />
           <ProjectDetails
@@ -261,7 +271,7 @@ const BidPageMain = ({ projectId }) => {
             userBids: [...placedOrders, ...filledOrders, ...cancelledOrders],
             gettingActions,
             submittingBid,
-            tokenAddress: thisTokenAddress,
+            tokenAddress: thisTokenAddress.current,
           }}
         />
       </div>
