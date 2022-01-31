@@ -151,7 +151,7 @@ const ProjectDetails = ({ props }) => {
             {/* Highest Bid Card End */}
 
             {/* Total Bids Card Start */}
-            <div className="flex flex-col overflow-hidden bg-gray-700 rounded shadow-sm">
+            {/* <div className="flex flex-col overflow-hidden bg-gray-700 rounded shadow-sm">
               <div className="flex-grow w-full p-5">
                 <dl>
                   <dt className="text-2xl font-semibold">
@@ -164,7 +164,7 @@ const ProjectDetails = ({ props }) => {
                   </dd>
                 </dl>
               </div>
-            </div>
+            </div> */}
             {/* Total Bids Card End */}
           </div>
         </div>
