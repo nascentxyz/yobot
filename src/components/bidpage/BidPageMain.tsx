@@ -10,6 +10,8 @@ import { filterOrders, parseAction, parseOrders } from "src/contexts/utils";
 
 const BidPageMain = ({ projectId }) => {
   const { yobot, address, chainId, actions, openOrders } = useYobot();
+  const tokenAddress = useRef("0x0000000000000000000000000000000000000000");
+  const mintPrice = useRef("-");
 
   // ** State ** //
   const [placedOrders, setPlacedOrders] = useState([]);
@@ -42,29 +44,15 @@ const BidPageMain = ({ projectId }) => {
     fetcher
   );
 
-  const thisTokenAddress = useRef("0x0000000000000000000000000000000000000000");
-  const mintPrice = useRef("-");
-
   // ** Refresh the variables on load ** //
   useEffect(() => {
-    console.log("oPEN ORDERS", openOrders);
-    console.log("tis token address", thisTokenAddress.current);
-
-    if (projectDetails && projectDetails.project && projectDetails.project[0]) {
-      thisTokenAddress.current =
-      projectDetails && projectDetails.project
-        ? projectDetails.project[0].token_address
-        : "0x0000000000000000000000000000000000000000";
-      mintPrice.current =
-          projectDetails && projectDetails.project
-          ? projectDetails.project[0].mint_price
-          : "-";
-    }
-    console.log("this token addres", thisTokenAddress.current);
-    console.log('mint price', mintPrice.current);
     setGettingPlaced(true);
     setGettingFilled(true);
     setGettingCancelled(true);
+    if (projectDetails && projectDetails.project && projectDetails.project[0]) {
+      tokenAddress.current = projectDetails.project[0].token_address;
+      mintPrice.current = projectDetails.project[0].mint_price;
+    }
     getPlacedOrders();
     getFilledOrders();
     getCancelledOrders();
@@ -105,7 +93,7 @@ const BidPageMain = ({ projectId }) => {
         // ** For this NFT ** //
         if (
           parsedAction.token_address.toUpperCase() ==
-          thisTokenAddress.current.toUpperCase()
+          tokenAddress.current.toUpperCase()
         ) {
           const isCurrUser =
             parsedAction.user.toUpperCase() == address.toUpperCase();
@@ -114,8 +102,10 @@ const BidPageMain = ({ projectId }) => {
           const qty = parseInt(parsedAction.quantity);
 
           if (parsedAction.status == "ORDER_PLACED") {
-            placedBidValuesForProject[parsedAction.order_id] =
-              bidPrice;
+            if (placedBidValuesForProject[parsedAction.order_id] !== -1) {
+              // If this order hasn't already been cancelled
+              placedBidValuesForProject[parsedAction.order_id] = bidPrice;
+            }
             totalQty += qty;
             if (isCurrUser) _placed_orders.push(parsedAction);
           }
@@ -176,7 +166,7 @@ const BidPageMain = ({ projectId }) => {
         // ** For this NFT ** //
         if (
           parsedAction.token_address.toUpperCase() ==
-          thisTokenAddress.current.toUpperCase()
+          tokenAddress.current.toUpperCase()
         ) {
           const isCurrUser =
             parsedAction.user.toUpperCase() == address.toUpperCase();
@@ -222,11 +212,12 @@ const BidPageMain = ({ projectId }) => {
         // ** For this NFT ** //
         if (
           parsedAction.token_address.toUpperCase() ==
-          thisTokenAddress.current.toUpperCase()
+          tokenAddress.current.toUpperCase()
         ) {
           const isCurrUser =
             parsedAction.user.toUpperCase() == address.toUpperCase();
           if (parsedAction.status == "ORDER_CANCELLED") {
+            placedBidValuesForProject[parsedAction.order_id] = -1;
             if (isCurrUser) _cancelled_orders.push(parsedAction);
           }
         }
@@ -234,6 +225,13 @@ const BidPageMain = ({ projectId }) => {
     }
 
     // ** Update State ** //
+
+    const highestBidInWei = Math.max(
+      // @ts-ignore
+      ...Object.values(placedBidValuesForProject),
+      -1
+    );
+    setHighestBidInWei(highestBidInWei > 0 ? highestBidInWei.toString() : "-");
     setCancelledOrders(_cancelled_orders);
     setGettingCancelled(false);
   };
@@ -249,7 +247,7 @@ const BidPageMain = ({ projectId }) => {
           <BidForm
             props={{
               onBidSubmitted,
-              tokenAddress: thisTokenAddress.current,
+              tokenAddress: tokenAddress.current,
               mintPrice: mintPrice.current,
             }}
           />
@@ -271,7 +269,7 @@ const BidPageMain = ({ projectId }) => {
             userBids: [...placedOrders, ...filledOrders, ...cancelledOrders],
             gettingActions,
             submittingBid,
-            tokenAddress: thisTokenAddress.current,
+            tokenAddress: tokenAddress.current,
           }}
         />
       </div>
