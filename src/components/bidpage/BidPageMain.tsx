@@ -41,13 +41,15 @@ const BidPageMain = ({ projectId }) => {
     `/api/project/${projectId}`,
     fetcher
   );
-  let thisTokenAddress =
-    projectDetails && projectDetails.project
-      ? projectDetails.project[0].token_address
-      : "0x0000000000000000000000000000000000000000";
+
+  let thisTokenAddress = "0x0000000000000000000000000000000000000000";
 
   // ** Refresh the variables on load ** //
   useEffect(() => {
+    thisTokenAddress =
+      projectDetails && projectDetails.project
+        ? projectDetails.project[0].token_address
+        : "0x0000000000000000000000000000000000000000";
     setGettingPlaced(true);
     setGettingFilled(true);
     setGettingCancelled(true);
@@ -234,10 +236,7 @@ const BidPageMain = ({ projectId }) => {
           <BidForm
             props={{
               onBidSubmitted,
-              tokenAddress:
-                projectDetails && projectDetails.project[0].token_address
-                  ? projectDetails.project[0].token_address
-                  : "0x0000000000000000000000000000000000000000",
+              tokenAddress: thisTokenAddress,
               mintPrice:
                 projectDetails && projectDetails.project[0].mint_price
                   ? projectDetails.project[0].mint_price
@@ -262,10 +261,7 @@ const BidPageMain = ({ projectId }) => {
             userBids: [...placedOrders, ...filledOrders, ...cancelledOrders],
             gettingActions,
             submittingBid,
-            tokenAddress:
-              projectDetails && projectDetails.token_address
-                ? projectDetails.token_address
-                : "0x0000000000000000000000000000000000000000",
+            tokenAddress: thisTokenAddress,
           }}
         />
       </div>
