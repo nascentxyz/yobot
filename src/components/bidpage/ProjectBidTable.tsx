@@ -40,11 +40,7 @@ const ProjectBidTable = ({ props }) => {
 
   // ** On actions refresh, filter and set a user's actions **
   useEffect(() => {
-    if (props.gettingActions) {
-      setOrders([]);
-    } else {
-      setOrders(props.userBids);
-    }
+    setOrders(props.gettingActions ? [] : props.userBids);
   }, [
     props.userBids,
     props.gettingActions,
@@ -91,7 +87,7 @@ const ProjectBidTable = ({ props }) => {
             &nbsp;
           </span>
           <div className=" px-2 py-1 text-xs font-semibold leading-4 text-orange-700 bg-orange-200 rounded-full md:inline-block">
-            Successful
+            Filled
           </div>
         </>
       );
@@ -147,9 +143,8 @@ const ProjectBidTable = ({ props }) => {
               </th>
             </tr>
           </thead>
-
           <tbody>
-            {isAuthed && (props.gettingActions || props.submittingBid) ? (
+            {props.gettingActions || props.submittingBid ? (
               <tr className="p-4">
                 <Spinner
                   padding="1em"
