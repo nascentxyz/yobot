@@ -1,5 +1,5 @@
 import { extendTheme, theme as chakraTheme } from "@chakra-ui/react";
-import { createBreakpoints } from "@chakra-ui/theme-tools";
+import { blacken, createBreakpoints } from "@chakra-ui/theme-tools";
 
 const fonts = {
   ...chakraTheme.fonts,
@@ -19,6 +19,13 @@ const theme = extendTheme({
   config: {
     initialColorMode: "dark",
     useSystemColorMode: false,
+  },
+  styles: {
+    global: (props) => ({
+      body: {
+        bg: "#18181b",
+      },
+    }),
   },
   colors: {
     black: "#16161D",

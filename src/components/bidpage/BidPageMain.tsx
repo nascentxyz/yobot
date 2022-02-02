@@ -242,8 +242,8 @@ const BidPageMain = ({ projectId }) => {
 
   return (
     <div>
-      <div className="max-w-screen-lg m-auto mt-2 mt-12 text-gray-300 bg-black xl:max-w-7xl App font-Roboto sm:">
-        <div className="pb-6 mx-auto sm:pb-0 flex border border-gray-700 rounded-xl  flex-col-reverse max-w-screen-xl m-auto  bg-gray-800 sm:flex-row sm:mb-4">
+      <div className="max-w-screen-lg p-2 m-auto mt-12 font-Rubik">
+        <div className="flex flex-col-reverse justify-between max-w-screen-xl mx-auto mb-6 border-0 sm:pb-0 rounded-xl sm:flex-row sm:mb-20">
           <BidForm
             props={{
               onBidSubmitted,
