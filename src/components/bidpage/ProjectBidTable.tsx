@@ -207,7 +207,7 @@ const ProjectBidTable = ({ props }) => {
                           <Spinner margin={"auto"} color={"red.400"} />
                         )
                       ) : (
-                        <p className="text-gray-500 md:table-cell">N/A</p>
+                        <p className="px-2 py-1 text-xs leading-4 text-gray-500 rounded-full md:inline-block">N/A</p>
                       )}
                     </td>
                   </tr>

@@ -76,7 +76,7 @@ const ProjectDetails = ({ props }) => {
           <div className="flex-grow">
             <p className="mt-6 mb-6">
               <a
-                href={props.project.projectWebsite}
+                href={props.project.website}
                 className="text-lg font-semibold hover:text-yobotgreen"
               >
                 {props.project.title}{" "}
