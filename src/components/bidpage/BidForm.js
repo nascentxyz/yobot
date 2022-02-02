@@ -308,7 +308,12 @@ const BidForm = () => {
         {/* END EXAMPLE BUTTON */}
 
         {!isAuthed ? (
-          <ConnectWallet fullWidth={true} darkerBackground={true} />
+          <button
+            type="button"
+            className="items-center w-full h-56 px-6 py-3 text-lg font-medium text-center text-white/75 bg-zinc border border-transparent rounded-md shadow-sm opacity-50"
+          >
+            Connect Wallet
+          </button>
         ) : (
           <button
             type="button"

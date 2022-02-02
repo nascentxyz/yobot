@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { createGlobalStyle } from "styled-components";
 import { DiscordSVG, TwitterSVG, YobotSVG } from "src/assets";
 import { ConnectWallet, FAQ, LaunchAppButton } from ".";
+import Link from "next/link";
 
 const StyledYobot = styled(YobotSVG)`
   margin-right: auto;
@@ -49,44 +50,14 @@ const Navbar = ({ accountButton = false, launchApp = false, onOpen }) => {
       <div className="container px-4 mx-auto xl:max-w-screen-lg lg:px-0">
         <div className="flex justify-between py-4">
           <div className="flex items-center">
-            <a
-              href="javascript:void(0)"
-              className="inline-flex items-center space-x-2 text-lg font-bold tracking-wide text-gray-700 group hover:text-indigo-600 active:text-gray-700"
-            >
-              <img className="" src="../assets/YOBOTSVG.svg" />
-            </a>
-          </div>
-
-          <div className="flex items-center space-x-1 lg:space-x-5">
-            <nav className="hidden lg:flex lg:items-center lg:space-x-2">
-              <a
-                href="javascript:void(0)"
-                className="flex items-center h-12 px-6 py-2 space-x-2 text-base font-medium text-white rounded-full bg-yobotblue"
-              >
-                <span>Connect Wallet</span>
+            <Link href="/">
+              <a className="inline-flex items-center space-x-2 text-lg font-bold tracking-wide text-gray-700 group hover:text-indigo-600 active:text-gray-700">
+                <img className="" src="../assets/YOBOTSVG.svg" />
               </a>
-            </nav>
-
-            <div className="lg:hidden">
-              <button
-                type="button"
-                className="inline-flex items-center justify-center px-3 py-2 space-x-2 font-semibold leading-6 text-gray-800 bg-white border border-gray-300 rounded shadow-sm focus:outline-none hover:text-gray-800 hover:bg-gray-100 hover:border-gray-300 hover:shadow focus:ring focus:ring-gray-500 focus:ring-opacity-25 active:bg-white active:border-white active:shadow-none"
-              >
-                <svg
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="inline-block w-5 h-5 hi-solid hi-menu"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-              </button>
-            </div>
+            </Link>
           </div>
+
+          {accountButton ? <ConnectWallet /> : null}
         </div>
 
         {/* Visibility

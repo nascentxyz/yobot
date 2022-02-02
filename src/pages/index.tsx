@@ -1,4 +1,11 @@
-import { Navbar, Main, LandingPageMain, FAQModal } from "src/components";
+import {
+  Navbar,
+  Main,
+  LandingPageMain,
+  ProjectGrid,
+  FAQModal,
+} from "src/components";
+import { ToastContainer } from "react-toastify";
 
 import { useDisclosure } from "@chakra-ui/react";
 
@@ -6,11 +13,18 @@ const Index = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <Main>
-      <Navbar onOpen={onOpen} launchApp={false} />
-      <LandingPageMain />
+    <div>
+      <ToastContainer />
+      <Navbar onOpen={onOpen} accountButton={true} />
       <FAQModal isOpen={isOpen} onClose={onClose} />
-    </Main>
+      <ProjectGrid />
+    </div>
+
+    // <Main>
+    //   <Navbar onOpen={onOpen} launchApp={false} />
+    //   <LandingPageMain />
+    //   <FAQModal isOpen={isOpen} onClose={onClose} />
+    // </Main>
   );
 };
 
