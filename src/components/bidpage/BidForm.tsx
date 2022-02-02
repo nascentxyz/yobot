@@ -231,7 +231,6 @@ const BidForm = ({ props }) => {
             min="0.000"
             step="0.0001"
             required
-            precision={3}
             onChange={(e) => {
               setBidPriceEmpty(e.target.value == "");
               setBidPrice(
