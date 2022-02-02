@@ -49,7 +49,7 @@ const ConnectWallet = ({ fullWidth = false, darkerBackground = false }) => {
 
   const connectWalletNavbarButton = (
     <div className="flex items-center space-x-1 lg:space-x-5">
-      <nav className="hidden lg:flex lg:items-center lg:space-x-2">
+      <nav className="lg:flex lg:items-center lg:space-x-2">
         <a
           onClick={handleAccountButtonClick}
           className="flex items-center h-12 px-6 py-2 space-x-2 text-base font-medium text-white rounded-full bg-yobotblue"
@@ -58,7 +58,7 @@ const ConnectWallet = ({ fullWidth = false, darkerBackground = false }) => {
         </a>
       </nav>
 
-      <div className="lg:hidden">
+      {/* <div className="lg:hidden">
         <button
           type="button"
           className="inline-flex items-center justify-center px-3 py-2 space-x-2 font-semibold leading-6 text-gray-800 bg-white border border-gray-300 rounded shadow-sm focus:outline-none hover:text-gray-800 hover:bg-gray-100 hover:border-gray-300 hover:shadow focus:ring focus:ring-gray-500 focus:ring-opacity-25 active:bg-white active:border-white active:shadow-none"
@@ -76,7 +76,7 @@ const ConnectWallet = ({ fullWidth = false, darkerBackground = false }) => {
             ></path>
           </svg>
         </button>
-      </div>
+      </div> */}
     </div>
   );
 
