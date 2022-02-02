@@ -125,27 +125,25 @@ const ProjectBidTable = ({ props }) => {
       <div className="rounded-xl min-w-full  overflow-x-auto bg-gray-800  ">
         <table className="min-w-full text-sm align-middle text-center">
           <thead>
-            <tr className="bg-gray-700">
-              <th className="p-3 text-sm font-semibold tracking-wider  text-gray-300 uppercase bg-gray-700">
-                Date Placed
-              </th>
-              <th className="p-3 text-sm text-center font-semibold tracking-wider sm:text-left text-gray-300 uppercase bg-gray-700">
+            <tr className=" bg-yobotblack text-lg text-textgraylight">
+              <th className="p-3 font-semibold tracking-wider ">Date Placed</th>
+              <th className="p-3 text-center font-semibold tracking-wider sm:text-left">
                 Quantity
               </th>
-              <th className="hidden p-3 text-sm font-semibold tracking-wider text-center text-gray-300 uppercase bg-gray-700 md:table-cell">
+              <th className="p-3 font-semibold tracking-wider text-center">
                 Price Per NFT (Ξ)
               </th>
-              <th className="p-3 text-sm font-semibold tracking-wider text-center text-gray-300 uppercase bg-gray-700">
+              <th className="p-3 font-semibold tracking-wider text-center">
                 Status
               </th>
-              <th className="p-3 text-sm font-semibold tracking-wider text-center text-gray-300 uppercase bg-gray-700">
+              <th className="p-3 font-semibold tracking-wider text-center ">
                 Cancel
               </th>
             </tr>
           </thead>
-          <tbody>
-            {props.gettingActions || props.submittingBid ? (
-              <tr className="p-4">
+          <tbody className="">
+            {isAuthed && (props.gettingActions || props.submittingBid) ? (
+              <tr className="p-4 ">
                 <Spinner
                   padding="1em"
                   ml="1em"
@@ -167,9 +165,9 @@ const ProjectBidTable = ({ props }) => {
                 } = order;
 
                 return (
-                  <tr key={Object.entries(order).toString()}>
+                  <tr className="" key={Object.entries(order).toString()}>
                     <td className="p-3">
-                      <p className="font-medium">{date_time}</p>
+                      <p className="font-medium ">{date_time}</p>
                       <p className="text-gray-500">{date_year}</p>
                     </td>
                     <td className="p-3 text-center text-gray-500 sm:text-left md:table-cell">
@@ -204,7 +202,7 @@ const ProjectBidTable = ({ props }) => {
                           <Spinner margin={"auto"} color={"red.400"} />
                         )
                       ) : (
-                        <p className="text-gray-500 md:table-cell">N/A</p>
+                        <p className="px-2 py-1 text-xs leading-4 text-gray-500 rounded-full md:inline-block">N/A</p>
                       )}
                     </td>
                   </tr>

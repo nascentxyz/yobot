@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { createGlobalStyle } from "styled-components";
 import { DiscordSVG, TwitterSVG, YobotSVG } from "src/assets";
 import { ConnectWallet, FAQ, LaunchAppButton } from ".";
+import Link from "next/link";
 
 const StyledYobot = styled(YobotSVG)`
   margin-right: auto;
@@ -42,45 +43,67 @@ const FontStyle = createGlobalStyle`
 
 const Navbar = ({ accountButton = false, launchApp = false, onOpen }) => {
   return (
-    <NavbarFlex>
-      <FontStyle />
-      <ChakraLink href="/" d="flex" flexGrow={0}>
-        <StyledYobot />
-      </ChakraLink>
-      <LaunchGroup>
-        <LinkWrapper>
-          <ChakraLink
-            fontFamily="Roboto"
-            textDecoration="none !important"
-            height="min-content"
-            margin="auto"
-            onClick={onOpen}
-          >
-            <FAQ mx="0.5em" />
-          </ChakraLink>
-          <ChakraLink
-            textDecoration="none !important"
-            height="min-content"
-            margin="auto"
-            isExternal
-            href="https://discord.gg/eSXG94jzqe"
-          >
-            <DiscordSVG mx="0.5em" />
-          </ChakraLink>
-          <ChakraLink
-            textDecoration="none !important"
-            height="min-content"
-            margin="auto"
-            isExternal
-            href="https://twitter.com/yobotmarket"
-          >
-            <TwitterSVG mx="0.5em" />
-          </ChakraLink>
-        </LinkWrapper>
-        {accountButton ? <ConnectWallet /> : null}
-        {launchApp ? <LaunchAppButton /> : null}
-      </LaunchGroup>
-    </NavbarFlex>
+    <header
+      id="page-header"
+      className="flex items-center flex-none py-4 shadow-sm bg-background z-1 font-Rubik"
+    >
+      <div className="container px-4 mx-auto xl:max-w-screen-lg lg:px-0">
+        <div className="flex justify-between py-4">
+          <div className="flex items-center">
+            <Link href="/">
+              <a className="inline-flex items-center space-x-2 text-lg font-bold tracking-wide text-gray-700 group hover:text-indigo-600 active:text-gray-700">
+                <img className="" src="/YOBOTSVG.svg" />
+              </a>
+            </Link>
+          </div>
+
+          {accountButton ? <ConnectWallet /> : null}
+        </div>
+
+        {/* Visibility
+            Closed        'hidden'
+            Opened        '' (no class) */}
+      </div>
+    </header>
+    // <NavbarFlex>
+    //   <FontStyle />
+    //   <ChakraLink href="/" d="flex" flexGrow={0}>
+    //     <StyledYobot />
+    //   </ChakraLink>
+    //   <LaunchGroup>
+    //     <LinkWrapper>
+    //       <ChakraLink
+    //         fontFamily="Roboto"
+    //         textDecoration="none !important"
+    //         height="min-content"
+    //         margin="auto"
+    //         onClick={onOpen}
+    //       >
+    //         <FAQ mx="0.5em" />
+    //       </ChakraLink>
+    //       <ChakraLink
+    //         textDecoration="none !important"
+    //         height="min-content"
+    //         margin="auto"
+    //         isExternal
+    //         href="https://discord.gg/eSXG94jzqe"
+    //       >
+    //         <DiscordSVG mx="0.5em" />
+    //       </ChakraLink>
+    //       <ChakraLink
+    //         textDecoration="none !important"
+    //         height="min-content"
+    //         margin="auto"
+    //         isExternal
+    //         href="https://twitter.com/yobotmarket"
+    //       >
+    //         <TwitterSVG mx="0.5em" />
+    //       </ChakraLink>
+    //     </LinkWrapper>
+    //     {accountButton ? <ConnectWallet /> : null}
+    //     {launchApp ? <LaunchAppButton /> : null}
+    //   </LaunchGroup>
+    // </NavbarFlex>
   );
 };
 
