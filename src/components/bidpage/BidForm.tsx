@@ -322,23 +322,8 @@ const BidForm = ({ props }) => {
               bidQtyEmpty ||
               placingBid
             }
-            colorScheme={validParams ? "004CFF" : "grey"}
-            backgroundColor={validParams ? "#004CFF" : "grey"}
-            _hover={
-              validParams
-                ? {
-                    color: "white.900",
-                    border: "0.4px",
-                    borderStyle: "solid",
-                    borderColor: "white.900",
-                    backgroundColor: "#285EDC",
-                  }
-                : {}
-            }
             color={validParams ? "white.800" : "grey.100"}
-            variant={validParams ? "solid" : "outline"}
             onClick={placeBid}
-            display={"flex"}
           >
             {!placingBid ? (
               <>

@@ -52,7 +52,7 @@ const Navbar = ({ accountButton = false, launchApp = false, onOpen }) => {
           <div className="flex items-center">
             <Link href="/">
               <a className="inline-flex items-center space-x-2 text-lg font-bold tracking-wide text-gray-700 group hover:text-indigo-600 active:text-gray-700">
-                <img className="" src="../assets/YOBOTSVG.svg" />
+                <img className="" src="/YOBOTSVG.svg" />
               </a>
             </Link>
           </div>
