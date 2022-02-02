@@ -46,6 +46,7 @@ const BidPageMain = ({ projectId }) => {
 
   // ** Refresh the variables on load ** //
   useEffect(() => {
+    setGettingActions(true);
     setGettingPlaced(true);
     setGettingFilled(true);
     setGettingCancelled(true);
