@@ -69,10 +69,12 @@ const ProjectDetails = ({ props }) => {
             }
             alt="NFT Project Image"
             className="flex-none inline-block w-full mb-6 sm:w-3/12"
+            width={100}
+            height={100}
           />
 
           <div className="flex-grow">
-            <p className="mb-6">
+            <p className="mt-6 mb-6">
               <a
                 href={props.project.projectWebsite}
                 className="text-lg font-semibold hover:text-yobotgreen"
@@ -80,7 +82,7 @@ const ProjectDetails = ({ props }) => {
                 {props.project.title}{" "}
                 <span className="font-normal">
                   {" "}
-                  | Base Mint Price: 0.1 ETH{" "}
+                  | Base Mint Price: {mintPrice} Ξ
                 </span>
               </a>
               {/* <span className="text-gray-500 sm:hidden">· 03h:13m:34s</span> */}
@@ -92,7 +94,7 @@ const ProjectDetails = ({ props }) => {
           </div>
 
           {/* BADGES */}
-          <div className="flex justify-start mb-4">
+          {/* <div className="flex justify-start mb-4">
             <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800 mr-2">
               Generative
             </span>
@@ -102,7 +104,7 @@ const ProjectDetails = ({ props }) => {
             <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800 mr-2">
               Placeholder
             </span>
-          </div>
+          </div> */}
           {/* END BADGES */}
         </div>
         {/* NFT image, title and description End */}

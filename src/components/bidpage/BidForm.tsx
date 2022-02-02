@@ -217,7 +217,10 @@ const BidForm = ({ props }) => {
       <p className="mb-6 font-medium text-xxl">Place Bids</p>
       <form className="space-y-6">
         <div className="space-y-1">
-          <label className="font-medium" htmlFor="tk-form-elements-lg-name">
+          <label
+            className="text-lg font-medium"
+            htmlFor="tk-form-elements-lg-name"
+          >
             Price per NFT (Ξ)
           </label>
           <input
@@ -228,7 +231,7 @@ const BidForm = ({ props }) => {
             min="0.000"
             step="0.0001"
             required
-            // precision={3}
+            precision={3}
             onChange={(e) => {
               setBidPriceEmpty(e.target.value == "");
               setBidPrice(
@@ -289,6 +292,18 @@ const BidForm = ({ props }) => {
         ) : (
           ""
         )}
+
+        {/* EXAMPLE BUTTON */}
+
+        {/* <button
+          type="button"
+          className="items-center w-full h-56 px-6 py-3 text-lg font-medium text-center text-white border border-transparent rounded-md shadow-sm bg-yobotblue hover:bg-yobotbluehover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yobotblue"
+        >
+          Example Button
+        </button> */}
+
+        {/* END EXAMPLE BUTTON */}
+
         {!isAuthed ? (
           <button
             type="button"
@@ -398,6 +413,191 @@ const BidForm = ({ props }) => {
         </Modal>
       </form>
     </div>
+    // <div className="text-left sm:mr-16 rounded-xl sm:min-w-460">
+    //   <p className="mb-6 font-medium text-xxl">Place Bids</p>
+    //   <form className="space-y-6">
+    //     <div className="space-y-1">
+    //       <label className="font-medium" htmlFor="tk-form-elements-lg-name">
+    //         Price per NFT (Ξ)
+    //       </label>
+    //       <input
+    //         className="block w-full px-5 py-3 leading-6 text-gray-800 border border-gray-200 rounded text-xxl bg-slate-200 h-80 font-Roboto focus:border-red-800 focus:ring focus:ring-red-300 focus:ring-opacity-50"
+    //         type="number"
+    //         id="tk-form-elements-lg-name"
+    //         placeholder="0.0"
+    //         min="0.000"
+    //         step="0.0001"
+    //         required
+    //         // precision={3}
+    //         onChange={(e) => {
+    //           setBidPriceEmpty(e.target.value == "");
+    //           setBidPrice(
+    //             e.target.value ? parseFloat(e.target.value) : undefined
+    //           );
+    //         }}
+    //       />
+    //     </div>
+
+    //     <div className="space-y-1">
+    //       <label className="text-lg font-medium" htmlFor="place-bid-quantity">
+    //         Quantity
+    //       </label>
+    //       <input
+    //         className="w-full px-5 py-3 leading-6 text-gray-800 border rounded text-xxl bg-slate-200 h-80 zblock font-Roboto border-grey-200 focus:border-yobotgreen focus:ring focus:ring-yobotgreen focus:ring-opacity-50"
+    //         type="number"
+    //         id="place-bid-quantity"
+    //         placeholder="# of NFTs"
+    //         min="1"
+    //         required
+    //         value={bidQty}
+    //         onKeyDown={(e) => {
+    //           if (!enterPressed) {
+    //             setEnterPressed(true);
+    //             // ** Let's allow the user to hit enter here to place bid **
+    //             if (
+    //               validParams &&
+    //               !bidPriceEmpty &&
+    //               !bidQtyEmpty &&
+    //               !insufficentFunds &&
+    //               isAuthed &&
+    //               !placingBid
+    //             ) {
+    //               if (e.key === "Enter") {
+    //                 setTimeout(() => {
+    //                   placeBid();
+    //                   setEnterPressed(false);
+    //                 }, 200);
+    //               } else {
+    //                 setEnterPressed(false);
+    //               }
+    //             } else {
+    //               setEnterPressed(false);
+    //             }
+    //           }
+    //         }}
+    //         onChange={(e) => {
+    //           setBidQtyEmpty(e.target.value == "");
+    //           setBidQty(e.target.value ? parseInt(e.target.value) : undefined);
+    //         }}
+    //       />
+    //     </div>
+
+    //     {insufficentFunds ? (
+    //       <Text mb="0.5em" fontSize="14px" color="red.500">
+    //         Insufficient Funds ~ {balance && balance.toFixed(3)}Ξ
+    //       </Text>
+    //     ) : (
+    //       ""
+    //     )}
+    //     {!isAuthed ? (
+    //       <button
+    //         type="button"
+    //         className="items-center w-full h-56 px-6 py-3 text-lg font-medium text-center text-white/75 bg-zinc border border-transparent rounded-md shadow-sm opacity-50"
+    //       >
+    //         Connect Wallet
+    //       </button>
+    //     ) : (
+    //       <button
+    //         type="button"
+    //         className="items-center w-full h-56 px-6 py-3 text-lg font-medium text-center text-white border border-transparent rounded-md shadow-sm bg-yobotblue hover:bg-yobotbluehover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yobotblue disabled:opacity-50 disabled:bg-zinc disabled:text-white/75"
+    //         disabled={
+    //           !validParams ||
+    //           insufficentFunds ||
+    //           bidPriceEmpty ||
+    //           bidQtyEmpty ||
+    //           placingBid
+    //         }
+    //         colorScheme={validParams ? "004CFF" : "grey"}
+    //         backgroundColor={validParams ? "#004CFF" : "grey"}
+    //         _hover={
+    //           validParams
+    //             ? {
+    //                 color: "white.900",
+    //                 border: "0.4px",
+    //                 borderStyle: "solid",
+    //                 borderColor: "white.900",
+    //                 backgroundColor: "#285EDC",
+    //               }
+    //             : {}
+    //         }
+    //         color={validParams ? "white.800" : "grey.100"}
+    //         variant={validParams ? "solid" : "outline"}
+    //         onClick={placeBid}
+    //         display={"flex"}
+    //       >
+    //         {!placingBid ? (
+    //           <>
+    //             {" "}
+    //             {validParams && !bidPriceEmpty && !bidQtyEmpty
+    //               ? "Place Bid"
+    //               : "Enter a Price and Quantity"}{" "}
+    //           </>
+    //         ) : (
+    //           <Spinner margin={"auto"} color={"green.400"} />
+    //         )}
+    //       </button>
+    //     )}
+    //     <Modal isOpen={isOpen} onClose={onClose}>
+    //       <ModalOverlay />
+    //       <ModalContent>
+    //         <ModalHeader>
+    //           <Heading>🚨 Place Bid? 🚨</Heading>
+    //           <ModalCloseButton
+    //             onClick={() => {
+    //               setPlacingBid(false);
+    //               onClose();
+    //             }}
+    //           />
+    //         </ModalHeader>
+    //         <ModalBody>
+    //           <Checkbox
+    //             colorScheme="red"
+    //             checked={notNovice}
+    //             onChange={(e) => {
+    //               setNotNovice(!notNovice);
+    //             }}
+    //           >
+    //             {t("Don't show this message in the future")}
+    //           </Checkbox>
+    //         </ModalBody>
+
+    //         <ModalFooter>
+    //           <NoShadowButton
+    //             colorScheme="green"
+    //             onClick={() => {
+    //               // ** If not a novice, make sure our localstorage is set
+    //               if (!notNovice) {
+    //                 localStorage.setItem("BASED_YOBOT_APE_MODE", "I_AM_BASED");
+    //               }
+    //               if (!transactionTimedOut) {
+    //                 // SUBMIT
+    //                 submitBid(frozenBidPrice, frozenBidQty);
+    //                 // ** Close the Modal **
+    //                 onClose();
+    //               } else {
+    //                 // ** Close the Modal **
+    //                 onClose();
+    //                 // ** Toast notification that the 1 minute confirmation period timed out...
+    //                 // ** Please resubmit tx
+    //                 toast.error({
+    //                   title: "Confirmation Timeout! (> 1 minute)",
+    //                   description: "Please confirm in less than 60 seconds!",
+    //                   status: "error",
+    //                   position: "middle",
+    //                   duration: 3000,
+    //                   isClosable: true,
+    //                 });
+    //                 setPlacingBid(false);
+    //               }
+    //             }}
+    //           >
+    //             Submit
+    //           </NoShadowButton>
+    //         </ModalFooter>
+    //       </ModalContent>
+    //     </Modal>
+    //   </form>
+    // </div>
   );
 };
 
