@@ -142,16 +142,18 @@ const ProjectBidTable = ({ props }) => {
             </tr>
           </thead>
           <tbody className="">
-            {isAuthed && (props.gettingActions || props.submittingBid) ? (
+            {props.gettingActions || props.submittingBid ? (
               <tr className="p-4 ">
-                <Spinner
-                  padding="1em"
-                  ml="1em"
-                  mt="1em"
-                  mb="1em"
-                  align="center"
-                  color={"blue.400"}
-                />
+                <td>
+                  <Spinner
+                    padding="1em"
+                    ml="1em"
+                    mt="1em"
+                    mb="1em"
+                    align="center"
+                    color={"blue.400"}
+                  />
+                </td>
               </tr>
             ) : orders.length > 0 ? (
               orders.map((order) => {
@@ -210,9 +212,9 @@ const ProjectBidTable = ({ props }) => {
               })
             ) : (
               <tr className="p-4">
-                <Text padding="1em" marginLeft="1em" align="start">
-                  {t("No bids placed")}
-                </Text>
+                <td>
+                  <p className="ml-4 p-4 text-base text-left leading-relaxed">No bids placed</p>
+                </td>
               </tr>
             )}
           </tbody>
