@@ -50,6 +50,7 @@ const BidPageMain = ({ projectId }) => {
     setGettingPlaced(true);
     setGettingFilled(true);
     setGettingCancelled(true);
+    console.log("actions", actions);
     if (projectDetails && projectDetails.project && projectDetails.project[0]) {
       tokenAddress.current = projectDetails.project[0].token_address;
       mintPrice.current = projectDetails.project[0].mint_price;

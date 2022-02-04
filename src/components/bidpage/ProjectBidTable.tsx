@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { useYobot } from "src/contexts/YobotContext";
+import { Yobot } from "src/yobot-sdk/index";
 import { ConnectWallet, NoShadowButton } from "src/components";
 import { useTranslation } from "react-i18next";
 import {
@@ -40,7 +41,9 @@ const ProjectBidTable = ({ props }) => {
 
   // ** On actions refresh, filter and set a user's actions **
   useEffect(() => {
-    setOrders(props.gettingActions ? [] : props.userBids);
+    if (Yobot.isSupportedChain(chainId)) {
+      setOrders(props.gettingActions ? [] : props.userBids);
+    }
   }, [
     props.userBids,
     props.gettingActions,
@@ -142,7 +145,8 @@ const ProjectBidTable = ({ props }) => {
             </tr>
           </thead>
           <tbody className="">
-            {props.gettingActions || props.submittingBid ? (
+            {Yobot.isSupportedChain(chainId) &&
+            (props.gettingActions || props.submittingBid) ? (
               <tr className="p-4 ">
                 <td>
                   <Spinner
@@ -204,7 +208,9 @@ const ProjectBidTable = ({ props }) => {
                           <Spinner margin={"auto"} color={"red.400"} />
                         )
                       ) : (
-                        <p className="px-2 py-1 text-xs leading-4 text-gray-500 rounded-full md:inline-block">N/A</p>
+                        <p className="px-2 py-1 text-xs leading-4 text-gray-500 rounded-full md:inline-block">
+                          N/A
+                        </p>
                       )}
                     </td>
                   </tr>
@@ -213,7 +219,9 @@ const ProjectBidTable = ({ props }) => {
             ) : (
               <tr className="p-4">
                 <td>
-                  <p className="ml-4 p-4 text-base text-left leading-relaxed">No bids placed</p>
+                  <p className="ml-4 p-4 text-base text-left leading-relaxed">
+                    No bids placed
+                  </p>
                 </td>
               </tr>
             )}

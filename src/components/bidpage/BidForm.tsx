@@ -20,6 +20,7 @@ import {
 import styled from "@emotion/styled";
 import { toast } from "material-react-toastify";
 import { useYobot } from "src/contexts/YobotContext";
+import { Yobot } from "src/yobot-sdk/index";
 import { ConnectWallet, NoShadowButton } from "src/components";
 import { useTranslation } from "react-i18next";
 import {
@@ -64,7 +65,8 @@ const PlaceBidButton = styled(Button)`
 
 const BidForm = ({ props }) => {
   const { t } = useTranslation();
-  const { yobot, isAuthed, balance, address, refreshEvents } = useYobot();
+  const { yobot, chainId, isAuthed, balance, address, refreshEvents } =
+    useYobot();
   const [validParams, setValidParams] = useState(false);
   const [placingBid, setPlacingBid] = useState(false);
 
@@ -314,6 +316,7 @@ const BidForm = ({ props }) => {
             type="button"
             className="items-center w-full h-56 px-6 py-3 text-lg font-medium text-center text-white border border-transparent rounded-md shadow-sm bg-yobotblue hover:bg-yobotbluehover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yobotblue disabled:opacity-50 disabled:bg-zinc disabled:text-white/75"
             disabled={
+              !Yobot.isSupportedChain(chainId) ||
               !validParams ||
               insufficentFunds ||
               bidPriceEmpty ||
