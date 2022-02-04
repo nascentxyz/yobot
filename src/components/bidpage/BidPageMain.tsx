@@ -25,9 +25,12 @@ const BidPageMain = ({ projectId }) => {
 
   const [gettingActions, setGettingActions] = useState(true);
 
+  const totalOpenPlacedBids = useRef(0);
+  const totalFilledBids = useRef(0);
+
   // ** Cumulative State ** //
-  const [totalBids, setTotalBids] = useState("-");
-  const [highestBidInWei, setHighestBidInWei] = useState("-");
+  const [totalBids, setTotalBids] = useState(-1);
+  const [highestBid, setHighestBid] = useState(-1);
   const [submittingBid, setSubmittingBid] = useState(false);
 
   // ** Filter for valid open orders ** //
@@ -46,6 +49,7 @@ const BidPageMain = ({ projectId }) => {
 
   // ** Refresh the variables on load ** //
   useEffect(() => {
+    setGettingActions(true);
     setGettingPlaced(true);
     setGettingFilled(true);
     setGettingCancelled(true);
@@ -61,6 +65,7 @@ const BidPageMain = ({ projectId }) => {
   // ** Set Getting Actions ** //
   useEffect(() => {
     if (!gettingPlaced && !gettingFilled && !gettingCancelled) {
+      setTotalBids(totalOpenPlacedBids.current + totalFilledBids.current);
       setGettingActions(false);
     }
   }, [gettingPlaced, gettingFilled, gettingCancelled]);
@@ -105,8 +110,8 @@ const BidPageMain = ({ projectId }) => {
             if (placedBidValuesForProject[parsedAction.order_id] !== -1) {
               // If this order hasn't already been cancelled
               placedBidValuesForProject[parsedAction.order_id] = bidPrice;
+              totalQty += qty;
             }
-            totalQty += qty;
             if (isCurrUser) _placed_orders.push(parsedAction);
           }
         }
@@ -127,7 +132,7 @@ const BidPageMain = ({ projectId }) => {
       }
     });
 
-    const highestBidInWei = Math.max(
+    const highestBid = Math.max(
       // @ts-ignore
       ...Object.values(placedBidValuesForProject),
       -1
@@ -135,15 +140,15 @@ const BidPageMain = ({ projectId }) => {
 
     // ** Update State ** //
     setPlacedOrders(verifiedOpenOrders);
-    setTotalBids((parseInt(totalBids) + totalQty).toString());
-    setHighestBidInWei(highestBidInWei > 0 ? highestBidInWei.toString() : "-");
+    totalOpenPlacedBids.current = totalQty;
+    if (highestBid >= 0) setHighestBid(highestBid);
     setGettingPlaced(false);
   };
 
   // ** Helper function to get the filled orders ** //
   const getFilledOrders = async () => {
     let filled_orders = [];
-    let totalQty = 0;
+    let totalFilledQty = 0;
 
     for (const action of actions) {
       try {
@@ -175,6 +180,7 @@ const BidPageMain = ({ projectId }) => {
           const qty = parseInt(parsedAction.quantity);
 
           if (parsedAction.status == "ORDER_FILLED") {
+            totalFilledQty += qty;
             if (isCurrUser) filled_orders.push(parsedAction);
           }
         }
@@ -182,14 +188,15 @@ const BidPageMain = ({ projectId }) => {
     }
 
     // ** Update State ** //
+    totalFilledBids.current = totalFilledQty;
     setFilledOrders(filled_orders);
-    setTotalBids((parseInt(totalBids) + totalQty).toString());
     setGettingFilled(false);
   };
 
   // ** Helper function to get the cancelled orders ** //
   const getCancelledOrders = async () => {
     let _cancelled_orders = [];
+    let totalCancelledQty = 0;
 
     for (const action of actions) {
       try {
@@ -218,6 +225,7 @@ const BidPageMain = ({ projectId }) => {
             parsedAction.user.toUpperCase() == address.toUpperCase();
           if (parsedAction.status == "ORDER_CANCELLED") {
             placedBidValuesForProject[parsedAction.order_id] = -1;
+            // totalCancelledQty += parseInt(parsedAction.quantity);
             if (isCurrUser) _cancelled_orders.push(parsedAction);
           }
         }
@@ -225,13 +233,6 @@ const BidPageMain = ({ projectId }) => {
     }
 
     // ** Update State ** //
-
-    const highestBidInWei = Math.max(
-      // @ts-ignore
-      ...Object.values(placedBidValuesForProject),
-      -1
-    );
-    setHighestBidInWei(highestBidInWei > 0 ? highestBidInWei.toString() : "-");
     setCancelledOrders(_cancelled_orders);
     setGettingCancelled(false);
   };
@@ -242,8 +243,8 @@ const BidPageMain = ({ projectId }) => {
 
   return (
     <div>
-      <div className="max-w-screen-lg m-auto mt-2 mt-12 text-gray-300 bg-black xl:max-w-7xl App font-Roboto sm:">
-        <div className="pb-6 mx-auto sm:pb-0 flex border border-gray-700 rounded-xl  flex-col-reverse max-w-screen-xl m-auto  bg-gray-800 sm:flex-row sm:mb-4">
+      <div className="max-w-screen-lg p-2 m-auto mt-12 font-Rubik">
+        <div className="flex flex-col-reverse justify-between max-w-screen-xl mx-auto mb-6 border-0 sm:pb-0 rounded-xl sm:flex-row sm:mb-20">
           <BidForm
             props={{
               onBidSubmitted,
@@ -257,7 +258,7 @@ const BidPageMain = ({ projectId }) => {
                 ? {
                     ...projectDetails.project[0],
                     totalBids: totalBids,
-                    highestBidInWei: highestBidInWei,
+                    highestBid: highestBid,
                   }
                 : {},
               gettingActions: gettingActions,

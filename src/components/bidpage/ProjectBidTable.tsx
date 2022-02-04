@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { useYobot } from "src/contexts/YobotContext";
+import { Yobot } from "src/yobot-sdk/index";
 import { ConnectWallet, NoShadowButton } from "src/components";
 import { useTranslation } from "react-i18next";
 import {
@@ -40,10 +41,8 @@ const ProjectBidTable = ({ props }) => {
 
   // ** On actions refresh, filter and set a user's actions **
   useEffect(() => {
-    if (props.gettingActions) {
-      setOrders([]);
-    } else {
-      setOrders(props.userBids);
+    if (Yobot.isSupportedChain(chainId)) {
+      setOrders(props.gettingActions ? [] : props.userBids);
     }
   }, [
     props.userBids,
@@ -91,7 +90,7 @@ const ProjectBidTable = ({ props }) => {
             &nbsp;
           </span>
           <div className=" px-2 py-1 text-xs font-semibold leading-4 text-orange-700 bg-orange-200 rounded-full md:inline-block">
-            Successful
+            Filled
           </div>
         </>
       );
@@ -129,36 +128,37 @@ const ProjectBidTable = ({ props }) => {
       <div className="rounded-xl min-w-full  overflow-x-auto bg-gray-800  ">
         <table className="min-w-full text-sm align-middle text-center">
           <thead>
-            <tr className="bg-gray-700">
-              <th className="p-3 text-sm font-semibold tracking-wider  text-gray-300 uppercase bg-gray-700">
-                Date Placed
-              </th>
-              <th className="p-3 text-sm text-center font-semibold tracking-wider sm:text-left text-gray-300 uppercase bg-gray-700">
+            <tr className=" bg-yobotblack text-lg text-textgraylight">
+              <th className="p-3 font-semibold tracking-wider ">Date Placed</th>
+              <th className="p-3 text-center font-semibold tracking-wider sm:text-left">
                 Quantity
               </th>
-              <th className="hidden p-3 text-sm font-semibold tracking-wider text-center text-gray-300 uppercase bg-gray-700 md:table-cell">
+              <th className="p-3 font-semibold tracking-wider text-center">
                 Price Per NFT (Ξ)
               </th>
-              <th className="p-3 text-sm font-semibold tracking-wider text-center text-gray-300 uppercase bg-gray-700">
+              <th className="p-3 font-semibold tracking-wider text-center">
                 Status
               </th>
-              <th className="p-3 text-sm font-semibold tracking-wider text-center text-gray-300 uppercase bg-gray-700">
+              <th className="p-3 font-semibold tracking-wider text-center ">
                 Cancel
               </th>
             </tr>
           </thead>
-
-          <tbody>
-            {isAuthed && (props.gettingActions || props.submittingBid) ? (
-              <tr className="p-4">
-                <Spinner
-                  padding="1em"
-                  ml="1em"
-                  mt="1em"
-                  mb="1em"
-                  align="center"
-                  color={"blue.400"}
-                />
+          <tbody className="">
+            {Yobot.isSupportedChain(chainId) &&
+            isAuthed &&
+            (props.gettingActions || props.submittingBid) ? (
+              <tr className="p-4 ">
+                <td>
+                  <Spinner
+                    padding="1em"
+                    ml="1em"
+                    mt="1em"
+                    mb="1em"
+                    align="center"
+                    color={"blue.400"}
+                  />
+                </td>
               </tr>
             ) : orders.length > 0 ? (
               orders.map((order) => {
@@ -172,9 +172,9 @@ const ProjectBidTable = ({ props }) => {
                 } = order;
 
                 return (
-                  <tr key={Object.entries(order).toString()}>
+                  <tr className="" key={Object.entries(order).toString()}>
                     <td className="p-3">
-                      <p className="font-medium">{date_time}</p>
+                      <p className="font-medium ">{date_time}</p>
                       <p className="text-gray-500">{date_year}</p>
                     </td>
                     <td className="p-3 text-center text-gray-500 sm:text-left md:table-cell">
@@ -209,7 +209,9 @@ const ProjectBidTable = ({ props }) => {
                           <Spinner margin={"auto"} color={"red.400"} />
                         )
                       ) : (
-                        <p className="text-gray-500 md:table-cell">N/A</p>
+                        <p className="px-2 py-1 text-xs leading-4 text-gray-500 rounded-full md:inline-block">
+                          N/A
+                        </p>
                       )}
                     </td>
                   </tr>
@@ -217,9 +219,11 @@ const ProjectBidTable = ({ props }) => {
               })
             ) : (
               <tr className="p-4">
-                <Text padding="1em" marginLeft="1em" align="start">
-                  {t("No bids placed")}
-                </Text>
+                <td>
+                  <p className="ml-4 p-4 text-base text-left leading-relaxed">
+                    No bids placed
+                  </p>
+                </td>
               </tr>
             )}
           </tbody>

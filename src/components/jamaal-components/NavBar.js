@@ -4,20 +4,20 @@ function NavBar() {
   return (
     <header
       id="page-header"
-      className="flex flex-none items-center bg-black shadow-sm z-1"
+      className="flex items-center flex-none bg-black shadow-sm z-1"
     >
-      <div className="container xl:max-w-7xl mx-auto px-4 lg:px-8">
+      <div className="container px-4 mx-auto xl:max-w-7xl lg:px-8">
         <div className="flex justify-between py-4">
           <div className="flex items-center">
             <a
               href="javascript:void(0)"
-              className="group inline-flex items-center space-x-2 font-bold text-lg tracking-wide text-gray-700 hover:text-indigo-600 active:text-gray-700"
+              className="inline-flex items-center space-x-2 text-lg font-bold tracking-wide text-gray-700 group hover:text-indigo-600 active:text-gray-700"
             >
               <svg
                 fill="white"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
-                className="opacity-90 text-indigo-600 transform transition group-hover:scale-110 hi-solid hi-cube-transparent inline-block w-5 h-5"
+                className="inline-block w-5 h-5 text-indigo-600 transition transform opacity-90 group-hover:scale-110 hi-solid hi-cube-transparent"
               >
                 <path
                   fillRule="evenodd"
@@ -33,13 +33,13 @@ function NavBar() {
             <nav className="hidden lg:flex lg:items-center lg:space-x-2">
               <a
                 href="javascript:void(0)"
-                className="text-sm font-medium flex items-center space-x-2 px-3 py-2 rounded border border-indigo-50 bg-indigo-50 text-indigo-500"
+                className="flex items-center px-3 py-2 space-x-2 text-sm font-medium text-indigo-500 border rounded border-indigo-50 bg-indigo-50"
               >
                 <svg
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="opacity-50 hi-solid hi-home inline-block w-5 h-5"
+                  className="inline-block w-5 h-5 opacity-50 hi-solid hi-home"
                 >
                   <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
                 </svg>
@@ -47,13 +47,13 @@ function NavBar() {
               </a>
               <a
                 href="javascript:void(0)"
-                className="text-sm font-medium flex items-center space-x-2 px-3 py-2 rounded text-gray-600 border border-transparent hover:text-indigo-500 hover:bg-indigo-50 hover:border-indigo-50 active:bg-indigo-100 active:border-indigo-100"
+                className="flex items-center px-3 py-2 space-x-2 text-sm font-medium text-gray-600 border border-transparent rounded hover:text-indigo-500 hover:bg-indigo-50 hover:border-indigo-50 active:bg-indigo-100 active:border-indigo-100"
               >
                 <svg
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="opacity-50 hi-solid hi-user-circle inline-block w-5 h-5"
+                  className="inline-block w-5 h-5 opacity-50 hi-solid hi-user-circle"
                 >
                   <path
                     fillRule="evenodd"
@@ -65,13 +65,13 @@ function NavBar() {
               </a>
               <a
                 href="javascript:void(0)"
-                className="text-sm font-medium flex items-center space-x-2 px-3 py-2 rounded text-gray-600 border border-transparent hover:text-indigo-500 hover:bg-indigo-50 hover:border-indigo-50 active:bg-indigo-100 active:border-indigo-100"
+                className="flex items-center px-3 py-2 space-x-2 text-sm font-medium text-gray-600 border border-transparent rounded hover:text-indigo-500 hover:bg-indigo-50 hover:border-indigo-50 active:bg-indigo-100 active:border-indigo-100"
               >
                 <svg
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="opacity-50 hi-solid hi-briefcase inline-block w-5 h-5"
+                  className="inline-block w-5 h-5 opacity-50 hi-solid hi-briefcase"
                 >
                   <path
                     fillRule="evenodd"
@@ -84,13 +84,13 @@ function NavBar() {
               </a>
               <a
                 href="javascript:void(0)"
-                className="text-sm font-medium flex items-center space-x-2 px-3 py-2 rounded text-gray-600 border border-transparent hover:text-indigo-500 hover:bg-indigo-50 hover:border-indigo-50 active:bg-indigo-100 active:border-indigo-100"
+                className="flex items-center px-3 py-2 space-x-2 text-sm font-medium text-gray-600 border border-transparent rounded hover:text-indigo-500 hover:bg-indigo-50 hover:border-indigo-50 active:bg-indigo-100 active:border-indigo-100"
               >
                 <svg
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="opacity-50 hi-solid hi-cog inline-block w-5 h-5"
+                  className="inline-block w-5 h-5 opacity-50 hi-solid hi-cog"
                 >
                   <path
                     fillRule="evenodd"
@@ -105,13 +105,13 @@ function NavBar() {
             <div className="lg:hidden">
               <button
                 type="button"
-                className="inline-flex justify-center items-center space-x-2 border font-semibold focus:outline-none px-3 py-2 leading-6 rounded border-gray-300 bg-white text-gray-800 shadow-sm hover:text-gray-800 hover:bg-gray-100 hover:border-gray-300 hover:shadow focus:ring focus:ring-gray-500 focus:ring-opacity-25 active:bg-white active:border-white active:shadow-none"
+                className="inline-flex items-center justify-center px-3 py-2 space-x-2 font-semibold leading-6 text-gray-800 bg-white border border-gray-300 rounded shadow-sm focus:outline-none hover:text-gray-800 hover:bg-gray-100 hover:border-gray-300 hover:shadow focus:ring focus:ring-gray-500 focus:ring-opacity-25 active:bg-white active:border-white active:shadow-none"
               >
                 <svg
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="hi-solid hi-menu inline-block w-5 h-5"
+                  className="inline-block w-5 h-5 hi-solid hi-menu"
                 >
                   <path
                     fillRule="evenodd"
@@ -129,16 +129,16 @@ function NavBar() {
             Opened        '' (no class) */}
 
         <div className="lg:hidden">
-          <nav className="flex flex-col space-y-2 py-4 border-t">
+          <nav className="flex flex-col py-4 space-y-2 border-t">
             <a
               href="javascript:void(0)"
-              className="text-sm font-medium flex items-center space-x-2 px-3 py-2 rounded border border-indigo-50 bg-indigo-50 text-indigo-500"
+              className="flex items-center px-3 py-2 space-x-2 text-sm font-medium text-indigo-500 border rounded border-indigo-50 bg-indigo-50"
             >
               <svg
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
-                className="opacity-50 hi-solid hi-home inline-block w-5 h-5"
+                className="inline-block w-5 h-5 opacity-50 hi-solid hi-home"
               >
                 <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
               </svg>
@@ -146,13 +146,13 @@ function NavBar() {
             </a>
             <a
               href="javascript:void(0)"
-              className="text-sm font-medium flex items-center space-x-2 px-3 py-2 rounded text-gray-600 border border-transparent hover:text-indigo-500 hover:bg-indigo-50 hover:border-indigo-50 active:bg-indigo-100 active:border-indigo-100"
+              className="flex items-center px-3 py-2 space-x-2 text-sm font-medium text-gray-600 border border-transparent rounded hover:text-indigo-500 hover:bg-indigo-50 hover:border-indigo-50 active:bg-indigo-100 active:border-indigo-100"
             >
               <svg
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
-                className="opacity-50 hi-solid hi-user-circle inline-block w-5 h-5"
+                className="inline-block w-5 h-5 opacity-50 hi-solid hi-user-circle"
               >
                 <path
                   fillRule="evenodd"
@@ -164,13 +164,13 @@ function NavBar() {
             </a>
             <a
               href="javascript:void(0)"
-              className="text-sm font-medium flex items-center space-x-2 px-3 py-2 rounded text-gray-600 border border-transparent hover:text-indigo-500 hover:bg-indigo-50 hover:border-indigo-50 active:bg-indigo-100 active:border-indigo-100"
+              className="flex items-center px-3 py-2 space-x-2 text-sm font-medium text-gray-600 border border-transparent rounded hover:text-indigo-500 hover:bg-indigo-50 hover:border-indigo-50 active:bg-indigo-100 active:border-indigo-100"
             >
               <svg
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
-                className="opacity-50 hi-solid hi-briefcase inline-block w-5 h-5"
+                className="inline-block w-5 h-5 opacity-50 hi-solid hi-briefcase"
               >
                 <path
                   fillRule="evenodd"
@@ -183,13 +183,13 @@ function NavBar() {
             </a>
             <a
               href="javascript:void(0)"
-              className="text-sm font-medium flex items-center space-x-2 px-3 py-2 rounded text-gray-600 border border-transparent hover:text-indigo-500 hover:bg-indigo-50 hover:border-indigo-50 active:bg-indigo-100 active:border-indigo-100"
+              className="flex items-center px-3 py-2 space-x-2 text-sm font-medium text-gray-600 border border-transparent rounded hover:text-indigo-500 hover:bg-indigo-50 hover:border-indigo-50 active:bg-indigo-100 active:border-indigo-100"
             >
               <svg
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
-                className="opacity-50 hi-solid hi-cog inline-block w-5 h-5"
+                className="inline-block w-5 h-5 opacity-50 hi-solid hi-cog"
               >
                 <path
                   fillRule="evenodd"
