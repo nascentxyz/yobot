@@ -30,7 +30,7 @@ const BidPageMain = ({ projectId }) => {
 
   // ** Cumulative State ** //
   const [totalBids, setTotalBids] = useState(-1);
-  const [highestBidInWei, setHighestBidInWei] = useState(-1);
+  const [highestBid, setHighestBid] = useState(-1);
   const [submittingBid, setSubmittingBid] = useState(false);
 
   // ** Filter for valid open orders ** //
@@ -132,7 +132,7 @@ const BidPageMain = ({ projectId }) => {
       }
     });
 
-    const highestBidInWei = Math.max(
+    const highestBid = Math.max(
       // @ts-ignore
       ...Object.values(placedBidValuesForProject),
       -1
@@ -141,7 +141,7 @@ const BidPageMain = ({ projectId }) => {
     // ** Update State ** //
     setPlacedOrders(verifiedOpenOrders);
     totalOpenPlacedBids.current = totalQty;
-    if (highestBidInWei >= 0) setHighestBidInWei(highestBidInWei);
+    if (highestBid >= 0) setHighestBid(highestBid);
     setGettingPlaced(false);
   };
 
@@ -233,14 +233,6 @@ const BidPageMain = ({ projectId }) => {
     }
 
     // ** Update State ** //
-
-    // const highestBidInWei = Math.max(
-    //   // @ts-ignore
-    //   ...Object.values(placedBidValuesForProject),
-    //   -1
-    // );
-    // if (highestBidInWei >= 0) setHighestBidInWei(highestBidInWei);
-    // totalCancelledBids.current = totalCancelledQty;
     setCancelledOrders(_cancelled_orders);
     setGettingCancelled(false);
   };
@@ -266,7 +258,7 @@ const BidPageMain = ({ projectId }) => {
                 ? {
                     ...projectDetails.project[0],
                     totalBids: totalBids,
-                    highestBidInWei: highestBidInWei,
+                    highestBid: highestBid,
                   }
                 : {},
               gettingActions: gettingActions,

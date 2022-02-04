@@ -17,8 +17,8 @@ const ProjectDetails = ({ props }) => {
 
   // Highest bid in ether
   const highestBid =
-    props.project.highestBidInWei && props.project.highestBidInWei >= 0
-      ? props.project.highestBidInWei //FIXME: this number isn't actually in wei?
+    props.project.highestBid && props.project.highestBid >= 0
+      ? props.project.highestBid
       : "-";
 
   // Mint price in ether
