@@ -25,9 +25,12 @@ const BidPageMain = ({ projectId }) => {
 
   const [gettingActions, setGettingActions] = useState(true);
 
+  const totalOpenPlacedBids = useRef(0);
+  const totalFilledBids = useRef(0);
+
   // ** Cumulative State ** //
-  const [totalBids, setTotalBids] = useState("-");
-  const [highestBidInWei, setHighestBidInWei] = useState("-");
+  const [totalBids, setTotalBids] = useState(-1);
+  const [highestBidInWei, setHighestBidInWei] = useState(-1);
   const [submittingBid, setSubmittingBid] = useState(false);
 
   // ** Filter for valid open orders ** //
@@ -50,7 +53,6 @@ const BidPageMain = ({ projectId }) => {
     setGettingPlaced(true);
     setGettingFilled(true);
     setGettingCancelled(true);
-    console.log("actions", actions);
     if (projectDetails && projectDetails.project && projectDetails.project[0]) {
       tokenAddress.current = projectDetails.project[0].token_address;
       mintPrice.current = projectDetails.project[0].mint_price;
@@ -63,6 +65,7 @@ const BidPageMain = ({ projectId }) => {
   // ** Set Getting Actions ** //
   useEffect(() => {
     if (!gettingPlaced && !gettingFilled && !gettingCancelled) {
+      setTotalBids(totalOpenPlacedBids.current + totalFilledBids.current);
       setGettingActions(false);
     }
   }, [gettingPlaced, gettingFilled, gettingCancelled]);
@@ -107,8 +110,8 @@ const BidPageMain = ({ projectId }) => {
             if (placedBidValuesForProject[parsedAction.order_id] !== -1) {
               // If this order hasn't already been cancelled
               placedBidValuesForProject[parsedAction.order_id] = bidPrice;
+              totalQty += qty;
             }
-            totalQty += qty;
             if (isCurrUser) _placed_orders.push(parsedAction);
           }
         }
@@ -137,15 +140,15 @@ const BidPageMain = ({ projectId }) => {
 
     // ** Update State ** //
     setPlacedOrders(verifiedOpenOrders);
-    setTotalBids((parseInt(totalBids) + totalQty).toString());
-    setHighestBidInWei(highestBidInWei > 0 ? highestBidInWei.toString() : "-");
+    totalOpenPlacedBids.current = totalQty;
+    if (highestBidInWei >= 0) setHighestBidInWei(highestBidInWei);
     setGettingPlaced(false);
   };
 
   // ** Helper function to get the filled orders ** //
   const getFilledOrders = async () => {
     let filled_orders = [];
-    let totalQty = 0;
+    let totalFilledQty = 0;
 
     for (const action of actions) {
       try {
@@ -177,6 +180,7 @@ const BidPageMain = ({ projectId }) => {
           const qty = parseInt(parsedAction.quantity);
 
           if (parsedAction.status == "ORDER_FILLED") {
+            totalFilledQty += qty;
             if (isCurrUser) filled_orders.push(parsedAction);
           }
         }
@@ -184,14 +188,15 @@ const BidPageMain = ({ projectId }) => {
     }
 
     // ** Update State ** //
+    totalFilledBids.current = totalFilledQty;
     setFilledOrders(filled_orders);
-    setTotalBids((parseInt(totalBids) + totalQty).toString());
     setGettingFilled(false);
   };
 
   // ** Helper function to get the cancelled orders ** //
   const getCancelledOrders = async () => {
     let _cancelled_orders = [];
+    let totalCancelledQty = 0;
 
     for (const action of actions) {
       try {
@@ -220,6 +225,7 @@ const BidPageMain = ({ projectId }) => {
             parsedAction.user.toUpperCase() == address.toUpperCase();
           if (parsedAction.status == "ORDER_CANCELLED") {
             placedBidValuesForProject[parsedAction.order_id] = -1;
+            // totalCancelledQty += parseInt(parsedAction.quantity);
             if (isCurrUser) _cancelled_orders.push(parsedAction);
           }
         }
@@ -228,12 +234,13 @@ const BidPageMain = ({ projectId }) => {
 
     // ** Update State ** //
 
-    const highestBidInWei = Math.max(
-      // @ts-ignore
-      ...Object.values(placedBidValuesForProject),
-      -1
-    );
-    setHighestBidInWei(highestBidInWei > 0 ? highestBidInWei.toString() : "-");
+    // const highestBidInWei = Math.max(
+    //   // @ts-ignore
+    //   ...Object.values(placedBidValuesForProject),
+    //   -1
+    // );
+    // if (highestBidInWei >= 0) setHighestBidInWei(highestBidInWei);
+    // totalCancelledBids.current = totalCancelledQty;
     setCancelledOrders(_cancelled_orders);
     setGettingCancelled(false);
   };
