@@ -292,18 +292,6 @@ const BidForm = ({ props }) => {
         ) : (
           ""
         )}
-
-        {/* EXAMPLE BUTTON */}
-
-        {/* <button
-          type="button"
-          className="items-center w-full h-56 px-6 py-3 text-lg font-medium text-center text-white border border-transparent rounded-md shadow-sm bg-yobotblue hover:bg-yobotbluehover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yobotblue"
-        >
-          Example Button
-        </button> */}
-
-        {/* END EXAMPLE BUTTON */}
-
         {!isAuthed ? (
           <button
             type="button"
