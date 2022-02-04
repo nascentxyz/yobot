@@ -146,6 +146,7 @@ const ProjectBidTable = ({ props }) => {
           </thead>
           <tbody className="">
             {Yobot.isSupportedChain(chainId) &&
+            isAuthed &&
             (props.gettingActions || props.submittingBid) ? (
               <tr className="p-4 ">
                 <td>
