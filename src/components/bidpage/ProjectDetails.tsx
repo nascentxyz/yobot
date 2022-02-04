@@ -9,10 +9,16 @@ const EmptyAddress = "0x0000000000000000000000000000000000000000";
 const ProjectDetails = ({ props }) => {
   const { yobot, address, actions, chainId, refreshEvents } = useYobot();
 
+  // Total number of non-cancelled bids (i.e. open placed bids + filled bids)
+  const totalBids =
+    props.project.totalBids && props.project.totalBids >= 0
+      ? props.project.totalBids
+      : "-";
+
   // Highest bid in ether
   const highestBid =
-    props.project.highestBidInWei && props.project.highestBidInWei >= 0
-      ? props.project.highestBidInWei //FIXME: this number isn't actually in wei?
+    props.project.highestBid && props.project.highestBid >= 0
+      ? props.project.highestBid
       : "-";
 
   // Mint price in ether
@@ -45,9 +51,7 @@ const ProjectDetails = ({ props }) => {
 
     return timeLeft;
   };
-
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
-
   useEffect(() => {
     const timer = setTimeout(() => {
       setTimeLeft(calculateTimeLeft());
@@ -157,7 +161,7 @@ const ProjectDetails = ({ props }) => {
                 <dt className="text-lg font-semibold text-white">
                   {props.gettingActions || address == EmptyAddress
                     ? "-"
-                    : props.project.totalBids}
+                    : totalBids}
                 </dt>
               </dl>
             </div>
