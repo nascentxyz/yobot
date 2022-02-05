@@ -20,8 +20,8 @@ const ProjectCard = ({ project }) => {
 
   return (
     <a href={projectIdLink}>
-      <div className="flex flex-col pb-3 overflow-hidden bg-gray-800 rounded shadow-sm">
-        <div className="flex-grow w-full text-center ">
+      <div className="flex flex-col pb-3 overflow-hidden rounded shadow-sm bg-yobotblack">
+        <div className="flex-grow w-full text-center">
           <a
             href={projectIdLink}
             className="block mb-5 -mx-2 -mt-2 transition duration-200 ease-out origin-bottom transform hover:scale-105 hover:shadow-xl active:shadow active:opacity-50"
