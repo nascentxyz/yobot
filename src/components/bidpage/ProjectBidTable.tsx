@@ -89,7 +89,7 @@ const ProjectBidTable = ({ props }) => {
           <span className="inline-block w-4 h-4 bg-orange-300 rounded-full md:hidden">
             &nbsp;
           </span>
-          <div className=" px-2 py-1 text-xs font-semibold leading-4 text-orange-700 bg-orange-200 rounded-full md:inline-block">
+          <div className="px-2 py-1 text-xs font-semibold leading-4 text-orange-700 bg-orange-200 rounded-full md:inline-block">
             Filled
           </div>
         </>
@@ -100,7 +100,7 @@ const ProjectBidTable = ({ props }) => {
           <span className="inline-block w-4 h-4 bg-orange-300 rounded-full md:hidden">
             &nbsp;
           </span>
-          <div className=" px-2 py-1 text-xs font-semibold leading-4 text-orange-700 bg-orange-200 rounded-full md:inline-block">
+          <div className="px-2 py-1 text-xs font-semibold leading-4 text-orange-700 bg-orange-200 rounded-full md:inline-block">
             Cancelled
           </div>
         </>
@@ -125,12 +125,12 @@ const ProjectBidTable = ({ props }) => {
 
   return (
     <div className="container mx-auto xl:max-w-7xl ">
-      <div className="rounded-xl min-w-full  overflow-x-auto bg-gray-800  ">
-        <table className="min-w-full text-sm align-middle text-center">
+      <div className="min-w-full overflow-x-auto bg-gray-800 rounded-xl ">
+        <table className="min-w-full text-sm text-center align-middle">
           <thead>
-            <tr className=" bg-yobotblack text-lg text-textgraylight">
+            <tr className="text-lg bg-yobotblack text-textgraylight">
               <th className="p-3 font-semibold tracking-wider ">Date Placed</th>
-              <th className="p-3 text-center font-semibold tracking-wider sm:text-left">
+              <th className="p-3 font-semibold tracking-wider text-center sm:text-left">
                 Quantity
               </th>
               <th className="p-3 font-semibold tracking-wider text-center">
@@ -149,7 +149,7 @@ const ProjectBidTable = ({ props }) => {
             isAuthed &&
             (props.gettingActions || props.submittingBid) ? (
               <tr className="p-4 ">
-                <td>
+                <td className="mx-auto">
                   <Spinner
                     padding="1em"
                     ml="1em"
@@ -172,7 +172,7 @@ const ProjectBidTable = ({ props }) => {
                 } = order;
 
                 return (
-                  <tr className="" key={Object.entries(order).toString()}>
+                  <tr className="bg-red-700" key={Object.entries(order).toString()}>
                     <td className="p-3">
                       <p className="font-medium ">{date_time}</p>
                       <p className="text-gray-500">{date_year}</p>
@@ -218,9 +218,9 @@ const ProjectBidTable = ({ props }) => {
                 );
               })
             ) : (
-              <tr className="p-4">
+              <tr className="p-4 ">
                 <td>
-                  <p className="ml-4 p-4 text-base text-left leading-relaxed">
+                  <p className="p-4 ml-4 text-base leading-relaxed text-left ">
                     No bids placed
                   </p>
                 </td>
