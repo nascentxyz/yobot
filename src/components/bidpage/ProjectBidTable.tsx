@@ -172,7 +172,7 @@ const ProjectBidTable = ({ props }) => {
                 } = order;
 
                 return (
-                  <tr className="bg-red-700" key={Object.entries(order).toString()}>
+                  <tr className="" key={Object.entries(order).toString()}>
                     <td className="p-3">
                       <p className="font-medium ">{date_time}</p>
                       <p className="text-gray-500">{date_year}</p>
