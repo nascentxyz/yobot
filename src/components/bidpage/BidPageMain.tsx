@@ -72,6 +72,11 @@ const BidPageMain = ({ projectId }) => {
 
   let placedBidValuesForProject = {};
 
+  // FIXME: bid table currently displays a duplicate row for a partially filled order
+    // redo how we get Placed orders / fileld orders/ canceleld orders
+    // iterate thru user's parsedOrders, add to mapping by `order_num: parsedOrder`,
+    // update status after iterating thru filledOrders, cancelledOrders
+
   // ** Helper function to get the open orders ** //
   const getPlacedOrders = async () => {
     let _placed_orders = [];
