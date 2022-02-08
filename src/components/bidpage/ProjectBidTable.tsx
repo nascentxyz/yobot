@@ -22,6 +22,7 @@ import {
   onTxFailed,
   userRejectedCallback,
   onTxConfirmed,
+  getNetworkPrefix,
 } from "src/utils";
 import { parseAction } from "src/contexts/utils";
 
@@ -169,12 +170,24 @@ const ProjectBidTable = ({ props }) => {
                   price,
                   status,
                   order_num,
+                  tx_hash,
                 } = order;
+
+                const etherscanLink =
+                  "https://" +
+                  (chainId > 0 ? getNetworkPrefix(chainId) : "") +
+                  "etherscan.io/tx/" +
+                  tx_hash;
 
                 return (
                   <tr className="" key={Object.entries(order).toString()}>
                     <td className="p-3">
-                      <p className="font-medium ">{date_time}</p>
+                      <a
+                        href={etherscanLink}
+                        className="font-medium hover:text-yobotgreen"
+                      >
+                        {date_time}
+                      </a>
                       <p className="text-gray-500">{date_year}</p>
                     </td>
                     <td className="p-3 text-center text-gray-500 sm:text-left md:table-cell">
