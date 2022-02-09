@@ -126,7 +126,7 @@ const ProjectBidTable = ({ props }) => {
 
   return (
     <div className="container mx-auto xl:max-w-7xl ">
-      <div className="rounded-xl min-w-full  overflow-x-auto bg-gray-800  ">
+      <div className="rounded-xl min-w-full overflow-x-auto bg-zinc">
         <table className="min-w-full text-sm align-middle text-center">
           <thead>
             <tr className=" bg-yobotblack text-lg text-textgraylight">
@@ -161,7 +161,9 @@ const ProjectBidTable = ({ props }) => {
                   />
                 </td>
               </tr>
-            ) : orders.length > 0 ? (
+            ) : Yobot.isSupportedChain(chainId) &&
+              isAuthed &&
+              orders.length > 0 ? (
               orders.map((order) => {
                 const {
                   placed_time,
