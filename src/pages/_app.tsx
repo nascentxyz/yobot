@@ -6,7 +6,7 @@ import "material-react-toastify/dist/ReactToastify.css";
 import "react-toastify/dist/ReactToastify.css";
 import { YobotProvider } from "src/contexts/YobotContext";
 import "../styles/globals.css";
-import "tailwindcss/tailwind.css"
+import "tailwindcss/tailwind.css";
 
 import LogRocket from "logrocket";
 // @ts-ignore
