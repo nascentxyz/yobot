@@ -1,8 +1,8 @@
 module.exports = {
   purge: [],
   content: [
-    './pages/**/*.{html,js,ts,tsx}',
-    './components/**/*.{html,js,ts,tsx}',
+    "./pages/**/*.{html,js,ts,tsx}",
+    "./components/**/*.{html,js,ts,tsx}",
   ],
   darkMode: false, // or 'media' or 'class'
   theme: {
