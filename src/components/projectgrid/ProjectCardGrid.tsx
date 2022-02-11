@@ -2,6 +2,7 @@ import React from "react";
 import ProjectCard from "./ProjectCard";
 import ProjectCardDisabled from "./ProjectCardDisabled";
 import { useEffect, useState } from "react";
+import { Yobot } from "src/yobot-sdk";
 
 function ProjectCardGrid() {
   const [liveProjects, setLiveProjects] = useState([]);
@@ -45,7 +46,11 @@ function ProjectCardGrid() {
 
     // ** Set the projects ** //
     const { projects } = await response.json();
-    setLiveProjects(projects);
+    setLiveProjects(
+      projects.filter(
+        (proj) => proj.visible && Yobot.isSupportedChain(proj.network)
+      )
+    );
   };
 
   useEffect(() => {
@@ -57,7 +62,7 @@ function ProjectCardGrid() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
         {liveProjects.length + tbaProjects.length > 0 ? (
           liveProjects.map((project) => {
-            return <ProjectCard key={project.projectId} project={project} />;
+            return <ProjectCard key={project.id} project={project} />;
           })
         ) : (
           // TODO: display tbaProjects as well

@@ -46,5 +46,5 @@ module.exports = {
       backgroundColor: ["disabled"],
     },
   },
-  plugins: [],
+  plugins: ["postcss-import", "tailwindcss", "autoprefixer"],
 };
