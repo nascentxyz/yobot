@@ -278,7 +278,7 @@ const BidForm = ({ props }) => {
         ) : (
           <button
             type="button"
-            className="items-center w-full h-56 px-6 py-3 text-lg font-medium text-center text-white border border-transparent rounded-md shadow-sm bg-yobotblue hover:bg-yobotbluehover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yobotblue disabled:opacity-50 disabled:bg-zinc disabled:text-white/75"
+            className="items-center w-full h-56 px-6 py-3 text-lg bg-yobotblue font-medium text-center text-white border border-transparent rounded-md shadow-sm hover:bg-yobotbluehover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yobotblue disabled:opacity-50 disabled:bg-zinc disabled:text-white/75"
             disabled={
               !Yobot.isSupportedChain(chainId) ||
               !validParams ||
