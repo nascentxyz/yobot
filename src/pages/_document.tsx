@@ -7,6 +7,12 @@ export default class Document extends NextDocument {
       <Html>
         <Head>
           <link rel="shortcut icon" href="/favicon.ico" />
+          {/* <link
+            rel="preload"
+            href="https://fonts.gstatic.com/s/rubik/v18/iJWEBXyIfDnIV7nEnXq61E_c5IhGzg.woff2"
+            as="font"
+            crossOrigin=""
+          /> */}
           <meta
             name="description"
             content="Yobot is a trustless broker to match off-chain bots with user contract call requests."
