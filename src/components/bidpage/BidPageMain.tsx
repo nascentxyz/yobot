@@ -34,11 +34,12 @@ const BidPageMain = ({ projectId }) => {
 
   const [gettingActions, setGettingActions] = useState(true);
 
-  const totalOpenPlacedBids = useRef(0);
+  const totalPlacedBids = useRef(0);
   const totalFilledBids = useRef(0);
+  const totalCancelledBids = useRef(0);
 
   // ** Cumulative State ** //
-  const orderNumToOrder = useRef({});
+  const currUserOrdersMap = useRef({});
   const [totalBids, setTotalBids] = useState(-1);
   const [highestBid, setHighestBid] = useState(-1);
   const [submittingBid, setSubmittingBid] = useState(false);
@@ -75,13 +76,15 @@ const BidPageMain = ({ projectId }) => {
   // ** Set Getting Actions ** //
   useEffect(() => {
     if (!gettingPlaced && !gettingFilled && !gettingCancelled) {
-      setOrders(Object.values(orderNumToOrder.current));
-      setTotalBids(totalOpenPlacedBids.current + totalFilledBids.current);
+      setOrders(Object.values(currUserOrdersMap.current));
+      console.log("total bids", totalPlacedBids.current - totalFilledBids.current - totalCancelledBids.current);
+      setTotalBids(totalPlacedBids.current - totalFilledBids.current - totalCancelledBids.current);  // total count of open bids only
       setGettingActions(false);
     }
   }, [gettingPlaced, gettingFilled, gettingCancelled]);
 
-  let placedBidValuesForProject = {};
+  let openBidPricesForProject = {};
+  let openBidQtyForProject = {}
 
   // ** Helper function to get the open orders ** //
   const getPlacedOrders = async () => {
@@ -119,13 +122,15 @@ const BidPageMain = ({ projectId }) => {
           const orderNum = parseInt(parsedAction.order_num);
 
           if (parsedAction.status == "ORDER_PLACED") {
-            if (placedBidValuesForProject[parsedAction.order_id] !== -1) {
+            console.log(parsedAction);
+            if (openBidPricesForProject[parsedAction.order_id] !== -1) {
               // If this order hasn't already been cancelled
-              placedBidValuesForProject[parsedAction.order_id] = bidPrice;
+              openBidPricesForProject[parsedAction.order_id] = bidPrice;
+              openBidQtyForProject[parsedAction.order_id] = qty;
               totalQty += qty;
             }
             if (isCurrUser) {
-              orderNumToOrder.current[orderNum] = {
+              currUserOrdersMap.current[orderNum] = {
                 placed_time: parsedAction.date_time,
                 placed_year: parsedAction.date_year,
                 order_id: parsedAction.order_id,
@@ -161,13 +166,14 @@ const BidPageMain = ({ projectId }) => {
 
     const highestBid = Math.max(
       // @ts-ignore
-      ...Object.values(placedBidValuesForProject),
+      ...Object.values(openBidPricesForProject),
       -1
     );
 
     // ** Update State ** //
     // setPlacedOrders(verifiedOpenOrders);
-    totalOpenPlacedBids.current = totalQty;
+    totalPlacedBids.current = totalQty;
+    console.log(totalQty);
     if (highestBid >= 0) setHighestBid(highestBid);
     setGettingPlaced(false);
   };
@@ -201,14 +207,14 @@ const BidPageMain = ({ projectId }) => {
           tokenAddress.current.toUpperCase()
         ) {
           if (parsedAction.status == "ORDER_FILLED") {
-            totalFilledQty += 1;
-
             const isCurrUser =
               parsedAction.user.toUpperCase() == address.toUpperCase();
             const remainingQty = parseInt(parsedAction.quantity);
+            openBidQtyForProject[parsedAction.order_id] -= 1;
+            totalFilledQty += 1;
             const orderNum = parseInt(parsedAction.order_num);
             if (isCurrUser) {
-              const order = orderNumToOrder.current[orderNum];
+              const order = currUserOrdersMap.current[orderNum];
               order.remaining_qty = remainingQty;
               // FIXME: if order is filled by multiple bots in multiple txs, this only displays one of them
               order.fill_tx_hash = parsedAction.tx_hash;
@@ -257,15 +263,15 @@ const BidPageMain = ({ projectId }) => {
           tokenAddress.current.toUpperCase()
         ) {
           if (parsedAction.status == "ORDER_CANCELLED") {
-            placedBidValuesForProject[parsedAction.order_id] = -1;
-            // totalCancelledQty += parseInt(parsedAction.quantity);
+            openBidPricesForProject[parsedAction.order_id] = -1;
+            totalCancelledQty += openBidQtyForProject[parsedAction.order_id]
 
             const orderNum = parseInt(parsedAction.order_num);
             const isCurrUser =
               parsedAction.user.toUpperCase() == address.toUpperCase();
             if (isCurrUser) {
               // _cancelled_orders.push(parsedAction);
-              const order = orderNumToOrder.current[orderNum];
+              const order = currUserOrdersMap.current[orderNum];
               order.status = OrderStatus.Cancelled;
               order.cancel_tx_hash = parsedAction.tx_hash;
             }
@@ -276,6 +282,7 @@ const BidPageMain = ({ projectId }) => {
 
     // ** Update State ** //
     // setCancelledOrders(_cancelled_orders);
+    totalCancelledBids.current = totalCancelledQty;
     setGettingCancelled(false);
   };
 
@@ -309,7 +316,7 @@ const BidPageMain = ({ projectId }) => {
         </div>
         <ProjectBidTable
           props={{
-            userBids: Object.values(orderNumToOrder.current),
+            userBids: Object.values(currUserOrdersMap.current),
             gettingActions,
             submittingBid,
             tokenAddress: tokenAddress.current,

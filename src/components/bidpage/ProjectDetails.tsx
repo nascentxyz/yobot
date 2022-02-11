@@ -11,19 +11,19 @@ const ProjectDetails = ({ props }) => {
 
   // Total number of non-cancelled bids (i.e. open placed bids + filled bids)
   const totalBids =
-    props.project.totalBids && props.project.totalBids >= 0
+    props.project.totalBids != null && props.project.totalBids >= 0
       ? props.project.totalBids
       : "-";
 
   // Highest bid in ether
   const highestBid =
-    props.project.highestBid && props.project.highestBid >= 0
+    props.project.highestBid != null && props.project.highestBid >= 0
       ? props.project.highestBid
       : "-";
 
   // Mint price in ether
   const mintPrice =
-    props.project.mint_price && props.project.mint_price >= 0
+    props.project.mint_price != null && props.project.mint_price >= 0
       ? web3.utils.fromWei(props.project.mint_price.toString(), "ether")
       : "-";
 
@@ -156,7 +156,7 @@ const ProjectDetails = ({ props }) => {
             <div className="flex-grow w-full p-2">
               <dl>
                 <dd className="text-lg font-semibold tracking-wider text-textgray ">
-                  Bid Count
+                  Open Bids
                 </dd>
                 <dt className="text-lg font-semibold text-white">
                   {props.gettingActions || address == EmptyAddress
