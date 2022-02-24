@@ -8,35 +8,6 @@ function ProjectCardGrid() {
   const [liveProjects, setLiveProjects] = useState([]);
   const [tbaProjects, setTbaProjects] = useState([]); // for ProjectCardDisabled
 
-  // function getLiveProjects() {
-  //   const p1 = {
-  //     projectId: "0",
-  //     title: "Art Blocks",
-  //     projectWebsite: "https://www.artblocks.io/",
-  //     description:
-  //       "Art Blocks is a first of its kind platform focused on genuinely programmable on demand generative content that is stored immutably on the Ethereum Blockchain.",
-  //     launchTime: new Date("December 31, 2021 23:59:59 PST"),
-  //     previewImageSrc:
-  //       "/artblocks.png",
-  //     projectTokenAddress: "0xd8bbf8ceb445de814fb47547436b3cfeecadd4ec",
-  //   };
-  //   const p2 = {
-  //     projectId: "1",
-  //     title: "StrictMint",
-  //     projectWebsite: "https://goerli.etherscan.io/address/0xed198777a685a7152ecf165b4a4dee010fe6f933",
-  //     description:
-  //       "ERC721 with strict minting requirements",
-  //     launchTime: new Date("February 1, 2022 23:59:59 PST"),
-  //     previewImageSrc:
-  //       "/etherscan.png",
-  //     projectTokenAddress: "0xed198777a685a7152ecf165b4a4dee010fe6f933",
-  //   };
-  //   return [
-  //     p1,
-  //     p2
-  //   ];
-  // }
-
   const fetchProjects = async () => {
     const response = await fetch("/api/projects");
 
