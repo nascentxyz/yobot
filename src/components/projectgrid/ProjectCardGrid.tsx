@@ -33,7 +33,13 @@ function ProjectCardGrid() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
         {liveProjects.length + tbaProjects.length > 0 ? (
           liveProjects.map((project) => {
-            return <ProjectCard key={project.id} project={project} isTestnet={project.network == 5}/>;
+            return (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                isTestnet={project.network == 5}
+              />
+            );
           })
         ) : (
           // TODO: display tbaProjects as well
