@@ -98,6 +98,11 @@ const ProjectDetails = ({ props }) => {
           </div>
 
           {/* BADGES */}
+          {props.project.network == 5 ? (
+            <div className="flex justify-start mb-4 hidden px-2 py-1 text-xs font-semibold leading-4 text-red-700 bg-red-200 rounded-full md:inline-block">
+              Goerli Testnet
+            </div>
+          ) : null}
           {/* <div className="flex justify-start mb-4">
             <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800 mr-2">
               Generative

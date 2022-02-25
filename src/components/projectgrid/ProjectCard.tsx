@@ -39,9 +39,9 @@ const ProjectCard = ({ project, isTestnet }) => {
           </h3>
           <h4 className="text-sm font-semibold text-gray-600">{dateStr}</h4>
           {isTestnet ? (
-            <h4 className="text-sm font-semibold text-gray-600">
-              GOERLI TESTNET
-            </h4>
+            <div className="hidden mt-2 px-2 py-1 text-xs font-semibold leading-4 text-red-700 bg-red-200 rounded-full md:inline-block">
+              Testnet
+            </div>
           ) : null}
         </div>
       </div>
