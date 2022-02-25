@@ -77,14 +77,23 @@ const BidPageMain = ({ projectId }) => {
   useEffect(() => {
     if (!gettingPlaced && !gettingFilled && !gettingCancelled) {
       setOrders(Object.values(currUserOrdersMap.current));
-      console.log("total bids", totalPlacedBids.current - totalFilledBids.current - totalCancelledBids.current);
-      setTotalBids(totalPlacedBids.current - totalFilledBids.current - totalCancelledBids.current);  // total count of open bids only
+      console.log(
+        "total bids",
+        totalPlacedBids.current -
+          totalFilledBids.current -
+          totalCancelledBids.current
+      );
+      setTotalBids(
+        totalPlacedBids.current -
+          totalFilledBids.current -
+          totalCancelledBids.current
+      ); // total count of open bids only
       setGettingActions(false);
     }
   }, [gettingPlaced, gettingFilled, gettingCancelled]);
 
   let openBidPricesForProject = {};
-  let openBidQtyForProject = {}
+  let openBidQtyForProject = {};
 
   // ** Helper function to get the open orders ** //
   const getPlacedOrders = async () => {
@@ -264,7 +273,7 @@ const BidPageMain = ({ projectId }) => {
         ) {
           if (parsedAction.status == "ORDER_CANCELLED") {
             openBidPricesForProject[parsedAction.order_id] = -1;
-            totalCancelledQty += openBidQtyForProject[parsedAction.order_id]
+            totalCancelledQty += openBidQtyForProject[parsedAction.order_id];
 
             const orderNum = parseInt(parsedAction.order_num);
             const isCurrUser =

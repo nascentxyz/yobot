@@ -1,10 +1,10 @@
 // ** Define our deployed contract addresses **
 const DeployedContracts = {
-  // // mainnet
-  // 1: {
-  //   YobotArtBlocksBroker: "",
-  //   YobotERC721LimitOrder: "",
-  // },
+  // mainnet
+  1: {
+    //   YobotArtBlocksBroker: "",
+    YobotERC721LimitOrder: "0x715da5e53526bEdaC9Bd96e8FDB7eFb185D1B6CA",
+  },
   // // Ropsten
   // 3: {
   //   YobotArtBlocksBroker: "",
