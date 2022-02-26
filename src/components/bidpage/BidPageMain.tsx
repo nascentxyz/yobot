@@ -53,10 +53,7 @@ const BidPageMain = ({ projectId }) => {
     fetch(url, { headers: { "Content-Type": "application/json" } }).then(
       (res) => res.json()
     );
-  const { data: projectDetails } = useSWR(
-    `/api/project/${projectId}`,
-    fetcher
-  );
+  const { data: projectDetails } = useSWR(`/api/project/${projectId}`, fetcher);
 
   // ** Refresh the variables on load ** //
   useEffect(() => {

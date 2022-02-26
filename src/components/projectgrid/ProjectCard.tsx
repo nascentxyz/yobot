@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
-const ProjectCard = ({ project, isTestnet }) => {
+const ProjectCard = ({ project, chainId }) => {
   const projectIdLink = "/projects/" + project.id;
 
   const options = {
@@ -17,6 +17,19 @@ const ProjectCard = ({ project, isTestnet }) => {
     // @ts-ignore
     options
   );
+
+  let label = "Mainnet";
+
+  switch (chainId) {
+    case 3:
+      label = "Ropsten";
+    case 4:
+      label = "Rinkeby";
+    case 5:
+      label = "Goerli";
+    default:
+      break;
+  }
 
   return (
     <a href={projectIdLink}>
@@ -38,11 +51,15 @@ const ProjectCard = ({ project, isTestnet }) => {
             {project.title}
           </h3>
           <h4 className="text-sm font-semibold text-gray-600">{dateStr}</h4>
-          {isTestnet ? (
+          {chainId != 1 ? (
             <div className="hidden mt-2 px-2 py-1 text-xs font-semibold leading-4 text-red-700 bg-red-200 rounded-full md:inline-block">
-              Testnet
+              {label}
             </div>
-          ) : null}
+          ) : (
+            <div className="hidden mt-2 px-2 py-1 text-xs font-semibold leading-4 text-green-700 bg-green-200 rounded-full md:inline-block">
+              {label}
+            </div>
+          )}
         </div>
       </div>
     </a>

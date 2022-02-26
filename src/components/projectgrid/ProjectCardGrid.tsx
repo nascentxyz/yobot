@@ -37,7 +37,7 @@ function ProjectCardGrid() {
               <ProjectCard
                 key={project.id}
                 project={project}
-                isTestnet={project.network == 5}
+                chainId={project.network}
               />
             );
           })
