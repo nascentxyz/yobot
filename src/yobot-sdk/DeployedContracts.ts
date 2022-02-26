@@ -1,23 +1,12 @@
-// ** Define our deployed contract addresses **
+// ** Define our deployed contract addresses * //
+// ?? Goerli is the only supported testnet since that's the only testnet with flashbot support
 const DeployedContracts = {
   // mainnet
   1: {
-    YobotArtBlocksBroker: "",
-    YobotERC721LimitOrder: "",
-  },
-  // Ropsten
-  3: {
-    YobotArtBlocksBroker: "",
-    YobotERC721LimitOrder: "",
-  },
-  // rinkeby
-  4: {
-    YobotArtBlocksBroker: "",
-    YobotERC721LimitOrder: "",
+    YobotERC721LimitOrder: "0x715da5e53526bEdaC9Bd96e8FDB7eFb185D1B6CA",
   },
   // goerli
   5: {
-    YobotArtBlocksBroker: "",
     YobotERC721LimitOrder: "0x20340e29ba445553f6a5c1b8d30f405b3447664d",
   },
 };

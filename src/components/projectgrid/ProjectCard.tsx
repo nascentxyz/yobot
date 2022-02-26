@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
-const ProjectCard = ({ project }) => {
+const ProjectCard = ({ project, isTestnet }) => {
   const projectIdLink = "/projects/" + project.id;
 
   const options = {
@@ -38,6 +38,11 @@ const ProjectCard = ({ project }) => {
             {project.title}
           </h3>
           <h4 className="text-sm font-semibold text-gray-600">{dateStr}</h4>
+          {isTestnet ? (
+            <div className="hidden mt-2 px-2 py-1 text-xs font-semibold leading-4 text-red-700 bg-red-200 rounded-full md:inline-block">
+              Testnet
+            </div>
+          ) : null}
         </div>
       </div>
     </a>

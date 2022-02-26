@@ -22,8 +22,10 @@ import {
   onTxFailed,
   userRejectedCallback,
   onTxConfirmed,
+  getNetworkPrefix,
 } from "src/utils";
 import { parseAction } from "src/contexts/utils";
+import { OrderStatus } from "./BidPageMain";
 
 const ProjectBidTable = ({ props }) => {
   const { t } = useTranslation();
@@ -82,40 +84,39 @@ const ProjectBidTable = ({ props }) => {
     );
   };
 
-  const getStatusCell = (status) => {
-    if (status == "ORDER_FILLED") {
+  const getStatusCell = (status, placedLink, filledLink, cancelledLink) => {
+    // FIXME: how to display filled link if order is only partially-filled?
+    if (status == OrderStatus.Filled) {
       return (
-        <>
+        <a href={filledLink}>
           <span className="inline-block w-4 h-4 bg-orange-300 rounded-full md:hidden">
             &nbsp;
           </span>
-          <div className=" px-2 py-1 text-xs font-semibold leading-4 text-orange-700 bg-orange-200 rounded-full md:inline-block">
+          <div className="px-2 py-1 text-xs font-semibold leading-4 text-orange-700 bg-orange-200 rounded-full md:inline-block hover:text-yobotgreen">
             Filled
           </div>
-        </>
+        </a>
       );
-    } else if (status == "ORDER_CANCELLED") {
+    } else if (status == OrderStatus.Cancelled) {
       return (
-        <>
+        <a href={cancelledLink}>
           <span className="inline-block w-4 h-4 bg-orange-300 rounded-full md:hidden">
             &nbsp;
           </span>
-          <div className=" px-2 py-1 text-xs font-semibold leading-4 text-orange-700 bg-orange-200 rounded-full md:inline-block">
+          <div className="px-2 py-1 text-xs font-semibold leading-4 text-orange-700 bg-orange-200 rounded-full md:inline-block hover:text-yobotgreen">
             Cancelled
           </div>
-        </>
+        </a>
       );
     } else {
-      // if (cancellingOrder) {
-      //   return <Spinner margin={"auto"} color={"red.400"} />;
-      // } else {
+      // if partially-filled or just placed
       return (
         <>
           <span className="inline-block w-4 h-4 bg-green-300 rounded-full md:hidden">
             &nbsp;
           </span>
           <div className="hidden px-2 py-1 text-xs font-semibold leading-4 text-green-700 bg-green-200 rounded-full md:inline-block">
-            Live
+            Open
           </div>
         </>
       );
@@ -125,13 +126,13 @@ const ProjectBidTable = ({ props }) => {
 
   return (
     <div className="container mx-auto xl:max-w-7xl ">
-      <div className="rounded-xl min-w-full  overflow-x-auto bg-gray-800  ">
+      <div className="rounded-xl min-w-full overflow-x-auto bg-zinc">
         <table className="min-w-full text-sm align-middle text-center">
           <thead>
             <tr className=" bg-yobotblack text-lg text-textgraylight">
               <th className="p-3 font-semibold tracking-wider ">Date Placed</th>
-              <th className="p-3 text-center font-semibold tracking-wider sm:text-left">
-                Quantity
+              <th className="p-3 font-semibold tracking-wider text-center">
+                Quantity Filled
               </th>
               <th className="p-3 font-semibold tracking-wider text-center">
                 Price Per NFT (Ξ)
@@ -160,32 +161,60 @@ const ProjectBidTable = ({ props }) => {
                   />
                 </td>
               </tr>
-            ) : orders.length > 0 ? (
+            ) : Yobot.isSupportedChain(chainId) &&
+              isAuthed &&
+              orders.length > 0 ? (
               orders.map((order) => {
                 const {
-                  date_time,
-                  date_year,
-                  quantity,
+                  placed_time,
+                  placed_year,
                   price,
+                  remaining_qty,
+                  orig_qty,
                   status,
                   order_num,
+                  place_tx_hash,
+                  fill_tx_hash,
+                  cancel_tx_hash,
                 } = order;
+
+                const etherscanLink =
+                  "https://" +
+                  (chainId > 0 ? getNetworkPrefix(chainId) : "") +
+                  "etherscan.io/tx/";
+
+                const placedEtherscanLink = etherscanLink + place_tx_hash;
+                const filledEtherscanLink = etherscanLink + fill_tx_hash;
+                const cancelledEtherscanLink = etherscanLink + cancel_tx_hash;
 
                 return (
                   <tr className="" key={Object.entries(order).toString()}>
                     <td className="p-3">
-                      <p className="font-medium ">{date_time}</p>
-                      <p className="text-gray-500">{date_year}</p>
+                      <a
+                        href={placedEtherscanLink}
+                        className="font-medium hover:text-yobotgreen"
+                      >
+                        {placed_time}
+                      </a>
+                      <p className="text-gray-500">{placed_year}</p>
                     </td>
-                    <td className="p-3 text-center text-gray-500 sm:text-left md:table-cell">
-                      {quantity}
+                    <td className="p-3 text-center text-gray-500 md:table-cell">
+                      {orig_qty - remaining_qty} / {orig_qty}
                     </td>
                     <td className="hidden p-3 text-center text-gray-500 md:table-cell">
                       {price}
                     </td>
-                    <td className="p-3 text-center">{getStatusCell(status)}</td>
                     <td className="p-3 text-center">
-                      {status == "ORDER_PLACED" ? (
+                      {getStatusCell(
+                        status,
+                        placedEtherscanLink,
+                        filledEtherscanLink,
+                        cancelledEtherscanLink
+                      )}
+                    </td>
+                    <td className="p-3 text-center">
+                      {status == OrderStatus.Placed ||
+                      status == OrderStatus.Partially_Filled ? (
                         !cancellingOrder ? (
                           <button
                             type="button"
@@ -209,9 +238,7 @@ const ProjectBidTable = ({ props }) => {
                           <Spinner margin={"auto"} color={"red.400"} />
                         )
                       ) : (
-                        <p className="px-2 py-1 text-xs leading-4 text-gray-500 rounded-full md:inline-block">
-                          N/A
-                        </p>
+                        <div></div>
                       )}
                     </td>
                   </tr>

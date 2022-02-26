@@ -26,6 +26,7 @@ const parseAction = (action) => {
     user: returnValues ? returnValues["_user"] : "",
     date_time: action["date"].toLocaleDateString("en-US", options),
     date_year: action["date"].getFullYear().toString(),
+    tx_hash: action["transactionHash"],
   };
 };
 

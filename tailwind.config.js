@@ -1,5 +1,9 @@
 module.exports = {
   purge: [],
+  content: [
+    "./pages/**/*.{html,js,ts,tsx}",
+    "./components/**/*.{html,js,ts,tsx}",
+  ],
   darkMode: false, // or 'media' or 'class'
   theme: {
     fontSize: {
@@ -46,5 +50,5 @@ module.exports = {
       backgroundColor: ["disabled"],
     },
   },
-  plugins: [],
+  plugins: ["postcss-import", "tailwindcss", "autoprefixer"],
 };
