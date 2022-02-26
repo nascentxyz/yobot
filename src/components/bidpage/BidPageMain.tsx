@@ -53,7 +53,7 @@ const BidPageMain = ({ projectId }) => {
     fetch(url, { headers: { "Content-Type": "application/json" } }).then(
       (res) => res.json()
     );
-  const { data: projectDetails, error } = useSWR(
+  const { data: projectDetails } = useSWR(
     `/api/project/${projectId}`,
     fetcher
   );
