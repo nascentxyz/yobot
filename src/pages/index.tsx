@@ -1,5 +1,6 @@
 import {
   Navbar,
+  AlphaMarquee,
   Main,
   LandingPageMain,
   ProjectGrid,
@@ -14,6 +15,7 @@ const Index = () => {
   return (
     <div>
       <ToastContainer />
+      <AlphaMarquee isAlpha={true} />
       <Navbar onOpen={onOpen} accountButton={true} />
       <FAQModal isOpen={isOpen} onClose={onClose} />
       <ProjectGrid />
