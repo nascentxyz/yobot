@@ -32,8 +32,11 @@ const ProjectCard = ({ project, chainId }) => {
   }
 
   return (
-    <a href={projectIdLink}>
-      <div className="flex flex-col overflow-hidden bg-gray-800 rounded shadow-sm">
+    <a
+      // className="mx-auto"
+      href={projectIdLink}
+    >
+      <div className="flex w-64  flex-col overflow-hidden bg-gray-800 rounded shadow-sm">
         <div className="flex-grow w-full text-center block pb-6 -mt-2 pt-10 transition duration-200 ease-out origin-bottom transform hover:scale-105 hover:shadow-xl active:shadow active:opacity-50">
           <Image
             src={project.image_src}

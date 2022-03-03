@@ -2,7 +2,7 @@
 import Web3 from "web3";
 
 import { DeployedContracts } from "../../";
-import { placeOrder, cancelOrder, fetchAction, viewUserOrders } from ".";
+import { fillOrder, placeOrder, cancelOrder, fetchAction, viewUserOrders } from ".";
 
 // ** Import the Contract Abis **
 var YobotERC721LimitOrderAbi = require(".." +
@@ -15,6 +15,20 @@ class YobotERC721LimitOrder {
 
   // ** Contracts
   YobotERC721LimitOrder: any;
+
+  // ** Fill an Order ** //
+  fillOrder: (
+    web3: Web3,
+    yobotERC721LimitOrder: any,
+    price: number,
+    quantity: number,
+    tokenAddress: string,
+    sender: string,
+    txSubmitCallback: any,
+    txFailCallback: any,
+    txConfirmedCallback: any,
+    userRejectedCallback: any
+  ) => Promise<any>;
 
   // ** ERC721 Limit Order Functions **
   placeOrder: (
