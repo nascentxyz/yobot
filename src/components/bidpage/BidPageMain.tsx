@@ -74,12 +74,6 @@ const BidPageMain = ({ projectId }) => {
   useEffect(() => {
     if (!gettingPlaced && !gettingFilled && !gettingCancelled) {
       setOrders(Object.values(currUserOrdersMap.current));
-      console.log(
-        "total bids",
-        totalPlacedBids.current -
-          totalFilledBids.current -
-          totalCancelledBids.current
-      );
       setTotalBids(
         totalPlacedBids.current -
           totalFilledBids.current -
@@ -128,7 +122,6 @@ const BidPageMain = ({ projectId }) => {
           const orderNum = parseInt(parsedAction.order_num);
 
           if (parsedAction.status == "ORDER_PLACED") {
-            console.log(parsedAction);
             if (openBidPricesForProject[parsedAction.order_id] !== -1) {
               // If this order hasn't already been cancelled
               openBidPricesForProject[parsedAction.order_id] = bidPrice;
@@ -140,6 +133,7 @@ const BidPageMain = ({ projectId }) => {
                 placed_time: parsedAction.date_time,
                 placed_year: parsedAction.date_year,
                 order_id: parsedAction.order_id,
+                order_num: orderNum,
                 price: bidPrice,
                 remaining_qty: qty,
                 orig_qty: qty,
@@ -179,7 +173,6 @@ const BidPageMain = ({ projectId }) => {
     // ** Update State ** //
     // setPlacedOrders(verifiedOpenOrders);
     totalPlacedBids.current = totalQty;
-    console.log(totalQty);
     if (highestBid >= 0) setHighestBid(highestBid);
     setGettingPlaced(false);
   };
